@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>닷런 Dot Learn · 만지며 배우는 매일 10분</title>
+<meta name="description" content="시각장애 학생을 위한 촉각 학습지 닷런. 디지털 점자 패드로 매일 10분, 만지고 들으며 놀이처럼 배워요.">
+<meta property="og:title" content="닷런 Dot Learn">
+<meta property="og:description" content="시각장애 학생을 위한 촉각 학습지. 점자가 놀이가 되는 순간.">
+<meta property="og:image" content="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025716_9dd03243-7ac3-4fab-aa8f-480987489978.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237FB84E'/%3E%3Ccircle cx='11' cy='9' r='3' fill='%23FFF9EC'/%3E%3Ccircle cx='21' cy='9' r='3' fill='%23FFF9EC'/%3E%3Ccircle cx='11' cy='16' r='3' fill='%23FFF9EC'/%3E%3Ccircle cx='21' cy='16' r='3' fill='%23FFD95C'/%3E%3Ccircle cx='11' cy='23' r='3' fill='%23FFD95C'/%3E%3Ccircle cx='21' cy='23' r='3' fill='%23FFF9EC'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --sky:#CDE9F6; --sky-deep:#9ED3EE; --cream:#FFF9EC; --paper:#FFFFFF;
+  --grass:#7FB84E; --grass-soft:#B5DE8B; --sun:#FFD95C; --coral:#FF8A5C;
+  --pink:#F6A9C4; --ink:#4A3B32; --ink-soft:#8A7A6E;
+  --r-lg:28px; --r-md:20px; --r-sm:14px;
+  --shadow:0 6px 0 rgba(74,59,50,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Pretendard,-apple-system,sans-serif;color:var(--ink);background:var(--cream);overflow-x:hidden}
+h1,h2,h3,.disp{font-family:Jua,Pretendard,sans-serif;font-weight:400}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.braille{font-size:.9em;letter-spacing:.12em;color:var(--grass);user-select:none}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:6px}
+
+/* ── nav ── */
+nav{position:sticky;top:0;z-index:50;background:rgba(255,249,236,.92);backdrop-filter:blur(8px);border-bottom:2px dashed rgba(127,184,78,.35)}
+.nav-in{display:flex;align-items:center;gap:24px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Jua;font-size:22px}
+.logo svg{width:34px;height:34px}
+.nav-links{display:flex;gap:20px;margin-left:auto;font-size:15px;color:var(--ink-soft)}
+.nav-links a:hover{color:var(--grass)}
+.nav-cta{background:var(--grass);color:#fff;padding:10px 18px;border-radius:999px;font-family:Jua;font-size:15px;box-shadow:0 4px 0 #5f9138;transition:transform .1s}
+.nav-cta:active{transform:translateY(2px)}
+@media(max-width:720px){.nav-links{display:none}}
+
+/* ── hero ── */
+.hero{background:linear-gradient(180deg,var(--sky) 0%,var(--cream) 92%);padding:56px 0 40px;position:relative}
+.hero-in{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}
+@media(max-width:840px){.hero-in{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(34px,5vw,54px);line-height:1.15;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--grass)}
+.hero .sub{margin:18px 0 8px;font-size:17px;line-height:1.65;color:var(--ink-soft);max-width:34ch}
+.hero .braille{display:block;margin-bottom:26px;font-size:18px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn-play{display:inline-flex;align-items:center;gap:8px;background:var(--coral);color:#fff;font-family:Jua;font-size:18px;padding:15px 28px;border-radius:999px;box-shadow:0 5px 0 #d96a3d;transition:transform .12s}
+.btn-play:hover{transform:translateY(-2px)}.btn-play:active{transform:translateY(2px)}
+.btn-ghost{display:inline-flex;align-items:center;background:#fff;color:var(--grass);font-family:Jua;font-size:16px;padding:15px 24px;border-radius:999px;border:2.5px solid var(--grass-soft);transition:background .15s}
+.btn-ghost:hover{background:var(--grass-soft)}
+.hero-art{position:relative}
+.hero-art .frame{border-radius:36px;overflow:hidden;border:6px solid #fff;box-shadow:0 16px 40px rgba(74,59,50,.16);transform:rotate(1.5deg)}
+.chip{position:absolute;background:#fff;border-radius:16px;padding:8px 14px;font-size:14px;box-shadow:var(--shadow);display:flex;gap:8px;align-items:center;animation:bob 4s ease-in-out infinite}
+.chip .braille{font-size:16px}
+.chip.c1{top:-14px;left:-8px}.chip.c2{bottom:22px;right:-10px;animation-delay:1.2s}.chip.c3{top:38%;left:-26px;animation-delay:2.1s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:840px){.chip.c3{display:none}}
+
+/* ── section shell ── */
+section{padding:64px 0}
+.sec-head{margin-bottom:34px}
+.sec-head h2{font-size:clamp(26px,3.4vw,36px)}
+.sec-head p{margin-top:10px;color:var(--ink-soft);font-size:16px;max-width:52ch;line-height:1.6}
+
+/* ── demo phone ── */
+#demo{background:var(--paper);border-top:2px dashed rgba(127,184,78,.35);border-bottom:2px dashed rgba(127,184,78,.35)}
+.demo-grid{display:grid;grid-template-columns:340px 1fr;gap:48px;align-items:start}
+@media(max-width:840px){.demo-grid{grid-template-columns:1fr;justify-items:center}}
+.phone{width:330px;background:#fff;border:8px solid var(--ink);border-radius:44px;overflow:hidden;box-shadow:0 20px 44px rgba(74,59,50,.22);position:relative}
+.phone .notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:110px;height:20px;background:var(--ink);border-radius:999px;z-index:5}
+.screen{height:600px;overflow-y:auto;background:linear-gradient(180deg,var(--sky) 0%,#EAF7DF 100%);padding:40px 16px 76px;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.tabbar{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid #eee2c8;display:flex;justify-content:space-around;padding:9px 0 13px;z-index:5}
+.tabbar button{background:none;font-size:22px;opacity:.4;transition:.15s;padding:4px 14px;border-radius:12px}
+.tabbar button.on{opacity:1;background:var(--grass-soft)}
+.demo-side h2{font-size:clamp(26px,3.4vw,36px)}
+.demo-side p{margin:14px 0;color:var(--ink-soft);line-height:1.7;font-size:16px}
+.demo-side ul{list-style:none;margin-top:6px}
+.demo-side li{padding:10px 0 10px 34px;position:relative;font-size:15.5px;line-height:1.55}
+.demo-side li::before{content:"⠿";position:absolute;left:4px;color:var(--grass);font-size:18px}
+.voice-note{margin-top:16px;background:var(--cream);border:2px solid var(--grass-soft);border-radius:var(--r-md);padding:14px 16px;font-size:14px;color:var(--ink-soft)}
+
+/* app widgets */
+.app-head{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:7px 8px;box-shadow:var(--shadow);margin-bottom:14px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-size:20px}
+.app-head .nm{font-family:Jua;font-size:16px}
+.lv{margin-left:auto;background:var(--sun);border-radius:999px;padding:5px 12px;font-family:Jua;font-size:13px}
+.banner{border-radius:var(--r-lg);overflow:hidden;position:relative;margin-bottom:14px;box-shadow:var(--shadow)}
+.banner img{height:130px;width:100%;object-fit:cover}
+.banner .bn-tx{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 18px;background:linear-gradient(90deg,rgba(74,59,50,.44),transparent 70%)}
+.banner .bn-tx b{font-family:Jua;color:#fff;font-size:21px;text-shadow:0 2px 4px rgba(0,0,0,.25)}
+.banner .bn-tx span{color:#fff;font-size:14px;opacity:.95;margin-top:3px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gcard{background:#fff;border-radius:var(--r-md);padding:16px 14px;text-align:left;box-shadow:var(--shadow);border:2.5px solid transparent;transition:transform .12s,border .12s}
+.gcard:hover{transform:translateY(-3px);border-color:var(--grass-soft)}
+.gcard:active{transform:scale(.97)}
+.gcard .ic{font-size:28px}
+.gcard b{display:block;font-family:Jua;font-size:15.5px;margin:8px 0 3px}
+.gcard .braille{font-size:13px}
+.scr-title{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.back{background:#fff;width:38px;height:38px;border-radius:50%;font-size:17px;box-shadow:var(--shadow)}
+.scr-title b{font-family:Jua;font-size:19px}
+.scr-title .spk{margin-left:auto;background:var(--sun);width:38px;height:38px;border-radius:50%;font-size:17px;box-shadow:var(--shadow)}
+.slots{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.slot{width:48px;height:56px;background:#fff;border-radius:14px;border:3px dashed var(--sky-deep);display:grid;place-items:center;font-family:Jua;font-size:24px;transition:.15s}
+.slot.fill{border-style:solid;border-color:var(--grass);background:#F1FAE4}
+.slot small{display:block;font-size:13px;color:var(--grass);line-height:1}
+.bubbles{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:18px 0}
+.bub{width:62px;height:62px;border-radius:50%;background:var(--pink);color:#fff;font-family:Jua;font-size:22px;box-shadow:0 5px 0 #d987a7;display:grid;place-items:center;line-height:1.05;transition:transform .12s}
+.bub small{font-size:13px;display:block}
+.bub:hover{transform:translateY(-3px)}
+.bub:disabled{opacity:.25;transform:scale(.9);box-shadow:none;cursor:default}
+.bub.num{background:#fff;color:var(--ink);box-shadow:0 5px 0 #e3d9c2;width:74px;height:74px}
+.bub.num small{color:var(--grass)}
+.eq{background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);padding:16px;text-align:center;font-family:Jua;font-size:27px;margin:8px 0 4px}
+.eq .braille{display:block;font-size:15px;margin-top:6px}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.pop{animation:pop .35s}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+.dotpad{background:var(--ink);border-radius:16px;padding:12px 10px;margin-top:14px}
+.dotpad .lbl{color:#cbbfae;font-size:11px;margin-bottom:8px;display:flex;justify-content:space-between}
+.dp-row{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+.dp-cell{display:grid;grid-template-columns:repeat(2,7px);grid-auto-rows:7px;gap:2.5px;padding:2px}
+.dp-dot{width:7px;height:7px;border-radius:50%;background:#5d5148;transition:.2s}
+.dp-dot.up{background:var(--sun);box-shadow:0 0 5px rgba(255,217,92,.8)}
+.result-hero{background:var(--grass);border-radius:var(--r-lg);padding:26px 16px;text-align:center;color:#fff;margin-bottom:14px}
+.score-ring{width:130px;height:130px;margin:8px auto;border-radius:50%;border:8px solid rgba(255,255,255,.45);background:#fff;color:var(--ink);display:grid;place-items:center}
+.score-ring b{font-family:Jua;font-size:36px;line-height:1}
+.score-ring span{font-size:13px;color:var(--ink-soft)}
+.result-hero .praise{font-family:Jua;font-size:22px}
+.result-hero .braille{color:#FFF3C4;font-size:15px}
+.stars{font-size:26px;letter-spacing:6px;margin:6px 0}
+.res-btns{display:grid;gap:10px}
+.res-btns button{font-family:Jua;font-size:16px;padding:13px;border-radius:16px;box-shadow:var(--shadow)}
+.rb1{background:var(--coral);color:#fff}.rb2{background:#fff;color:var(--ink)}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:22px 0 12px}
+.pod{text-align:center}
+.avatar img,.pav img{width:86%;height:86%;object-fit:contain}
+.pod .pav{width:52px;height:52px;margin:0 auto 6px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:26px;box-shadow:var(--shadow);border:3px solid var(--sun)}
+.pod .bar{border-radius:12px 12px 0 0;background:linear-gradient(180deg,#B98A5E,#9a6f47);color:#fff;font-family:Jua;display:grid;place-items:center;width:74px}
+.pod.p1 .bar{height:96px;font-size:26px}.pod.p2 .bar{height:70px;font-size:20px}.pod.p3 .bar{height:54px;font-size:20px}
+.pod .pn{font-family:Jua;font-size:14px;margin-top:5px}
+.pod .pp{font-size:12px;color:var(--ink-soft)}
+.rank-list{background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);overflow:hidden}
+.rank-list div{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1.5px solid #f4ecd8;font-size:14.5px}
+.rank-list div:last-child{border-bottom:none}
+.rank-list .rk{width:24px;height:24px;border-radius:50%;background:var(--sky);font-family:Jua;font-size:13px;display:grid;place-items:center}
+.rank-list .pt{margin-left:auto;font-family:Jua;color:var(--grass)}
+.confetti{position:absolute;width:10px;height:10px;top:-12px;z-index:9;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(640px) rotate(540deg);opacity:.2}}
+
+/* ── how ── */
+.how-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:18px}
+@media(max-width:840px){.how-grid{grid-template-columns:1fr}}
+.how-card{background:#fff;border-radius:var(--r-lg);padding:26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.how-card .no{font-family:Jua;font-size:15px;color:#fff;background:var(--coral);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;margin-bottom:14px}
+.how-card:nth-child(2) .no{background:var(--grass)}
+.how-card:nth-child(3) .no{background:var(--sun);color:var(--ink)}
+.how-card h3{font-size:20px;margin-bottom:8px}
+.how-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.65}
+.how-card img{position:absolute;right:-8px;bottom:-6px;width:96px;opacity:.95}
+
+/* ── curriculum ── */
+#curri{background:linear-gradient(180deg,var(--cream),#F2F9E8)}
+.cur-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:840px){.cur-row{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.cur-row{grid-template-columns:1fr}}
+.cur-card{border-radius:var(--r-lg);padding:22px 18px;min-height:190px;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.cur-card .braille{margin-top:auto;font-size:15px}
+.cur-card h3{font-size:19px;margin:10px 0 6px}
+.cur-card p{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+.cur-card .tag{font-size:12px;background:rgba(255,255,255,.7);align-self:flex-start;border-radius:999px;padding:4px 10px;font-family:Jua}
+.cc1{background:#FBE3EC}.cc2{background:#DFF0FA}.cc3{background:#FFF3CE}.cc4{background:#E4F3D3}
+
+/* ── playground ── */
+.play-box{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+@media(max-width:840px){.play-box{grid-template-columns:1fr}}
+.play-box label{font-family:Jua;font-size:16px;display:block;margin-bottom:10px}
+.play-in{display:flex;gap:10px}
+.play-in input{flex:1;border:3px solid var(--grass-soft);border-radius:16px;padding:13px 16px;font-size:16px;font-family:inherit;background:var(--cream)}
+.play-in input:focus{outline:none;border-color:var(--grass)}
+.play-in button{background:var(--grass);color:#fff;font-family:Jua;font-size:16px;padding:0 22px;border-radius:16px;box-shadow:0 4px 0 #5f9138}
+.big-braille{font-size:34px;line-height:1.5;color:var(--ink);min-height:56px;word-break:break-all;letter-spacing:.1em}
+.pg-note{font-size:13px;color:var(--ink-soft);margin-top:10px}
+.pg-spk{margin-top:12px;background:var(--sun);border-radius:999px;font-family:Jua;padding:10px 20px;font-size:15px;box-shadow:0 4px 0 #d9b53e}
+
+/* ── footer ── */
+footer{background:var(--ink);color:#EFE6D8;padding:56px 0 36px;margin-top:20px}
+.foot-cta{text-align:center;margin-bottom:36px}
+.foot-cta h2{font-size:clamp(24px,3.4vw,34px);color:#fff}
+.foot-cta .braille{color:var(--sun);display:block;margin:10px 0 20px;font-size:17px}
+.foot-cta a{display:inline-block;background:var(--coral);color:#fff;font-family:Jua;font-size:17px;padding:15px 32px;border-radius:999px;box-shadow:0 5px 0 #d96a3d}
+.foot-meta{border-top:1px solid rgba(255,255,255,.14);padding-top:22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:#B9AC9C}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<nav aria-label="주 메뉴">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top" aria-label="닷런 홈">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#7FB84E"/><circle cx="11" cy="9" r="3" fill="#FFF9EC"/><circle cx="21" cy="9" r="3" fill="#FFF9EC"/><circle cx="11" cy="16" r="3" fill="#FFF9EC"/><circle cx="21" cy="16" r="3" fill="#FFD95C"/><circle cx="11" cy="23" r="3" fill="#FFD95C"/><circle cx="21" cy="23" r="3" fill="#FFF9EC"/></svg>
+      닷런 <span style="font-size:13px;color:var(--ink-soft)">Dot Learn</span>
+    </a>
+    <div class="nav-links">
+      <a href="#demo">데모 체험</a>
+      <a href="#how">어떻게 배우나요</a>
+      <a href="#curri">커리큘럼</a>
+      <a href="#play">점자 놀이터</a>
+    </div>
+    <a class="nav-cta" href="#demo">데모 체험</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-in">
+    <div>
+      <h1>점자가 <em>놀이</em>가<br>되는 순간</h1>
+      <p class="sub">시각장애 학생을 위한 촉각 학습지, 닷런. 디지털 점자 패드 위에 매일 아침 오늘의 학습지가 도착해요. 만지고, 듣고, 놀면서 배워요.</p>
+      <span class="braille" aria-hidden="true">⠨⠎⠢⠨⠫⠦⠕⠀⠘⠗⠏⠬</span>
+      <div class="cta-row">
+        <a class="btn-play" href="#demo">▶ 지금 체험하기</a>
+        <a class="btn-ghost" href="#curri">커리큘럼 보기</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="frame">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025716_9dd03243-7ac3-4fab-aa8f-480987489978.png" alt="파스텔 언덕 위에서 여우와 아기돼지 토이 캐릭터가 점자 방울을 가지고 노는 3D 일러스트">
+      </div>
+      <div class="chip c1"><span class="braille">⠠⠍⠚⠁</span> 수학</div>
+      <div class="chip c2"><span class="braille">⠨⠎⠢⠨</span> 점자</div>
+      <div class="chip c3"><span class="braille">⠻⠎</span> 영어</div>
+    </div>
+  </div>
+</header>
+
+<section id="demo">
+  <div class="wrap demo-grid">
+    <div class="phone" aria-label="닷런 앱 데모">
+      <div class="notch" aria-hidden="true"></div>
+      <div class="screen" id="scr"></div>
+      <div class="tabbar" aria-label="앱 탭">
+        <button id="tab-home" class="on" aria-label="홈">🏠</button>
+        <button id="tab-board" aria-label="순위">🏆</button>
+        <button id="tab-voice" aria-label="음성 안내 켜고 끄기">🔊</button>
+      </div>
+    </div>
+    <div class="demo-side">
+      <h2>직접 만져 보세요</h2>
+      <p>실제 서비스에서는 이 모든 화면이 점자 패드의 촉각 그래픽과 음성으로 함께 전달됩니다. 아래 데모의 노란 점이 실제 기기에서 올라오는 핀이에요.</p>
+      <ul>
+        <li><b>점자 놀이</b> 낱말을 만들면 점자 패드에 바로 점자가 떠올라요.</li>
+        <li><b>수학 놀이</b> 식과 답을 점자와 음성으로 함께 확인해요.</li>
+        <li><b>오늘의 순위</b> 친구들과 포인트로 겨루며 매일 학습 습관을 만들어요.</li>
+      </ul>
+      <div class="voice-note">🔊 탭 바의 스피커 버튼을 켜면 화면을 만질 때마다 음성 안내가 나옵니다. 모든 게임은 화면을 보지 않아도 소리와 점자만으로 진행할 수 있게 설계했어요.</div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>매일 10분, 세 걸음이면 충분해요</h2>
+      <p>구몬처럼 꾸준하게, 듀오링고처럼 재미있게. 닷런은 학습지와 코치, 게임을 하나로 묶었어요.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="no">1</div>
+        <h3>아침마다 학습지 도착</h3>
+        <p>아이 수준에 맞춘 오늘의 촉각 학습지가 점자 패드로 배달됩니다. 점자 문해부터 수학 도형까지, 작은 단계로 잘게 나눴어요.</p>
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025829_fee6ef33-54da-409c-a02f-1b440b038a68_min.png" alt="" aria-hidden="true">
+      </div>
+      <div class="how-card">
+        <div class="no">2</div>
+        <h3>만지고 들으며 스스로</h3>
+        <p>문제를 만지고, 음성을 듣고, 바로 답을 확인해요. 맞으면 촉각 배지가 손끝에 떠오릅니다.</p>
+      </div>
+      <div class="how-card">
+        <div class="no">3</div>
+        <h3>코치와 부모 리포트</h3>
+        <p>주 1회 점자 코치가 진도를 살피고, 점자를 몰라도 읽을 수 있는 리포트가 부모님께 전달됩니다.</p>
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025832_90a79ac7-c64b-49d9-888f-c41d3754dc8c_min.png" alt="" aria-hidden="true">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="curri">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>커리큘럼 미리보기</h2>
+      <p>학년과 수준을 진단한 뒤, 네 갈래 과정에서 아이만의 진도를 만들어 갑니다.</p>
+    </div>
+    <div class="cur-row">
+      <div class="cur-card cc1">
+        <span class="tag">1단계</span>
+        <h3>점자 문해</h3>
+        <p>자모부터 약자, 문장 유창성까지. 중도 실명 학생을 위한 속성 과정도 있어요.</p>
+        <span class="braille" aria-hidden="true">⠨⠎⠢⠨</span>
+      </div>
+      <div class="cur-card cc2">
+        <span class="tag">2단계</span>
+        <h3>수학</h3>
+        <p>수 개념과 연산, 그리고 촉각 그래픽으로 만나는 도형과 그래프.</p>
+        <span class="braille" aria-hidden="true">⠠⠍⠚⠁</span>
+      </div>
+      <div class="cur-card cc3">
+        <span class="tag">3단계</span>
+        <h3>영어</h3>
+        <p>듣기만으로는 배울 수 없는 철자를 점자로 정확하게. 말하기 연습도 함께.</p>
+        <span class="braille" aria-hidden="true">⠻⠎</span>
+      </div>
+      <div class="cur-card cc4">
+        <span class="tag">4단계</span>
+        <h3>교과 촉각 그림</h3>
+        <p>과학 구조도, 지리 지도까지. 이번 주 학교 진도에 맞춘 촉각 그림 패키지.</p>
+        <span class="braille" aria-hidden="true">⠰⠭⠫⠁</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="play">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>점자 놀이터</h2>
+      <p>아이 이름을 넣어 보세요. 개정 한국 점자 규정 기반 점역 엔진이 실시간으로 점자를 만들어 점자 패드에 띄워 줍니다.</p>
+    </div>
+    <div class="play-box">
+      <div>
+        <label for="pg-input">한글, 영어, 숫자를 입력해 보세요</label>
+        <div class="play-in">
+          <input id="pg-input" type="text" value="점자랑 놀자" maxlength="20" autocomplete="off">
+          <button id="pg-go">변환</button>
+        </div>
+        <p class="pg-note">한국 점자 약자·약어와 UEB Grade 2 규정을 적용해 변환합니다.</p>
+        <button class="pg-spk" id="pg-spk">🔊 소리로 듣기</button>
+      </div>
+      <div>
+        <div class="big-braille" id="pg-out" aria-live="polite"></div>
+        <div class="dotpad">
+          <div class="lbl"><span>DOT PAD · 텍스트 라인</span><span>20 cells</span></div>
+          <div class="dp-row" id="pg-pad"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-cta">
+      <h2>우리 아이의 첫 점자, 닷런과 함께</h2>
+      <span class="braille" aria-hidden="true">⠊⠄⠐⠾⠫⠦⠕⠀⠘⠗⠏⠬</span>
+      <a href="mailto:dot@dotincorp.com?subject=닷런 데모 문의">체험 신청하기</a>
+    </div>
+    <div class="foot-meta">
+      <span>닷런 Dot Learn · 시각장애 학생을 위한 촉각 학습지 (데모)</span>
+      <span>이 페이지는 제품 컨셉 데모이며 실제 판매 페이지가 아닙니다.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="sr-only" role="status" aria-live="polite" id="live"></div>
+
+<script src="braille-engine.js"></script>
+<script>
+/* ───────── 공용 ───────── */
+const $=s=>document.querySelector(s);
+let voiceOn=true;
+function speak(t){
+  if(!voiceOn||!('speechSynthesis' in window))return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=1.05;speechSynthesis.speak(u);}catch(e){}
+  $('#live').textContent=t;
+}
+function dotCell(dots){
+  /* 6점: 1,2,3 왼쪽열 위→아래 / 4,5,6 오른쪽열. grid는 행 우선이라 순서 재배치 */
+  const order=[1,4,2,5,3,6];
+  const el=document.createElement('div');el.className='dp-cell';
+  order.forEach(d=>{const s=document.createElement('span');s.className='dp-dot'+(dots.includes(d)?' up':'');el.appendChild(s);});
+  return el;
+}
+function renderPad(container,text,cells){
+  container.innerHTML='';
+  const seq=KB.brailleCells(text).slice(0,cells);
+  for(let i=0;i<cells;i++){
+    container.appendChild(dotCell(seq[i]||[]));
+  }
+}
+
+/* ───────── 점자 놀이터 ───────── */
+function pgRun(){
+  const t=$('#pg-input').value.trim()||'점자';
+  $('#pg-out').textContent=KB.toUnicodeBraille(t);
+  renderPad($('#pg-pad'),t,20);
+}
+$('#pg-go').addEventListener('click',()=>{pgRun();speak($('#pg-input').value);});
+$('#pg-input').addEventListener('keydown',e=>{if(e.key==='Enter'){pgRun();speak($('#pg-input').value);}});
+$('#pg-spk').addEventListener('click',()=>speak($('#pg-input').value||'점자'));
+pgRun();
+
+/* ───────── 폰 데모 앱 ───────── */
+const scr=$('#scr');
+let score=0;
+const FOX='https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025829_fee6ef33-54da-409c-a02f-1b440b038a68_min.png',PIG='https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025830_00a0ae6d-1eac-4fe2-9a36-b6374c0807e1_min.png',FROG='https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025832_90a79ac7-c64b-49d9-888f-c41d3754dc8c_min.png';
+const HERO_IMG='https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025716_9dd03243-7ac3-4fab-aa8f-480987489978.png';
+
+function setTab(t){
+  $('#tab-home').classList.toggle('on',t==='home');
+  $('#tab-board').classList.toggle('on',t==='board');
+}
+function goHome(){
+  setTab('home');
+  scr.innerHTML=`
+  <div class="app-head"><div class="avatar"><img src="${FOX}" alt=""></div><span class="nm">지우</span><span class="lv">Lv.1</span></div>
+  <div class="banner">
+    <img src="${HERO_IMG}" alt="">
+    <div class="bn-tx"><b>같이 배워요!</b><span class="braille" style="color:#fff">⠫⠦⠕⠀⠘⠗⠏⠬</span></div>
+  </div>
+  <div class="cards">
+    <button class="gcard" id="c-word"><span class="ic">🔤</span><b>점자 놀이</b><span class="braille">⠨⠎⠢⠨</span></button>
+    <button class="gcard" id="c-math"><span class="ic">🧮</span><b>수학 놀이</b><span class="braille">⠠⠍⠚⠁</span></button>
+    <button class="gcard" id="c-eng"><span class="ic">🍎</span><b>영어 단어</b><span class="braille">⠻⠎</span></button>
+    <button class="gcard" id="c-rank"><span class="ic">🏆</span><b>오늘의 순위</b><span class="braille">⠐⠻⠍</span></button>
+  </div>`;
+  $('#c-word').onclick=()=>goWord();
+  $('#c-eng').onclick=()=>goWord();
+  $('#c-math').onclick=()=>goMath();
+  $('#c-rank').onclick=()=>goBoard();
+  speak('홈 화면이에요. 점자 놀이, 수학 놀이, 영어 단어, 오늘의 순위가 있어요.');
+}
+
+/* 낱말 게임 */
+const WORD='TABLE';
+let fillIdx=0;
+function goWord(){
+  setTab('home');fillIdx=0;
+  const letters=['A','E','T','B','L'];
+  scr.innerHTML=`
+  <div class="scr-title"><button class="back" id="bk" aria-label="뒤로">←</button><b>낱말 만들기</b>
+    <button class="spk" id="hint" aria-label="문제 듣기">🔊</button></div>
+  <p style="text-align:center;font-size:14px;color:var(--ink-soft)">점자를 만져 보고 <b>테이블</b>을 만들어요</p>
+  <div class="slots" id="slots">${WORD.split('').map(()=>`<div class="slot"></div>`).join('')}</div>
+  <div class="bubbles" id="bubs">${letters.map(l=>`<button class="bub" data-l="${l}">${l}<small>${KB.toUnicodeBraille(l.toLowerCase())}</small></button>`).join('')}</div>
+  <div class="dotpad"><div class="lbl"><span>DOT PAD</span><span id="dp-word-lbl">···</span></div><div class="dp-row" id="dp-word"></div></div>`;
+  $('#bk').onclick=goHome;
+  $('#hint').onclick=()=>speak('테이블. 티, 에이, 비, 엘, 이 순서로 만져 보세요.');
+  renderPad($('#dp-word'),'',10);
+  document.querySelectorAll('#bubs .bub').forEach(b=>{
+    b.onclick=()=>{
+      const need=WORD[fillIdx];
+      if(b.dataset.l===need){
+        const slot=document.querySelectorAll('#slots .slot')[fillIdx];
+        slot.classList.add('fill','pop');
+        slot.innerHTML=`${need}<small>${KB.toUnicodeBraille(need.toLowerCase())}</small>`;
+        b.disabled=true;fillIdx++;
+        const part=WORD.slice(0,fillIdx).toLowerCase();
+        renderPad($('#dp-word'),part,10);
+        $('#dp-word-lbl').textContent=KB.toUnicodeBraille(part);
+        speak(need==='A'?'에이':need==='B'?'비':need==='E'?'이':need==='L'?'엘':'티');
+        if(fillIdx>=WORD.length){score=89;setTimeout(()=>{confetti();speak('참 잘했어요! 테이블 완성!');setTimeout(goResult,900);},250);}
+      }else{
+        b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),450);
+        speak('다시 만져 보세요.');
+      }
+    };
+  });
+  speak('낱말 만들기. 점자 방울을 눌러 테이블을 만들어요. 첫 글자는 티예요.');
+}
+
+/* 수학 게임 */
+function goMath(){
+  setTab('home');
+  const answers=[39,93,63,38,40,36];
+  scr.innerHTML=`
+  <div class="scr-title"><button class="back" id="bk" aria-label="뒤로">←</button><b>수학 놀이</b>
+    <button class="spk" id="hint" aria-label="문제 듣기">🔊</button></div>
+  <div class="eq">3 + 4 × 9 = ?<span class="braille">${KB.toUnicodeBraille('3+4x9')}</span></div>
+  <p style="text-align:center;font-size:13px;color:var(--ink-soft);margin-bottom:4px">곱셈 먼저라는 것, 기억하죠?</p>
+  <div class="bubbles">${answers.map(n=>`<button class="bub num" data-n="${n}">${n}<small>${KB.toUnicodeBraille(String(n))}</small></button>`).join('')}</div>
+  <div class="dotpad"><div class="lbl"><span>DOT PAD</span><span>3 + 4 × 9</span></div><div class="dp-row" id="dp-math"></div></div>`;
+  $('#bk').onclick=goHome;
+  $('#hint').onclick=()=>speak('삼 더하기, 사 곱하기 구는 얼마일까요?');
+  renderPad($('#dp-math'),'3+4x9',10);
+  document.querySelectorAll('.bub.num').forEach(b=>{
+    b.onclick=()=>{
+      if(b.dataset.n==='39'){score=95;confetti();speak('정답! 삼십구!');b.classList.add('pop');setTimeout(goResult,900);}
+      else{b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),450);b.disabled=true;speak('음, 다시 한번!');}
+    };
+  });
+  speak('수학 놀이. 삼 더하기, 사 곱하기 구. 답을 골라 보세요.');
+}
+
+/* 결과 */
+function goResult(){
+  setTab('home');
+  scr.innerHTML=`
+  <div class="result-hero">
+    <div class="praise">참 잘했어요!</div>
+    <span class="braille">⠰⠣⠢⠀⠨⠂⠚⠗⠌⠎⠬</span>
+    <div class="score-ring"><div><b>${score}</b><span>포인트</span></div></div>
+    <div class="stars">⭐⭐⭐</div><img src="${PIG}" alt="" style="width:84px;margin:2px auto 0">
+  </div>
+  <div class="res-btns">
+    <button class="rb1" id="r-again">한 번 더 하기</button>
+    <button class="rb2" id="r-rank">오늘의 순위 보기</button>
+  </div>`;
+  $('#r-again').onclick=goHome;
+  $('#r-rank').onclick=goBoard;
+  speak(`참 잘했어요! ${score}포인트를 얻었어요.`);
+}
+
+/* 리더보드 */
+function goBoard(){
+  setTab('board');
+  scr.innerHTML=`
+  <div class="scr-title"><button class="back" id="bk" aria-label="뒤로">←</button><b>오늘의 순위</b></div>
+  <div class="podium">
+    <div class="pod p2"><div class="pav"><img src="${FOX}" alt="여우 캐릭터"></div><div class="bar">2</div><div class="pn">지우</div><div class="pp">${Math.max(score,89)} P</div></div>
+    <div class="pod p1"><div class="pav"><img src="${FROG}" alt="개구리 캐릭터"></div><div class="bar">1</div><div class="pn">키키</div><div class="pp">100 P</div></div>
+    <div class="pod p3"><div class="pav"><img src="${PIG}" alt="아기돼지 캐릭터"></div><div class="bar">3</div><div class="pn">니코</div><div class="pp">88 P</div></div>
+  </div>
+  <div class="rank-list">
+    <div><span class="rk">4</span> 준 <span class="pt">87 P</span></div>
+    <div><span class="rk">5</span> 소라 <span class="pt">86 P</span></div>
+    <div><span class="rk">6</span> 하늘 <span class="pt">85 P</span></div>
+  </div>`;
+  $('#bk').onclick=goHome;
+  speak(`오늘의 순위. 1위 키키 100포인트, 2위 지우, 3위 니코예요.`);
+}
+
+/* confetti */
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const colors=['#FF8A5C','#FFD95C','#7FB84E','#F6A9C4','#9ED3EE'];
+  for(let i=0;i<26;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=(6+Math.random()*88)+'%';
+    c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(1.2+Math.random()*1.2)+'s';
+    $('.phone').appendChild(c);
+    setTimeout(()=>c.remove(),2600);
+  }
+}
+
+/* tabbar */
+$('#tab-home').onclick=goHome;
+$('#tab-board').onclick=goBoard;
+$('#tab-voice').onclick=e=>{
+  voiceOn=!voiceOn;
+  e.currentTarget.textContent=voiceOn?'🔊':'🔇';
+  if(voiceOn)speak('음성 안내를 켰어요.');else{try{speechSynthesis.cancel()}catch(_){}}
+};
+
+goHome();
+</script>
+</body>
+</html>
