@@ -205,6 +205,43 @@ footer{background:var(--ink);color:#EFE6D8;padding:56px 0 36px;margin-top:20px}
   html{scroll-behavior:auto}
 }
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ── pearl polish ── */
+.stitch{height:24px;margin:0 auto;max-width:640px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27120%27%20height%3D%2724%27%20viewBox%3D%270%200%20120%2024%27%3E%3Cpath%20d%3D%27M0%2014%20q15%20-12%2030%200%20t30%200%20t30%200%20t30%200%27%20stroke%3D%27%2523C9B99F%27%20fill%3D%27none%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M86%206%20l9%209%20M95%206%20l-9%209%27%20stroke%3D%27%2523C9B99F%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E") repeat-x center/120px 24px;opacity:.9}
+section .stitch{margin-bottom:30px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sticker{position:absolute;width:118px;height:118px;bottom:-30px;left:-34px;z-index:4;filter:drop-shadow(0 6px 12px rgba(74,59,50,.22))}
+.sticker .ring{animation:spin 16s linear infinite;transform-origin:50% 50%}
+.swatches{display:flex;margin-top:22px;width:230px;height:13px;border-radius:7px;overflow:hidden;box-shadow:var(--shadow)}
+.swatches span{flex:1}
+.spark{position:absolute;font-size:22px;color:#fff;text-shadow:0 2px 6px rgba(74,59,50,.2);animation:tw 2.8s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.35;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}
+#friends{background:linear-gradient(180deg,#3D8FCC,#79C3E8);position:relative;overflow:hidden}
+#friends .sec-head h2{color:#fff}
+#friends .sec-head p{color:#EAF6FF}
+#friends .bubble{display:inline-block;font-family:Jua;font-size:15px;background:#DCF56E;color:#42632B;border-radius:999px;padding:6px 16px;margin-bottom:12px;letter-spacing:.14em}
+.friend-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:840px){.friend-row{grid-template-columns:1fr}}
+.friend-card{border-radius:34px;padding:26px 22px 22px;position:relative;overflow:hidden;color:#fff;box-shadow:0 14px 30px rgba(21,66,100,.28);transition:transform .18s}
+.friend-card:hover{transform:translateY(-6px) rotate(-.5deg)}
+.friend-card::after{content:"";position:absolute;inset:auto -30% -55% -30%;height:75%;background:rgba(255,255,255,.22);border-radius:50%}
+.fc1{background:radial-gradient(120% 100% at 20% 0%,#FFC46B,#F2913B)}
+.fc2{background:radial-gradient(120% 100% at 20% 0%,#8FD98A,#4EA95D)}
+.fc3{background:radial-gradient(120% 100% at 20% 0%,#FF9DBE,#E8638C)}
+.friend-card img{width:74%;margin:4px auto 10px;position:relative;z-index:2;filter:drop-shadow(0 10px 16px rgba(45,25,10,.28))}
+.friend-card .no{font-family:Jua;font-size:13px;letter-spacing:.22em;opacity:.9}
+.friend-card h3{font-size:34px;line-height:1.1;margin:2px 0 4px;position:relative;z-index:2}
+.friend-card h3 small{font-size:15px;opacity:.92;margin-left:8px}
+.friend-card .hobby{font-size:14px;line-height:1.55;opacity:.96;position:relative;z-index:2}
+.friend-card .braille{color:#FFF3C4;display:block;margin-top:8px;font-size:15px}
+.friend-card .fsw{display:flex;height:10px;border-radius:5px;overflow:hidden;margin-top:14px;position:relative;z-index:2;background:rgba(255,255,255,.25)}
+.friend-card .fsw span{flex:1}
+.gcard{border-width:2.5px}
+#c-word.gcard{background:#FBE9F1;border-color:#F3C3D8}
+#c-math.gcard{background:#E4F2FC;border-color:#BFE0F5}
+#c-eng.gcard{background:#FFF6DC;border-color:#F2E1AC}
+#c-rank.gcard{background:#EAF6DE;border-color:#CBE8AC}
+
 </style>
 </head>
 <body>
@@ -218,6 +255,7 @@ footer{background:var(--ink);color:#EFE6D8;padding:56px 0 36px;margin-top:20px}
     <div class="nav-links">
       <a href="#demo">데모 체험</a>
       <a href="#how">어떻게 배우나요</a>
+      <a href="#friends">프렌즈</a>
       <a href="#curri">커리큘럼</a>
       <a href="#play">점자 놀이터</a>
     </div>
@@ -235,11 +273,15 @@ footer{background:var(--ink);color:#EFE6D8;padding:56px 0 36px;margin-top:20px}
         <a class="btn-play" href="#demo">▶ 지금 체험하기</a>
         <a class="btn-ghost" href="#curri">커리큘럼 보기</a>
       </div>
+      <div class="swatches" aria-hidden="true"><span style="background:#7FB84E"></span><span style="background:#FFD95C"></span><span style="background:#FF8A5C"></span><span style="background:#F6A9C4"></span><span style="background:#9ED3EE"></span></div>
     </div>
     <div class="hero-art">
       <div class="frame">
         <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025716_9dd03243-7ac3-4fab-aa8f-480987489978.png" alt="파스텔 언덕 위에서 여우와 아기돼지 토이 캐릭터가 점자 방울을 가지고 노는 3D 일러스트">
       </div>
+      <svg class="sticker" viewBox="0 0 120 120" aria-hidden="true"><g class="ring"><circle cx="60" cy="60" r="57" fill="#FFD95C"/><circle cx="60" cy="60" r="33" fill="#FFF9EC"/><defs><path id="tring" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0"/></defs><text font-size="13" font-family="Jua" fill="#4A3B32" letter-spacing="1.5"><textPath href="#tring">DOT LEARN ✕ 만지면 인사해요 ✕ 닷런 프렌즈 </textPath></text></g><text x="60" y="70" text-anchor="middle" font-size="26" fill="#4A3B32">⠿</text></svg>
+      <span class="spark" style="top:-6px;right:16%" aria-hidden="true">✦</span>
+      <span class="spark" style="bottom:12%;right:-14px;animation-delay:1.3s" aria-hidden="true">✦</span>
       <div class="chip c1"><span class="braille">⠠⠍⠚⠁</span> 수학</div>
       <div class="chip c2"><span class="braille">⠨⠎⠢⠨</span> 점자</div>
       <div class="chip c3"><span class="braille">⠻⠎</span> 영어</div>
@@ -299,8 +341,49 @@ footer{background:var(--ink);color:#EFE6D8;padding:56px 0 36px;margin-top:20px}
   </div>
 </section>
 
+
+<section id="friends">
+  <span class="spark" style="top:56px;left:8%" aria-hidden="true">✦</span>
+  <span class="spark" style="top:120px;right:10%;animation-delay:.9s" aria-hidden="true">✦</span>
+  <span class="spark" style="bottom:60px;left:14%;animation-delay:1.7s" aria-hidden="true">✧</span>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="bubble">DOT LEARN FRIENDS</span>
+      <h2>닷런 프렌즈와 함께해요</h2>
+      <p>매일 아침 학습지를 배달하고, 정답을 맞추면 같이 기뻐하는 친구들이에요.</p>
+    </div>
+    <div class="friend-row">
+      <div class="friend-card fc1">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025829_fee6ef33-54da-409c-a02f-1b440b038a68_min.png" alt="멜빵 가방을 멘 레서판다 캐릭터 지우">
+        <span class="no">NO.001 · 레서판다</span>
+        <h3>지우<small>점자 카드 수집가</small></h3>
+        <p class="hobby">새로운 점자 약자를 발견하면 가방에 모아 둡니다. 오늘의 학습지 배달 담당.</p>
+        <span class="braille" data-br="지우"></span>
+        <div class="fsw" aria-hidden="true"><span style="background:#FFE3B3"></span><span style="background:#F2913B"></span><span style="background:#B65E24"></span><span style="background:#FFF3DC"></span></div>
+      </div>
+      <div class="friend-card fc2">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025832_90a79ac7-c64b-49d9-888f-c41d3754dc8c_min.png" alt="헤드폰을 쓴 개구리 캐릭터 키키">
+        <span class="no">NO.002 · 청개구리</span>
+        <h3>키키<small>음악 담당</small></h3>
+        <p class="hobby">음악을 들으며 수학 푸는 걸 좋아해요. 정답이면 신나는 효과음을 틀어 줍니다.</p>
+        <span class="braille" data-br="키키"></span>
+        <div class="fsw" aria-hidden="true"><span style="background:#DCF56E"></span><span style="background:#4EA95D"></span><span style="background:#2E6E44"></span><span style="background:#F4FBE8"></span></div>
+      </div>
+      <div class="friend-card fc3">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3CcWiPncoAiF9dchSMyN7go3kbf/hf_20260713_025830_00a0ae6d-1eac-4fe2-9a36-b6374c0807e1_min.png" alt="하늘색 옷을 입은 아기돼지 캐릭터 니코">
+        <span class="no">NO.003 · 아기돼지</span>
+        <h3>니코<small>응원 단장</small></h3>
+        <p class="hobby">수박과 낮잠을 사랑해요. 문제를 맞출 때마다 제일 크게 박수를 칩니다.</p>
+        <span class="braille" data-br="니코"></span>
+        <div class="fsw" aria-hidden="true"><span style="background:#FFD1E0"></span><span style="background:#E8638C"></span><span style="background:#A63A5E"></span><span style="background:#FFF0F5"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="curri">
   <div class="wrap">
+    <div class="stitch" aria-hidden="true"></div>
     <div class="sec-head">
       <h2>커리큘럼 미리보기</h2>
       <p>학년과 수준을 진단한 뒤, 네 갈래 과정에서 아이만의 진도를 만들어 갑니다.</p>
@@ -336,6 +419,7 @@ footer{background:var(--ink);color:#EFE6D8;padding:56px 0 36px;margin-top:20px}
 
 <section id="play">
   <div class="wrap">
+    <div class="stitch" aria-hidden="true"></div>
     <div class="sec-head">
       <h2>점자 놀이터</h2>
       <p>아이 이름을 넣어 보세요. 개정 한국 점자 규정 기반 점역 엔진이 실시간으로 점자를 만들어 점자 패드에 띄워 줍니다.</p>
@@ -412,6 +496,7 @@ $('#pg-go').addEventListener('click',()=>{pgRun();speak($('#pg-input').value);})
 $('#pg-input').addEventListener('keydown',e=>{if(e.key==='Enter'){pgRun();speak($('#pg-input').value);}});
 $('#pg-spk').addEventListener('click',()=>speak($('#pg-input').value||'점자'));
 pgRun();
+document.querySelectorAll('[data-br]').forEach(e=>{e.textContent=KB.toUnicodeBraille(e.dataset.br);});
 
 /* ───────── 폰 데모 앱 ───────── */
 const scr=$('#scr');
