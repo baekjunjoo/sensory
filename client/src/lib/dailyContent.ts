@@ -1,5 +1,7 @@
 export type CharacterKey = "momo" | "pio" | "lulu" | "nabi";
 
+export const CHARACTER_THEME_KEY = "sensory-character-theme";
+
 export type DailyLesson = {
   id: string;
   weekday: string;
@@ -14,12 +16,21 @@ export type DailyLesson = {
   character: CharacterKey;
 };
 
-export const characters: Record<CharacterKey, { name: string; role: string; accent: string; greeting: string; correct: string; retry: string }> = {
-  momo: { name: "모모", role: "용기 담당", accent: "coral", greeting: "안녕! 나는 모모야. 오늘의 점을 먼저 만져 볼까?", correct: "짜잔! 손끝이 정답을 찾았어. 오늘의 점이 반짝 올라왔어!", retry: "괜찮아. 모모와 함께 한 점씩 다시 따라가 보자." },
-  pio: { name: "피오", role: "탐험 담당", accent: "sky", greeting: "피오가 길을 밝혀 줄게. 손끝으로 천천히 탐험해 봐!", correct: "좋아! 손끝이 길을 정확히 찾았어. 피오가 박수 짝짝!", retry: "앗, 아직은 아니야. 위쪽부터 다시 만져 보자." },
-  lulu: { name: "루루", role: "응원 담당", accent: "pink", greeting: "루루랑 천천히 해 보자. 서두르지 않아도 괜찮아!", correct: "와, 맞았어! 루루의 꽃잎처럼 자신감이 활짝 피었어!", retry: "살짝 헷갈렸구나. 루루가 힌트를 들려줄게." },
-  nabi: { name: "나비", role: "호기심 담당", accent: "lime", greeting: "새로운 모양을 찾는 시간이야. 나비를 따라 손끝을 움직여 봐!", correct: "정답! 오늘의 발견을 나비가 기록해 뒀어!", retry: "좋은 시도야. 점 사이의 간격을 다시 느껴 볼까?" },
+export const characters: Record<CharacterKey, { name: string; role: string; accent: string; shape: "round" | "arch" | "drop" | "triangle"; greeting: string; correct: string; retry: string }> = {
+  momo: { name: "모모", role: "용기 담당", accent: "coral", shape: "round", greeting: "안녕! 나는 모모야. 오늘의 점을 먼저 만져 볼까?", correct: "짜잔! 손끝이 정답을 찾았어. 오늘의 점이 반짝 올라왔어!", retry: "괜찮아. 모모와 함께 한 점씩 다시 따라가 보자." },
+  pio: { name: "피오", role: "탐험 담당", accent: "sky", shape: "arch", greeting: "피오가 길을 밝혀 줄게. 손끝으로 천천히 탐험해 봐!", correct: "좋아! 손끝이 길을 정확히 찾았어. 피오가 박수 짝짝!", retry: "앗, 아직은 아니야. 위쪽부터 다시 만져 보자." },
+  lulu: { name: "루루", role: "응원 담당", accent: "pink", shape: "drop", greeting: "루루랑 천천히 해 보자. 서두르지 않아도 괜찮아!", correct: "와, 맞았어! 루루의 볼처럼 자신감이 활짝 피었어!", retry: "살짝 헷갈렸구나. 루루가 힌트를 들려줄게." },
+  nabi: { name: "나비", role: "호기심 담당", accent: "lime", shape: "triangle", greeting: "새로운 모양을 찾는 시간이야. 나비를 따라 손끝을 움직여 봐!", correct: "정답! 오늘의 발견을 나비가 기록해 뒀어!", retry: "좋은 시도야. 점 사이의 간격을 다시 느껴 볼까?" },
 };
+
+export function loadCharacterTheme(): CharacterKey {
+  try { const saved = localStorage.getItem(CHARACTER_THEME_KEY); return saved && saved in characters ? saved as CharacterKey : "momo"; } catch { return "momo"; }
+}
+
+export function applyCharacterTheme(theme: CharacterKey) {
+  document.documentElement.dataset.sensoryTheme = theme;
+  try { localStorage.setItem(CHARACTER_THEME_KEY, theme); } catch { /* Browser privacy mode keeps the visual selection in memory. */ }
+}
 
 export const dailyLessons: DailyLesson[] = [
   { id: "d1", weekday: "월", title: "첫 글자 찾기", subject: "점자 문해", accent: "coral", prompt: "닷패드 위 점자를 만져 보고, 알맞은 글자를 골라 보세요.", description: "점 하나하나의 자리를 느끼며 읽기의 첫 감각을 만들어요.", answer: "바", options: ["바", "다", "마"], hint: "왼쪽 윗점과 오른쪽 가운데·아랫점의 위치를 천천히 확인해 보세요.", character: "momo" },
