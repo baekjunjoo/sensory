@@ -2,7 +2,7 @@
 import { ArrowLeft, ArrowRight, Check, Clock3, Ear, Leaf, Sparkles, Volume2 } from "lucide-react";
 import { characters, dailyLessons, loadProgress, type DailyLesson } from "@/lib/dailyContent";
 
-function ShapeBadge({ accent }: { accent: string }) { return <span className={`report-shape ${accent}`} aria-hidden="true"><i /><i /><b /></span>; }
+function ShapeBadge({ accent }: { accent: string }) { return <span className={`report-shape ${accent}`} aria-hidden="true"><span className="face-eyes"><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /></span><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /></span></span><b /></span>; }
 function ProgressBar({ completed, total }: { completed: number; total: number }) { return <div className="progress-track" aria-label={`${total}개 중 ${completed}개 완료`}><span style={{ width: `${(completed / total) * 100}%` }} /></div>; }
 
 export default function Report() {
