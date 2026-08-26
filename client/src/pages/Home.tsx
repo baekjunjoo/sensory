@@ -1,5 +1,5 @@
 /* Sensory Garden Print: daily sheets, character-tapped speech feedback, and parent-report-ready local progress. */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, BookOpenCheck, ChartNoAxesCombined, Check, ChevronRight, Headphones, House, Menu, PanelsTopLeft, Send, Volume2, VolumeX, X } from "lucide-react";
 import { applyCharacterTheme, characters, dailyLessons, loadCharacterTheme, loadProgress, saveProgress, type CharacterKey, type DailyLesson } from "@/lib/dailyContent";
 
@@ -24,16 +24,29 @@ export default function Home() {
   const [theme, setTheme] = useState<CharacterKey>("momo");
   const [celebrating, setCelebrating] = useState<CharacterKey | null>(null);
   const [studioText, setStudioText] = useState("센서리");
+  const sceneTimer = useRef<number | null>(null);
   const [liveMessage, setLiveMessage] = useState("수요일 학습지가 도착했어요.");
   const lesson = dailyLessons[lessonIndex];
   const character = characters[lesson.character];
   const lessonDots = useMemo(() => getCells(lesson.answer).slice(0, 3), [lesson.answer]);
   const studioCells = useMemo(() => getCells(studioText || "점자").slice(0, 14), [studioText]);
-  useEffect(() => { setCompleted(loadProgress()); setTheme(loadCharacterTheme()); }, []);
+  useEffect(() => { setCompleted(loadProgress()); setTheme(loadCharacterTheme()); return () => { if (sceneTimer.current) window.clearTimeout(sceneTimer.current); }; }, []);
   useEffect(() => { applyCharacterTheme(theme); }, [theme]);
   const goTo = (id: string) => { setMobileOpen(false); document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }); };
   const speak = (message: string) => { setLiveMessage(message); if (voiceOn && "speechSynthesis" in window) { window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(message); utterance.lang = "ko-KR"; utterance.rate = 1.02; window.speechSynthesis.speak(utterance); } };
-  const selectLesson = (index: number) => { setLessonIndex(index); setSelected(null); setChecked(false); const next = dailyLessons[index]; speak(`${next.weekday}요일 ${next.title} 학습지가 열렸어요. ${characters[next.character].greeting}`); };
+  const selectLesson = (index: number) => {
+    if (index === lessonIndex || document.documentElement.dataset.lessonScene === "exit") return;
+    const next = dailyLessons[index];
+    const swap = () => {
+      setLessonIndex(index); setSelected(null); setChecked(false);
+      document.documentElement.dataset.lessonScene = "enter";
+      sceneTimer.current = window.setTimeout(() => { delete document.documentElement.dataset.lessonScene; }, 520);
+      speak(`${next.weekday}요일 ${next.title} 학습지가 열렸어요. ${characters[next.character].greeting}`);
+    };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { swap(); return; }
+    document.documentElement.dataset.lessonScene = "exit";
+    sceneTimer.current = window.setTimeout(swap, 220);
+  };
   const choose = (option: string) => { if (!completed.includes(lesson.id)) { setSelected(option); setChecked(false); speak(`${option}을 골랐어요. 정답을 확인해 보세요.`); } };
   const check = () => { if (!selected) return speak("먼저 답 하나를 골라 보세요."); setChecked(true); if (selected === lesson.answer) { const next = completed.includes(lesson.id) ? completed : [...completed, lesson.id]; setCompleted(next); saveProgress(next); setCelebrating(lesson.character); window.setTimeout(() => setCelebrating(null), 760); speak(characters[lesson.character].correct); } else speak(characters[lesson.character].retry); };
   const isDone = completed.includes(lesson.id);
