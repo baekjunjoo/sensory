@@ -1,4 +1,4 @@
-/* Sensory Garden Print: pointer and touch movement drive only pupil transforms, keeping character art and layout stable. */
+/* Sensory Garden Print: requestAnimationFrame interpolation turns pointer targets into smooth, bounded pupil motion. */
 import { useEffect } from "react";
 import { applyCharacterTheme, loadCharacterTheme } from "@/lib/dailyContent";
 
@@ -9,28 +9,61 @@ export default function GooglyEyesTracker() {
     let frame = 0;
     let idleTimer = 0;
     let sleepyTimer = 0;
+    let lastFrameTime = performance.now();
     let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let targetsNeedUpdate = true;
+    const pupils = new Map<HTMLElement, { x: number; y: number; targetX: number; targetY: number }>();
+
+    const syncPupils = () => {
+      document.querySelectorAll<HTMLElement>("[data-googly-pupil]").forEach((pupil) => {
+        if (!pupils.has(pupil)) pupils.set(pupil, { x: 0, y: 0, targetX: 0, targetY: 0 });
+      });
+      pupils.forEach((_, pupil) => { if (!document.contains(pupil)) pupils.delete(pupil); });
+    };
 
     const centerEyes = () => {
-      document.querySelectorAll<HTMLElement>("[data-googly-pupil]").forEach((pupil) => {
+      syncPupils();
+      pupils.forEach((state, pupil) => {
+        state.x = 0;
+        state.y = 0;
+        state.targetX = 0;
+        state.targetY = 0;
         pupil.style.transform = "translate3d(0, 0, 0)";
       });
     };
 
-    const updateEyes = () => {
-      frame = 0;
-      document.querySelectorAll<HTMLElement>("[data-googly-pupil]").forEach((pupil) => {
+    const updateTargets = () => {
+      syncPupils();
+      pupils.forEach((state, pupil) => {
         const eye = pupil.parentElement;
         if (!eye) return;
         const rect = eye.getBoundingClientRect();
         const horizontal = pointer.x - (rect.left + rect.width / 2);
         const vertical = pointer.y - (rect.top + rect.height / 2);
         const distance = Math.hypot(horizontal, vertical) || 1;
-        const max = Math.max(2, Math.min(rect.width, rect.height) * 0.24);
-        const moveX = (horizontal / distance) * max;
-        const moveY = (vertical / distance) * max;
-        pupil.style.transform = `translate3d(${moveX.toFixed(2)}px, ${moveY.toFixed(2)}px, 0)`;
+        const max = Math.max(2, Math.min(rect.width, rect.height) * 0.21);
+        state.targetX = (horizontal / distance) * max;
+        state.targetY = (vertical / distance) * max;
       });
+    };
+
+    const animateEyes = (timestamp: number) => {
+      const frameFactor = Math.min((timestamp - lastFrameTime) / 16.67, 2.5);
+      lastFrameTime = timestamp;
+      if (targetsNeedUpdate) { updateTargets(); targetsNeedUpdate = false; }
+      const easing = 1 - Math.pow(1 - 0.17, frameFactor);
+      let stillMoving = false;
+      pupils.forEach((state, pupil) => {
+        state.x += (state.targetX - state.x) * easing;
+        state.y += (state.targetY - state.y) * easing;
+        if (Math.abs(state.targetX - state.x) > 0.08 || Math.abs(state.targetY - state.y) > 0.08) stillMoving = true;
+        pupil.style.transform = `translate3d(${state.x.toFixed(2)}px, ${state.y.toFixed(2)}px, 0)`;
+      });
+      frame = stillMoving || targetsNeedUpdate ? window.requestAnimationFrame(animateEyes) : 0;
+    };
+
+    const requestSmoothUpdate = () => {
+      if (!frame) { lastFrameTime = performance.now(); frame = window.requestAnimationFrame(animateEyes); }
     };
 
     const resetCharacterState = () => {
@@ -48,12 +81,13 @@ export default function GooglyEyesTracker() {
       if (reducedMotion.matches) return;
       resetCharacterState();
       pointer = { x: event.clientX, y: event.clientY };
-      if (!frame) frame = window.requestAnimationFrame(updateEyes);
+      targetsNeedUpdate = true;
+      requestSmoothUpdate();
     };
 
     const handleMotionPreference = () => {
       if (reducedMotion.matches) { centerEyes(); pageRoot.dataset.characterIdle = "false"; pageRoot.dataset.characterSleepy = "false"; }
-      else resetCharacterState();
+      else { targetsNeedUpdate = true; requestSmoothUpdate(); resetCharacterState(); }
     };
 
     window.addEventListener("pointermove", trackPointer, { passive: true });
