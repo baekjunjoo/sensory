@@ -1,5 +1,5 @@
 /* Sensory Garden Print report: a clear parent-facing weekly overview built from the same 7-day sample learning record. */
-import { ArrowLeft, ArrowRight, Check, Clock3, Ear, Leaf, Sparkles, Volume2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpenCheck, ChartNoAxesCombined, Check, Clock3, Ear, House, Leaf, PanelsTopLeft, Sparkles, Volume2 } from "lucide-react";
 import { characters, dailyLessons, loadProgress, type DailyLesson } from "@/lib/dailyContent";
 
 function ShapeBadge({ accent }: { accent: string }) { return <span className={`report-shape ${accent}`} aria-hidden="true"><span className="face-eyes"><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /></span><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /></span></span><b /></span>; }
@@ -24,5 +24,6 @@ export default function Report() {
       <section className="report-board recent-board"><div className="report-section-head"><div><span className="report-label">RECENT MOMENTS</span><h2>최근의 작은 성취</h2></div><span className="report-note"><Volume2 size={15} />캐릭터 피드백과 함께 기록돼요.</span></div>{recent.length ? <div className="recent-list">{recent.map((lesson) => <article key={lesson.id}><ShapeBadge accent={characters[lesson.character].accent} /><div><b>{lesson.weekday}요일 · {lesson.title}</b><p>{characters[lesson.character].name}: “{characters[lesson.character].correct}”</p></div><span className="recent-complete"><Check size={16} />완료</span></article>)}</div> : <div className="report-empty"><Ear size={22} /><p>첫 학습지를 마치면, 여기에 캐릭터의 응원 기록이 쌓여요.</p></div>}</section>
       <p className="report-footnote"><Sparkles size={14} />이 대시보드는 샘플 학습 데이터로 구성된 데모입니다. 실제 보호자 기능은 사용자 계정과 학습 기록 저장 기능을 연동해 확장할 수 있습니다.</p>
     </main>
+    <nav className="mobile-dock" aria-label="모바일 빠른 탐색"><a href="/"><House size={18} /><span>홈</span></a><a href="/#today"><BookOpenCheck size={18} /><span>학습</span></a><a href="/#studio"><PanelsTopLeft size={18} /><span>점자</span></a><a className="current" href="/report"><ChartNoAxesCombined size={18} /><span>리포트</span></a></nav>
   </div>;
 }
