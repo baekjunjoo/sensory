@@ -1,6 +1,6 @@
 /* Sensory Garden Print: requestAnimationFrame interpolation turns pointer targets into smooth, bounded pupil motion. */
 import { useEffect } from "react";
-import { applyCharacterTheme, loadCharacterTheme } from "@/lib/dailyContent";
+import { applyCharacterTheme, characters, loadCharacterTheme, type CharacterKey } from "@/lib/dailyContent";
 
 export default function GooglyEyesTracker() {
   useEffect(() => {
@@ -12,11 +12,12 @@ export default function GooglyEyesTracker() {
     let lastFrameTime = performance.now();
     let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     let targetsNeedUpdate = true;
-    const pupils = new Map<HTMLElement, { x: number; y: number; targetX: number; targetY: number }>();
+    const pupils = new Map<HTMLElement, { x: number; y: number; targetX: number; targetY: number; follow: number }>();
+    const defaultCharacter: CharacterKey = "momo";
 
     const syncPupils = () => {
       document.querySelectorAll<HTMLElement>("[data-googly-pupil]").forEach((pupil) => {
-        if (!pupils.has(pupil)) pupils.set(pupil, { x: 0, y: 0, targetX: 0, targetY: 0 });
+        if (!pupils.has(pupil)) pupils.set(pupil, { x: 0, y: 0, targetX: 0, targetY: 0, follow: characters[defaultCharacter].eye.follow });
       });
       pupils.forEach((_, pupil) => { if (!document.contains(pupil)) pupils.delete(pupil); });
     };
@@ -37,13 +38,18 @@ export default function GooglyEyesTracker() {
       pupils.forEach((state, pupil) => {
         const eye = pupil.parentElement;
         if (!eye) return;
+        const host = pupil.closest<HTMLElement>("[data-character]");
+        const characterKey = host?.dataset.character as CharacterKey | undefined;
+        const profile = characters[characterKey && characterKey in characters ? characterKey : defaultCharacter].eye;
         const rect = eye.getBoundingClientRect();
         const horizontal = pointer.x - (rect.left + rect.width / 2);
         const vertical = pointer.y - (rect.top + rect.height / 2);
         const distance = Math.hypot(horizontal, vertical) || 1;
-        const max = Math.max(2, Math.min(rect.width, rect.height) * 0.21);
-        state.targetX = (horizontal / distance) * max;
-        state.targetY = (vertical / distance) * max;
+        const max = Math.max(2, Math.min(rect.width, rect.height) * profile.range);
+        const phase = performance.now() / 1000 * profile.rhythm + rect.left * 0.02;
+        state.follow = profile.follow;
+        state.targetX = (horizontal / distance) * max + Math.sin(phase) * profile.wander;
+        state.targetY = (vertical / distance) * max + Math.cos(phase * 1.23) * profile.wander;
       });
     };
 
@@ -51,9 +57,9 @@ export default function GooglyEyesTracker() {
       const frameFactor = Math.min((timestamp - lastFrameTime) / 16.67, 2.5);
       lastFrameTime = timestamp;
       if (targetsNeedUpdate) { updateTargets(); targetsNeedUpdate = false; }
-      const easing = 1 - Math.pow(1 - 0.17, frameFactor);
       let stillMoving = false;
       pupils.forEach((state, pupil) => {
+        const easing = 1 - Math.pow(1 - state.follow, frameFactor);
         state.x += (state.targetX - state.x) * easing;
         state.y += (state.targetY - state.y) * easing;
         if (Math.abs(state.targetX - state.x) > 0.08 || Math.abs(state.targetY - state.y) > 0.08) stillMoving = true;

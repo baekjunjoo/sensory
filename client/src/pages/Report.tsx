@@ -1,8 +1,8 @@
 /* Sensory Garden Print report: a clear parent-facing weekly overview built from the same 7-day sample learning record. */
 import { ArrowLeft, ArrowRight, BookOpenCheck, ChartNoAxesCombined, Check, Clock3, Ear, House, Leaf, PanelsTopLeft, Sparkles, Volume2 } from "lucide-react";
-import { characters, dailyLessons, loadProgress, type DailyLesson } from "@/lib/dailyContent";
+import { characters, dailyLessons, loadProgress, type CharacterKey, type DailyLesson } from "@/lib/dailyContent";
 
-function ShapeBadge({ accent }: { accent: string }) { return <span className={`report-shape ${accent}`} aria-hidden="true"><span className="face-eyes"><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /></span><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /></span></span><b /></span>; }
+function ShapeBadge({ accent }: { accent: string }) { const colorMap: Record<string, CharacterKey> = { coral: "momo", sky: "pio", pink: "lulu", lime: "nabi", purple: "nabi" }; const identity = colorMap[accent] ?? "momo"; return <span className={`report-shape character-breathe ${accent}`} data-character={identity} aria-hidden="true"><span className="face-eyes"><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /><i className="blink-lid" /></span><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /><i className="blink-lid" /></span></span><b /></span>; }
 function ProgressBar({ completed, total }: { completed: number; total: number }) { return <div className="progress-track" aria-label={`${total}개 중 ${completed}개 완료`}><span style={{ width: `${(completed / total) * 100}%` }} /></div>; }
 
 export default function Report() {
