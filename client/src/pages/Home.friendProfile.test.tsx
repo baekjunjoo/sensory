@@ -69,4 +69,10 @@ describe("오늘의 친구 프로필", () => {
     expect(nabi.lastElementChild?.textContent).toBe("나비");
     expect(screen.getByTestId("hero-scene-label").textContent).toContain("나비 · 알파벳 구름 정원");
   });
+
+  it("LIVE DOTPAD PREVIEW에는 중복 유니코드 점자 문자열 없이 촉각 격자만 남긴다", () => {
+    render(<Home />);
+    expect(document.querySelector(".studio-braille")).toBeNull();
+    expect(document.querySelectorAll(".studio-dotpad .cell-small").length).toBeGreaterThan(0);
+  });
 });

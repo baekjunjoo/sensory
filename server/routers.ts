@@ -2,7 +2,6 @@ import { COOKIE_NAME } from "@shared/const";
 import { z } from "zod";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { BRAILLE_LOCALES, liblouis } from "./liblouis";
-import { piperTts } from "./piperTts";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 
@@ -18,13 +17,6 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
-  }),
-  accessibilityTts: router({
-    synthesize: publicProcedure.input(z.object({
-      text: z.string().trim().min(1).max(560),
-      locale: z.enum(["ko-KR", "en-US", "es-ES"]),
-      rate: z.number().min(0.85).max(1.3).optional(),
-    })).mutation(({ input }) => piperTts.synthesize(input)),
   }),
   braille: router({
     status: publicProcedure.query(() => liblouis.status()),
