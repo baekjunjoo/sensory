@@ -76,7 +76,7 @@ export default function Home() {
   const lesson = dailyLessons[lessonIndex];
   const scene = WEEK_SCENES[lessonIndex];
   const heroScene = WEEK_SCENES[heroSceneIndex];
-  const reportHref = `${import.meta.env.BASE_URL}report`;
+  const reportHref = import.meta.env.VITE_GITHUB_PAGES === "true" ? `${import.meta.env.BASE_URL}?view=report` : `${import.meta.env.BASE_URL}report`;
   const sharedSceneVariables = { "--toy-island": `url(${publicAsset("/manus-storage/sensory-3d-toy-island_077dd413.png", "sensory-3d-toy-island.webp")})`, "--neon-stage": `url(${publicAsset("/manus-storage/sensory-neon-character-stage_744636b3.png", "sensory-neon-character-stage.webp")})`, "--friend-momo": `url(${CURRICULUM_CHARACTERS.momo})`, "--friend-pio": `url(${CURRICULUM_CHARACTERS.pio})`, "--friend-lulu": `url(${CURRICULUM_CHARACTERS.lulu})`, "--friend-nabi": `url(${CURRICULUM_CHARACTERS.nabi})` } as CSSProperties;
   const pageSceneStyle = { ...sharedSceneVariables, "--daily-scene": `url(${scene.src})` } as CSSProperties;
   const heroSceneStyle = { ...sharedSceneVariables, "--daily-scene": `url(${heroScene.src})`, "--previous-scene": previousSceneIndex === null ? "none" : `url(${WEEK_SCENES[previousSceneIndex].src})` } as CSSProperties;
