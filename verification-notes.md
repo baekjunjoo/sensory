@@ -49,3 +49,5 @@ Piper 오디오 오류에서 브라우저 음성 대체 상태까지 이어지�
 영어 `en-US` 합성 요청도 실제 개발 서버 API에서 WAV base64 데이터를 반환했고, 응답 크기는 111,400바이트였다. 접근성 TTS 컴포넌트 테스트는 라이브 상태 영역, 읽기·정지 버튼의 이름과 `Space`·`Escape` 단축키, 실제 단축키에 따른 재생·정지 상태를 확인했다. 전역 키보드 이벤트의 대상이 Window인 경우까지 안전하게 처리하도록 보완했으며 최종적으로 4개 테스트 파일의 11개 테스트, 타입 검사, 프로덕션 빌드를 통과했다.
 
 Piper 기본 재생 성공 경로를 접근성 TTS 렌더링 테스트에 추가했다. 읽기 클릭 후 Piper 오디오의 `play()`가 실행되고 브라우저 `speechSynthesis.speak()`는 호출되지 않으며, Piper 재생 오류에서만 브라우저 음성 대체가 한 번 실행되는 것을 확인했다. 최종적으로 4개 테스트 파일의 12개 테스트, 타입 검사, 프로덕션 빌드를 통과했다.
+
+사용자 승인에 따라 기존 GitHub Pages 정적 초안을 교체하고 `baekjunjoo/sensory`의 `main`을 커밋 `ac0f79b3007909228b63ecd1b11cfdee33aaa726`으로 강제 반영했다. 원격 저장소에서 `server/piperTts.ts`, `client/src/components/AccessibilityTts.tsx`, `Dockerfile`을 확인했다. 최종 재검증에서도 Piper API는 한국어 요청에 `audioBase64`를 반환했고, 동일 문장은 첫 요청 0.156초·캐시 요청 0.004초로 응답했다.
