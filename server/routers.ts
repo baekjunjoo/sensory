@@ -1,0 +1,37 @@
+import { COOKIE_NAME } from "@shared/const";
+import { z } from "zod";
+import { getSessionCookieOptions } from "./_core/cookies";
+import { piperTts } from "./piperTts";
+import { systemRouter } from "./_core/systemRouter";
+import { publicProcedure, router } from "./_core/trpc";
+
+export const appRouter = router({
+    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
+  system: systemRouter,
+  auth: router({
+    me: publicProcedure.query(opts => opts.ctx.user),
+    logout: publicProcedure.mutation(({ ctx }) => {
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      return {
+        success: true,
+      } as const;
+    }),
+  }),
+  accessibilityTts: router({
+    synthesize: publicProcedure.input(z.object({
+      text: z.string().trim().min(1).max(560),
+      locale: z.enum(["ko-KR", "en-US"]),
+      rate: z.number().min(0.85).max(1.3),
+    })).mutation(({ input }) => piperTts.synthesize(input)),
+  }),
+
+  // TODO: add feature routers here, e.g.
+  // todo: router({
+  //   list: protectedProcedure.query(({ ctx }) =>
+  //     db.getUserTodos(ctx.user.id)
+  //   ),
+  // }),
+});
+
+export type AppRouter = typeof appRouter;
