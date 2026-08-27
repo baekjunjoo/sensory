@@ -47,3 +47,5 @@ GitHub App 토큰에는 Actions variables 조회·변경 권한이 없어 기존
 GitHub Pages Origin 헤더를 붙인 실제 공개 Liblouis tRPC 배치 요청은 HTTP 200, `Access-Control-Allow-Origin: https://baekjunjoo.github.io`, `Access-Control-Allow-Methods: GET, POST, OPTIONS`를 반환했다. 응답에는 `engine: liblouis`, `table: ko-g2.ctb`, `locale: ko-KR` 및 `감각`의 4개 점자 셀이 포함됐다. 최신 Pages 번들에는 `https://sensorytac-v8ekttiz.manus.space` 공용 API 주소가 포함된 것도 확인했다.
 
 리포트 지연 로딩이 처음 몇 프레임 동안 배경만 보여 빈 화면처럼 인지될 수 있는 점을 수정했다. 이제 로딩 중에는 `WEEKLY LEARNING REPORT` 라벨과 `보호자 리포트를 불러오고 있어요.` 안내를 표시하며, `aria-busy`와 `aria-live`로 보조기기에도 상태를 전달한다. 수정 뒤 16개 테스트 파일의 38개 테스트, 타입 검사, 프로덕션 빌드를 다시 통과했다. 공개 운영·GitHub Pages 반영 뒤 직접 진입, 새로고침, 복귀 링크를 최종 확인한다.
+
+GitHub Pages 리포트에서는 `/` 절대 링크가 배포 기본 경로(`/sensory/`) 밖을 가리킬 수 있어, 리포트가 런타임의 `BASE_URL`로 홈·학습·점자·리포트 경로를 생성하도록 수정했다. 운영 도메인은 기존 `/`, `/#today`, `/#studio`, `/report` 경로를 그대로 사용한다. 수정 뒤 16개 테스트 파일의 38개 테스트, 타입 검사와 프로덕션 빌드를 다시 통과했다. GitHub Pages 반영 후 실제 클릭·새로고침으로 경로를 확인한다.
