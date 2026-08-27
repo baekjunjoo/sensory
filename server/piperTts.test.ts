@@ -24,4 +24,18 @@ describe("Piper TTS cache", () => {
 
     await expect(service.synthesize({ text: "fallback", locale: "en-US", rate: 1 })).rejects.toThrow("voice unavailable");
   });
+
+  it("supports Spanish while reusing generated audio across client-side speed changes", async () => {
+    let calls = 0;
+    const service = createPiperTtsService(async () => {
+      calls += 1;
+      return new Uint8Array([82, 73, 70, 70]);
+    });
+
+    const first = await service.synthesize({ text: "Hola, Sensory.", locale: "es-ES", rate: 0.85 });
+    const second = await service.synthesize({ text: "Hola, Sensory.", locale: "es-ES", rate: 1.3 });
+
+    expect(first.audioBase64).toBe(second.audioBase64);
+    expect(calls).toBe(1);
+  });
 });

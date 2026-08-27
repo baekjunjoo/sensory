@@ -70,14 +70,17 @@ export default function Home() {
     site: {
       "ko-KR": "Sensory는 닷패드와 함께 매일 새로운 촉각 학습지를 만나는 감각 학습 경험입니다. 오늘의 학습, 학습 정원, 점자 실험실과 보호자 리포트를 이용할 수 있습니다.",
       "en-US": "Sensory is a tactile learning experience with a new daily worksheet for DotPad. You can explore today's activity, the learning garden, the braille studio, and the caregiver report.",
+      "es-ES": "Sensory es una experiencia de aprendizaje táctil con una nueva hoja diaria para DotPad. Puedes explorar la actividad de hoy, el jardín de aprendizaje, el laboratorio braille y el informe para cuidadores.",
     },
     today: {
       "ko-KR": `${lesson.weekday}요일 ${lesson.title} 학습입니다. ${lesson.description} 질문은 ${lesson.prompt}입니다. 선택지는 ${lesson.options.join(", ")}입니다.`,
       "en-US": `${lesson.weekday} lesson: ${lesson.subject}. Today's tactile prompt is ${lesson.prompt}.`,
+      "es-ES": `Lección del ${lesson.weekday}: ${lesson.subject}. La actividad táctil de hoy es ${lesson.prompt}.`,
     },
     studio: {
       "ko-KR": "점자 실험실입니다. 내 이름이나 좋아하는 단어를 입력하면 Sensory가 점자로 바꿔 닷패드 한 줄에 보여 줍니다.",
       "en-US": "Welcome to the Braille Studio. Type a name or favorite word and Sensory converts it into braille for a DotPad preview.",
+      "es-ES": "Bienvenido al laboratorio braille. Escribe un nombre o una palabra favorita y Sensory la convierte a braille para la vista previa de DotPad.",
     },
   }), [lesson]);
   useEffect(() => { setCompleted(loadProgress()); setTheme(loadCharacterTheme()); return () => { if (sceneTimer.current) window.clearTimeout(sceneTimer.current); }; }, []);

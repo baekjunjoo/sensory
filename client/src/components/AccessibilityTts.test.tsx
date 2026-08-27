@@ -26,9 +26,9 @@ class FakeAudio {
 }
 
 const content = {
-  site: { "ko-KR": "센서리 소개", "en-US": "Sensory introduction" },
-  today: { "ko-KR": "오늘의 학습", "en-US": "Today's lesson" },
-  studio: { "ko-KR": "점자 실험실", "en-US": "Braille studio" },
+  site: { "ko-KR": "센서리 소개. 매일 한 장을 읽어요.", "en-US": "Sensory introduction.", "es-ES": "Introducción a Sensory." },
+  today: { "ko-KR": "오늘의 학습", "en-US": "Today's lesson", "es-ES": "La lección de hoy" },
+  studio: { "ko-KR": "점자 실험실", "en-US": "Braille studio", "es-ES": "Laboratorio braille" },
 };
 
 describe("AccessibilityTts fallback status", () => {
@@ -93,6 +93,24 @@ describe("AccessibilityTts fallback status", () => {
 
     expect(player.play).toHaveBeenCalledTimes(1);
     expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
-    expect(screen.getByText("자연스러운 음성을 재생해요.")).toBeTruthy();
+    expect(screen.getByText("1/2번째 문장을 자연 음성으로 읽어요.")).toBeTruthy();
+  });
+
+  it("exposes Spanish and pitch controls while highlighting the active sentence", () => {
+    render(<AccessibilityTts content={content} />);
+    expect(screen.getByRole("option", { name: "Español" })).toBeTruthy();
+    expect(screen.getByRole("option", { name: "낮게" })).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    expect(screen.getByText("센서리 소개.").className).toContain("is-reading");
+  });
+
+  it("applies user-selected speed and pitch to Piper audio playback", () => {
+    render(<AccessibilityTts content={content} />);
+    fireEvent.change(screen.getByLabelText("속도"), { target: { value: "1.15" } });
+    fireEvent.change(screen.getByLabelText("피치"), { target: { value: "3" } });
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+
+    expect(player.playbackRate).toBeCloseTo(1.15 * 2 ** (3 / 12));
   });
 });

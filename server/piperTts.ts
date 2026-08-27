@@ -2,10 +2,10 @@ import { createHash } from "node:crypto";
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import path from "node:path";
 
-export const PIPER_LOCALES = ["ko-KR", "en-US"] as const;
+export const PIPER_LOCALES = ["ko-KR", "en-US", "es-ES"] as const;
 export type PiperLocale = (typeof PIPER_LOCALES)[number];
 
-type SynthesisRequest = { text: string; locale: PiperLocale; rate: number };
+type SynthesisRequest = { text: string; locale: PiperLocale; rate?: number };
 type SynthesizeBytes = (request: SynthesisRequest) => Promise<Uint8Array>;
 
 const DEFAULT_PORT = 5001;
@@ -15,11 +15,11 @@ let piperProcess: ChildProcessWithoutNullStreams | undefined;
 let startup: Promise<void> | undefined;
 
 function voiceFor(locale: PiperLocale) {
-  return locale === "ko-KR" ? "ko_KR-kss-medium" : "en_US-lessac-low";
+  return { "ko-KR": "ko_KR-kss-medium", "en-US": "en_US-lessac-low", "es-ES": "es_ES-davefx-medium" }[locale];
 }
 
-function cacheKey({ text, locale, rate }: SynthesisRequest) {
-  return createHash("sha256").update(`${locale}\u0000${rate}\u0000${text}`).digest("hex");
+function cacheKey({ text, locale }: SynthesisRequest) {
+  return createHash("sha256").update(`${locale}\u0000${text}`).digest("hex");
 }
 
 function cacheAudio(key: string, audio: Uint8Array) {
@@ -33,7 +33,7 @@ async function waitForPiper() {
       const response = await fetch(`http://127.0.0.1:${DEFAULT_PORT}/info`);
       if (response.ok) return;
     } catch {
-      // Piper is still loading its onnx voice into memory.
+      // Piper is still loading its first voice into memory.
     }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
@@ -58,18 +58,12 @@ async function ensurePiper() {
   return startup;
 }
 
-async function synthesizeWithPiper({ text, locale, rate }: SynthesisRequest) {
+async function synthesizeWithPiper({ text, locale }: SynthesisRequest) {
   await ensurePiper();
   const response = await fetch(`http://127.0.0.1:${DEFAULT_PORT}/synthesize`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      text,
-      voice: voiceFor(locale),
-      length_scale: Math.min(1.28, Math.max(0.72, 1 / rate)),
-      noise_scale: 0.62,
-      noise_w_scale: 0.72,
-    }),
+    body: JSON.stringify({ text, voice: voiceFor(locale), length_scale: 1, noise_scale: 0.62, noise_w_scale: 0.72 }),
   });
   if (!response.ok) throw new Error("Piper 음성 합성에 실패했습니다.");
   return new Uint8Array(await response.arrayBuffer());

@@ -21,8 +21,8 @@ export const appRouter = router({
   accessibilityTts: router({
     synthesize: publicProcedure.input(z.object({
       text: z.string().trim().min(1).max(560),
-      locale: z.enum(["ko-KR", "en-US"]),
-      rate: z.number().min(0.85).max(1.3),
+      locale: z.enum(["ko-KR", "en-US", "es-ES"]),
+      rate: z.number().min(0.85).max(1.3).optional(),
     })).mutation(({ input }) => piperTts.synthesize(input)),
   }),
 

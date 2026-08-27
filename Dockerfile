@@ -8,7 +8,7 @@ COPY . .
 
 RUN python3 -m pip install --no-cache-dir --break-system-packages "piper-tts[http]==1.7.0" \
     && mkdir -p /app/vendor/piper \
-    && python3 -m piper.download_voices --download-dir /app/vendor/piper ko_KR-kss-medium en_US-lessac-low \
+    && python3 -m piper.download_voices --download-dir /app/vendor/piper ko_KR-kss-medium en_US-lessac-low es_ES-davefx-medium \
     && npm install -g corepack@latest \
     && corepack pnpm install \
     && corepack pnpm run build
