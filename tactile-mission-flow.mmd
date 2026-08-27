@@ -1,0 +1,29 @@
+flowchart TD
+    A[오늘의 한 장 도착] --> B[봉투 열기]
+    B --> C{DotPad 연결 상태}
+    C -- 연결됨 --> D[오늘의 촉각 프레임 준비]
+    C -- 미연결 --> E[BLE 또는 USB 연결 안내]
+    E --> F{권한·연결 성공?}
+    F -- 예 --> D
+    F -- 아니오 --> G[화면 점자 프리뷰와 음성 안내로 계속]
+    D --> H[1단계 · 손끝으로 탐색]
+    G --> H
+    H --> I[점·도형·순서를 만지고 소리 듣기]
+    I --> J[2단계 · 뜻을 연결하기]
+    J --> K[선택지 비교 · 힌트 · 다시 듣기]
+    K --> L{정답 확인}
+    L -- 다시 살펴보기 --> H
+    L -- 정답 --> M[3단계 · 나의 한 장 완성]
+    M --> N[완료 도장 · 촉각 스티커]
+    N --> O[학습지 보관함에 저장]
+    O --> P[보호자 리포트에 한 줄 기록]
+    P --> Q[내일의 한 장 미리 보기]
+
+    classDef arrival fill:#fff6d9,stroke:#f4aa3c,stroke-width:2px,color:#083d5a;
+    classDef tactile fill:#d9f4ed,stroke:#148d81,stroke-width:2px,color:#083d5a;
+    classDef choice fill:#e8e8ff,stroke:#7a6fd6,stroke-width:2px,color:#083d5a;
+    classDef completion fill:#ffddcf,stroke:#e86d41,stroke-width:2px,color:#083d5a;
+    class A,B,N,O,P,Q arrival;
+    class D,H,I,J,K tactile;
+    class C,E,F,G,L choice;
+    class M completion;
