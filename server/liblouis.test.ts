@@ -15,4 +15,9 @@ describe("Liblouis standard braille service", () => {
     expect(english.table).toBe("en-ueb-g2.ctb");
     await expect(createLiblouisService(async () => "not braille").translate({ text: "x", locale: "en-US" })).rejects.toThrow("점자 셀");
   });
+
+  it("reports the Liblouis runtime version and supported standard tables", async () => {
+    const status = await createLiblouisService(async () => "⠁", async () => "3.38.0").status();
+    expect(status).toEqual({ engine: "liblouis", version: "3.38.0", tables: ["ko-g2.ctb", "en-ueb-g2.ctb"] });
+  });
 });

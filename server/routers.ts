@@ -27,6 +27,7 @@ export const appRouter = router({
     })).mutation(({ input }) => piperTts.synthesize(input)),
   }),
   braille: router({
+    status: publicProcedure.query(() => liblouis.status()),
     translate: publicProcedure.input(z.object({
       text: z.string().trim().min(1).max(120),
       locale: z.enum(BRAILLE_LOCALES),
