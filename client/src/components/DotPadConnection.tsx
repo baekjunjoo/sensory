@@ -114,6 +114,10 @@ export function DotPadConnection({ dots, lessonLabel }: DotPadConnectionProps) {
     const module = moduleRef.current;
     const device = deviceRef.current;
     if (!sdk || !module || !device || state !== "connected") return;
+    if (!dots.length) {
+      setMessage("표준 점역 결과를 준비하고 있어요. 잠시 뒤 다시 보내 주세요.");
+      return;
+    }
     try {
       sdk.displayGraphicData(makeBrailleGraphicFrame(dots), device, module.DisplayMode.GraphicMode);
       sdk.requestVibrator(device, 45, 35, 1);
@@ -143,7 +147,7 @@ export function DotPadConnection({ dots, lessonLabel }: DotPadConnectionProps) {
     <div className="dotpad-actions">
       <button type="button" onClick={() => connect("ble")} disabled={state === "scanning" || state === "connecting" || !support.ble}><Bluetooth size={16} />블루투스 연결</button>
       <button type="button" onClick={() => connect("usb")} disabled={state === "scanning" || state === "connecting" || !support.usb}><Cable size={16} />USB 연결</button>
-      {state === "connected" ? <button type="button" className="dotpad-send" onClick={sendFrame}><Send size={16} />오늘의 점자 보내기</button> : null}
+      {state === "connected" ? <button type="button" className="dotpad-send" onClick={sendFrame} disabled={!dots.length}><Send size={16} />오늘의 점자 보내기</button> : null}
       {state === "connected" ? <button type="button" className="dotpad-disconnect" onClick={disconnect}><Unplug size={16} />연결 해제</button> : null}
     </div>
     <div className="dotpad-live-note" role="status" aria-live="polite">{state === "error" || state === "unsupported" ? <CircleAlert size={16} /> : state === "connected" ? <CheckCircle2 size={16} /> : <Vibrate size={16} />}<span>{message}</span></div>

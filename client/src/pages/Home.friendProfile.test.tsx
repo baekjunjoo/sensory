@@ -15,6 +15,20 @@ vi.mock("@/lib/publicAsset", () => ({
   publicAsset: (path: string) => path,
 }));
 
+vi.mock("@/lib/trpc", () => ({
+  trpc: {
+    braille: {
+      translate: {
+        useMutation: () => ({
+          mutate: (_input: unknown, callbacks?: { onSuccess?: (result: { braille: string; cells: number[][]; engine: "liblouis"; table: string }) => void }) => {
+            callbacks?.onSuccess?.({ braille: "⠠⠝", cells: [[6], [1, 3, 4, 5]], engine: "liblouis", table: "ko-g2.ctb" });
+          },
+        }),
+      },
+    },
+  },
+}));
+
 import Home from "./Home";
 
 describe("오늘의 친구 프로필", () => {

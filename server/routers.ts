@@ -1,6 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { z } from "zod";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { BRAILLE_LOCALES, liblouis } from "./liblouis";
 import { piperTts } from "./piperTts";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
@@ -24,6 +25,12 @@ export const appRouter = router({
       locale: z.enum(["ko-KR", "en-US", "es-ES"]),
       rate: z.number().min(0.85).max(1.3).optional(),
     })).mutation(({ input }) => piperTts.synthesize(input)),
+  }),
+  braille: router({
+    translate: publicProcedure.input(z.object({
+      text: z.string().trim().min(1).max(120),
+      locale: z.enum(BRAILLE_LOCALES),
+    })).mutation(({ input }) => liblouis.translate(input)),
   }),
 
   // TODO: add feature routers here, e.g.
