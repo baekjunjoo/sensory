@@ -70,4 +70,19 @@ describe("AccessibilityTts fallback status", () => {
     await act(async () => { player.onerror?.(new Event("error")); });
     expect(screen.getByText("자연 음성과 브라우저 음성을 사용할 수 없어요. 화면의 텍스트를 계속 읽어 주세요.")).toBeTruthy();
   });
+
+  it("exposes a live status and labelled controls while supporting Space and Escape shortcuts", async () => {
+    render(<AccessibilityTts content={content} />);
+    const reader = screen.getByLabelText("다국어 접근성 음성 읽기");
+    const liveStatus = reader.querySelector("[aria-live='polite']");
+
+    expect(liveStatus).toBeTruthy();
+    expect(screen.getByRole("button", { name: "읽기" }).getAttribute("aria-keyshortcuts")).toBe("Space");
+    expect(screen.getByRole("button", { name: "정지" }).getAttribute("aria-keyshortcuts")).toBe("Escape");
+
+    fireEvent.keyDown(window, { code: "Space" });
+    expect(mutate).toHaveBeenCalledTimes(1);
+    await act(async () => { fireEvent.keyDown(window, { key: "Escape" }); });
+    expect(screen.getByText("음성 읽기를 멈췄어요.")).toBeTruthy();
+  });
 });

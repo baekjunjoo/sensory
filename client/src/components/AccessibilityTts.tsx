@@ -94,8 +94,8 @@ export function AccessibilityTts({ content }: { content: Record<ReadingScope, Re
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (target?.closest("input, textarea, select, button, a, [contenteditable='true']")) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && target.closest("input, textarea, select, button, a, [contenteditable='true']")) return;
       if (event.code === "Space") {
         event.preventDefault();
         play();
