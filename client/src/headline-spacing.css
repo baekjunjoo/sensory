@@ -1,0 +1,11 @@
+.garden-site :is(
+  .hero-copy h1,
+  .section-copy h2,
+  .how-copy h2,
+  .curriculum-header h2,
+  .studio-copy h2,
+  .garden-footer h2,
+  .question-block h3
+) {
+  letter-spacing: -0.04em;
+}
