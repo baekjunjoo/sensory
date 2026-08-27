@@ -61,3 +61,5 @@ GitHub Pages의 이전 화면은 GitHub Pages 설정이 `main`이 아니라 별�
 접근성 TTS는 한국어·영어에 스페인어(`es-ES`) Piper 모델을 추가했고, 스페인어 실합성 API도 WAV base64 응답을 반환했다. 텍스트를 문장으로 나누어 한 문장씩 합성·재생하며, 현재 문장은 `▶` 표시와 고대비 배경으로 시각적으로 하이라이트된다. 사용자는 재생 속도(0.85×–1.3×)와 피치(낮게·기본·높게)를 직접 바꿀 수 있고, Piper 캐시는 발화 텍스트·언어 중심으로 유지해 제어값 변경 시 동일 음성을 재사용한다. 데스크톱과 390px 모바일 화면에서 컨트롤·하이라이트의 배치를 확인했다.
 
 다국어 Piper·문장 하이라이트·속도·피치 변경은 `baekjunjoo/sensory`의 `main`에 커밋 `11ce226a9b54c84d6c6d9ba0ac5eb2281891da9c`으로 반영했다. GitHub Pages는 `gh-pages`의 정적 파일만 제공하므로 이전 화면을 유지하는 것이 정상이며, Node·Python Piper 서버를 실행할 수 없다. 실제 자연 음성 기능은 프로젝트의 Manus 서버 배포 환경에서 동작하도록 준비됐고, 배포는 사용자가 관리 화면의 Publish 버튼으로 실행해야 한다.
+
+GitHub Pages와 Piper 서버를 분리하는 구조를 추가했다. `main`의 GitHub Actions 워크플로는 `/sensory/` 경로의 정적 프런트엔드를 만들며, 저장소 변수 `PIPER_API_URL`에 Manus 배포 주소가 있으면 해당 서버의 tRPC 음성 API를 호출한다. 주소가 비어 있거나 연결에 실패하면 브라우저 음성 대체를 유지한다. Piper API는 `https://baekjunjoo.github.io` Origin에만 CORS 응답을 제공하며, 실제 OPTIONS preflight에서 POST·OPTIONS·Content-Type·Authorization 헤더를 확인했다. 19개 테스트와 GitHub Pages 전용 빌드를 통과했다.

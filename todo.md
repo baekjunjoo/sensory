@@ -2,12 +2,12 @@
 
 ## GitHub Pages 화면과 Piper API 분리 연결
 
-- [ ] GitHub Pages 정적 화면과 Manus Piper API의 역할·보안·교차 출처 제약을 문서화한다.
-- [ ] GitHub Pages용 정적 빌드·배포 워크플로와 Piper API 허용 출처 구성을 추가한다.
+- [x] GitHub Pages 정적 화면과 Manus Piper API의 역할·보안·교차 출처 제약을 문서화한다.
+- [x] GitHub Pages용 정적 빌드·배포 워크플로와 Piper API 허용 출처 구성을 추가한다.
 - [ ] 배포된 Piper API 주소를 GitHub Pages 빌드에 연결하고 브라우저 대체 흐름을 유지한다.
 - [ ] GitHub Pages 최신 화면과 자연 음성 연결을 검증하고 최신 코드를 GitHub에 반영한다.
-- [ ] GitHub Pages 빌드가 사용할 Piper API 공개 주소 변수를 구성하고 연결 절차를 문서화한다.
-- [ ] GitHub Pages 출처만 허용하는 Piper API CORS와 preflight 응답을 구현·검증한다.
+- [x] GitHub Pages 빌드가 사용할 Piper API 공개 주소 변수를 구성하고 연결 절차를 문서화한다.
+- [x] GitHub Pages 출처만 허용하는 Piper API CORS와 preflight 응답을 구현·검증한다.
 
 ## GitHub Pages 진단 및 다국어 접근성 TTS 확장
 
