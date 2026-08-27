@@ -169,6 +169,27 @@ describe("AccessibilityTts fallback status", () => {
     expect(transcript.getAttribute("data-highlight-background")).toBe("night");
   });
 
+  it("applies a high-contrast preset and persists its highlight values", () => {
+    render(<AccessibilityTts content={content} />);
+    fireEvent.click(screen.getByRole("button", { name: "큰 글자 고대비" }));
+    const transcript = screen.getByLabelText("문장별 읽기 진행");
+    expect(transcript.getAttribute("data-highlight-text")).toBe("black");
+    expect(transcript.getAttribute("data-highlight-size")).toBe("xlarge");
+    expect(transcript.getAttribute("data-highlight-background")).toBe("contrast");
+    expect(JSON.parse(window.localStorage.getItem("sensory-accessibility-tts-preferences") ?? "{}")).toMatchObject({ highlightText: "black", highlightSize: "xlarge", highlightBackground: "contrast" });
+  });
+
+  it("reads uploaded local text without sending the file itself to the server", async () => {
+    render(<AccessibilityTts content={content} />);
+    const file = new File(["파일 첫 문장. 파일 다음 문장."], "my-lesson.txt", { type: "text/plain" });
+    Object.defineProperty(file, "text", { value: async () => "파일 첫 문장. 파일 다음 문장." });
+    fireEvent.change(screen.getByLabelText("텍스트 파일 불러오기"), { target: { files: [file] } });
+    await screen.findByText("my-lesson.txt");
+    expect(screen.getByText("파일 첫 문장. 파일 다음 문장.")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    expect(mutate).toHaveBeenLastCalledWith(expect.objectContaining({ text: "파일 첫 문장." }), expect.anything());
+  });
+
   it("scrolls the active sentence into view while reading", async () => {
     render(<AccessibilityTts content={content} />);
     fireEvent.click(screen.getByRole("button", { name: "읽기" }));
