@@ -129,6 +129,46 @@ describe("AccessibilityTts fallback status", () => {
     expect((screen.getByLabelText("피치") as HTMLSelectElement).value).toBe("-3");
   });
 
+  it("resets every stored reader and highlight preference to the default", () => {
+    render(<AccessibilityTts content={content} />);
+    fireEvent.change(screen.getByLabelText("언어"), { target: { value: "es-ES" } });
+    fireEvent.change(screen.getByLabelText("속도"), { target: { value: "1.3" } });
+    fireEvent.change(screen.getByLabelText("피치"), { target: { value: "3" } });
+    fireEvent.change(screen.getByLabelText("하이라이트 글자색"), { target: { value: "black" } });
+    fireEvent.change(screen.getByLabelText("하이라이트 크기"), { target: { value: "xlarge" } });
+    fireEvent.change(screen.getByLabelText("하이라이트 배경"), { target: { value: "night" } });
+    fireEvent.click(screen.getByRole("button", { name: "기본값으로 초기화" }));
+
+    expect((screen.getByLabelText("언어") as HTMLSelectElement).value).toBe("ko-KR");
+    expect((screen.getByLabelText("속도") as HTMLSelectElement).value).toBe("1");
+    expect((screen.getByLabelText("피치") as HTMLSelectElement).value).toBe("0");
+    expect((screen.getByLabelText("하이라이트 글자색") as HTMLSelectElement).value).toBe("navy");
+    expect((screen.getByLabelText("하이라이트 크기") as HTMLSelectElement).value).toBe("normal");
+    expect((screen.getByLabelText("하이라이트 배경") as HTMLSelectElement).value).toBe("soft");
+  });
+
+  it("replays and navigates the active sentence without browser speech", () => {
+    render(<AccessibilityTts content={content} />);
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    fireEvent.click(screen.getByRole("button", { name: "다음 문장" }));
+    expect(screen.getByText("매일 한 장을 읽어요.").className).toContain("is-reading");
+    fireEvent.click(screen.getByRole("button", { name: "현재 문장 다시 듣기" }));
+    fireEvent.click(screen.getByRole("button", { name: "이전 문장" }));
+    expect(screen.getByText("센서리 소개.").className).toContain("is-reading");
+    expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
+  });
+
+  it("applies the selected low-vision highlight data attributes", () => {
+    render(<AccessibilityTts content={content} />);
+    fireEvent.change(screen.getByLabelText("하이라이트 글자색"), { target: { value: "black" } });
+    fireEvent.change(screen.getByLabelText("하이라이트 크기"), { target: { value: "xlarge" } });
+    fireEvent.change(screen.getByLabelText("하이라이트 배경"), { target: { value: "night" } });
+    const transcript = screen.getByLabelText("문장별 읽기 진행");
+    expect(transcript.getAttribute("data-highlight-text")).toBe("black");
+    expect(transcript.getAttribute("data-highlight-size")).toBe("xlarge");
+    expect(transcript.getAttribute("data-highlight-background")).toBe("night");
+  });
+
   it("scrolls the active sentence into view while reading", async () => {
     render(<AccessibilityTts content={content} />);
     fireEvent.click(screen.getByRole("button", { name: "읽기" }));

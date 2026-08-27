@@ -3,8 +3,8 @@ import { DEFAULT_TTS_PREFERENCES, loadTtsPreferences, saveTtsPreferences } from 
 
 describe("TTS preferences", () => {
   it("restores only supported language, rate, and pitch combinations", () => {
-    const storage = { getItem: vi.fn(() => JSON.stringify({ locale: "es-ES", rate: 1.15, pitch: 3 })) };
-    expect(loadTtsPreferences(storage)).toEqual({ locale: "es-ES", rate: 1.15, pitch: 3 });
+    const storage = { getItem: vi.fn(() => JSON.stringify({ locale: "es-ES", rate: 1.15, pitch: 3, highlightText: "black", highlightSize: "xlarge", highlightBackground: "night" })) };
+    expect(loadTtsPreferences(storage)).toEqual({ locale: "es-ES", rate: 1.15, pitch: 3, highlightText: "black", highlightSize: "xlarge", highlightBackground: "night" });
   });
 
   it("returns safe defaults when saved values are invalid or unavailable", () => {
@@ -14,7 +14,8 @@ describe("TTS preferences", () => {
 
   it("writes a reusable preference set without exposing failures", () => {
     const storage = { setItem: vi.fn() };
-    saveTtsPreferences({ locale: "en-US", rate: 0.85, pitch: -3 }, storage);
-    expect(storage.setItem).toHaveBeenCalledWith("sensory-accessibility-tts-preferences", JSON.stringify({ locale: "en-US", rate: 0.85, pitch: -3 }));
+    const preferences = { locale: "en-US" as const, rate: 0.85, pitch: -3, highlightText: "blue" as const, highlightSize: "large" as const, highlightBackground: "contrast" as const };
+    saveTtsPreferences(preferences, storage);
+    expect(storage.setItem).toHaveBeenCalledWith("sensory-accessibility-tts-preferences", JSON.stringify(preferences));
   });
 });

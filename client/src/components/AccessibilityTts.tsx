@@ -1,8 +1,8 @@
-import { Pause, Play, Square, Volume2 } from "lucide-react";
+import { Pause, Play, RotateCcw, SkipBack, SkipForward, Square, Volume2 } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { attachPiperAudioErrorFallback, runBrowserSpeechFallback } from "@/lib/browserSpeech";
-import { loadTtsPreferences, saveTtsPreferences, type TtsLocale } from "@/lib/ttsPreferences";
+import { DEFAULT_TTS_PREFERENCES, loadTtsPreferences, saveTtsPreferences, type HighlightBackground, type HighlightSize, type HighlightText, type TtsLocale } from "@/lib/ttsPreferences";
 
 type ReadingScope = "site" | "today" | "studio";
 type ReaderLocale = TtsLocale;
@@ -28,6 +28,9 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
   const [locale, setLocale] = useState<ReaderLocale>(preferences.locale);
   const [rate, setRate] = useState(preferences.rate);
   const [pitch, setPitch] = useState(preferences.pitch);
+  const [highlightText, setHighlightText] = useState<HighlightText>(preferences.highlightText);
+  const [highlightSize, setHighlightSize] = useState<HighlightSize>(preferences.highlightSize);
+  const [highlightBackground, setHighlightBackground] = useState<HighlightBackground>(preferences.highlightBackground);
   const [status, setStatus] = useState("접근성 음성 읽기를 준비했어요.");
   const [playing, setPlaying] = useState(false);
   const [readingSentences, setReadingSentences] = useState<string[]>([]);
@@ -53,6 +56,17 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
     setPlaying(false);
     setSentenceIndex(-1);
     setStatus("음성 읽기를 멈췄어요.");
+  };
+
+  const clearPlayback = () => {
+    speechToken.current += 1;
+    if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
+    retryTimer.current = null;
+    audio.current?.pause();
+    audio.current = null;
+    window.speechSynthesis?.cancel();
+    if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
+    objectUrl.current = null;
   };
 
   const browserFallback = (text: string) => {
@@ -131,6 +145,27 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
     requestSentence(sentences, 0, token);
   };
 
+  const moveToSentence = (targetIndex: number) => {
+    const sentences = readingSentences.length > 0 ? readingSentences : splitSentences(selectedText);
+    if (targetIndex < 0 || targetIndex >= sentences.length) return;
+    clearPlayback();
+    const token = ++speechToken.current;
+    setReadingSentences(sentences);
+    requestSentence(sentences, targetIndex, token);
+  };
+
+  const resetPreferences = () => {
+    stop();
+    setReadingSentences([]);
+    setLocale(DEFAULT_TTS_PREFERENCES.locale);
+    setRate(DEFAULT_TTS_PREFERENCES.rate);
+    setPitch(DEFAULT_TTS_PREFERENCES.pitch);
+    setHighlightText(DEFAULT_TTS_PREFERENCES.highlightText);
+    setHighlightSize(DEFAULT_TTS_PREFERENCES.highlightSize);
+    setHighlightBackground(DEFAULT_TTS_PREFERENCES.highlightBackground);
+    setStatus("음성·하이라이트 설정을 기본값으로 되돌렸어요.");
+  };
+
   const playSelection = () => {
     const selection = window.getSelection()?.toString().replace(/\s+/g, " ").trim();
     if (!selection) {
@@ -158,8 +193,8 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
   }, []);
 
   useEffect(() => {
-    saveTtsPreferences({ locale, rate, pitch });
-  }, [locale, pitch, rate]);
+    saveTtsPreferences({ locale, rate, pitch, highlightText, highlightSize, highlightBackground });
+  }, [highlightBackground, highlightSize, highlightText, locale, pitch, rate]);
 
   useEffect(() => {
     if (sentenceIndex < 0 || !activeSentence.current) return;
@@ -177,8 +212,15 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
       <button className="accessibility-tts__play" onClick={() => play()} aria-pressed={playing} aria-keyshortcuts="Space">{playing ? <Pause size={17} /> : <Play size={17} />}{playing ? "일시정지" : "읽기"}</button>
       <button className="accessibility-tts__stop" onClick={stop} aria-keyshortcuts="Escape"><Square size={15} />정지</button>
       <button className="accessibility-tts__selection" onClick={playSelection}>선택한 글 읽기</button>
+      <button className="accessibility-tts__sentence-control" onClick={() => moveToSentence(sentenceIndex)} disabled={sentenceIndex < 0} aria-label="현재 문장 다시 듣기"><RotateCcw size={15} />다시 듣기</button>
+      <button className="accessibility-tts__sentence-control" onClick={() => moveToSentence(sentenceIndex - 1)} disabled={sentenceIndex <= 0} aria-label="이전 문장"><SkipBack size={15} />이전</button>
+      <button className="accessibility-tts__sentence-control" onClick={() => moveToSentence(sentenceIndex + 1)} disabled={sentenceIndex < 0 || sentenceIndex >= transcript.length - 1} aria-label="다음 문장"><SkipForward size={15} />다음</button>
+      <button className="accessibility-tts__reset" onClick={resetPreferences}><RotateCcw size={15} />기본값으로 초기화</button>
+      <label>하이라이트 글자색<select value={highlightText} onChange={(event) => setHighlightText(event.target.value as HighlightText)}><option value="navy">진한 남색</option><option value="black">검정</option><option value="blue">선명한 파랑</option></select></label>
+      <label>하이라이트 크기<select value={highlightSize} onChange={(event) => setHighlightSize(event.target.value as HighlightSize)}><option value="normal">기본</option><option value="large">크게</option><option value="xlarge">매우 크게</option></select></label>
+      <label>하이라이트 배경<select value={highlightBackground} onChange={(event) => setHighlightBackground(event.target.value as HighlightBackground)}><option value="soft">부드러운 크림</option><option value="contrast">고대비 밝게</option><option value="night">고대비 어둡게</option></select></label>
     </div>
-    <div className="accessibility-tts__transcript" aria-label="문장별 읽기 진행"><b>읽는 문장</b><p>{transcript.map((sentence, index) => <span ref={index === sentenceIndex ? activeSentence : undefined} className={index === sentenceIndex ? "is-reading" : ""} key={`${index}-${sentence}`}>{sentence}</span>)}</p></div>
+    <div className="accessibility-tts__transcript" data-highlight-text={highlightText} data-highlight-size={highlightSize} data-highlight-background={highlightBackground} aria-label="문장별 읽기 진행"><b>읽는 문장</b><p>{transcript.map((sentence, index) => <span ref={index === sentenceIndex ? activeSentence : undefined} className={index === sentenceIndex ? "is-reading" : ""} key={`${index}-${sentence}`}>{sentence}</span>)}</p></div>
     <p aria-live="polite" className="accessibility-tts__status">{status}</p>
   </aside>;
 }
