@@ -7,3 +7,5 @@ LIVE DOTPAD PREVIEW에는 Liblouis 점역 셀을 보여 주는 촉각 격자만 
 Piper 서버 합성 모듈·음성 모델 다운로드·전용 브라우저 대체 모듈은 제거했다. 최종 로컬 검증에서 15개 테스트 파일의 33개 테스트, 타입 검사, 프로덕션 번들을 통과했다.
 
 개발 브라우저에서 `window.SDTTS`는 `speak`, `isEcho`, `detectTextLang`, `setMicActive`, `configure`, `getConfig`, `voices`, `onLog`, `stop` API를 제공했고 `speechSynthesis`도 감지됐다. `.studio-braille` 요소는 없었으며, LIVE DOTPAD PREVIEW에는 중복 유니코드 점자 문구가 렌더링되지 않았다. 초기화된 개발 환경에는 Liblouis 실행 파일이 아직 설치되지 않아 촉각 격자 셀 수는 0으로 표시됐고, 이는 운영 Docker 이미지와 별개인 로컬 런타임 의존성 문제이므로 로컬 Liblouis 유틸리티를 복구한 뒤 다시 확인한다.
+
+GitHub Pages의 캐시 우회 주소에서 `기기 음성으로 읽기` 안내와 한국어·영어·스페인어 선택, 속도·피치·문장 탐색·저시력 제어가 나타났고, LIVE DOTPAD PREVIEW에는 중복 유니코드 점자 문자열 없이 Liblouis 상태 안내만 표시됐다. 무음 자동 브라우저에서 읽기 버튼을 요청했으나 발화 상태를 신뢰성 있게 관찰할 수 없었으므로, 실제 오디오 출력이 가능한 사용자 브라우저에서 시작·진행·종료를 확인해야 한다.
