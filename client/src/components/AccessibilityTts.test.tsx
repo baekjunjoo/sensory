@@ -113,4 +113,40 @@ describe("AccessibilityTts fallback status", () => {
 
     expect(player.playbackRate).toBeCloseTo(1.15 * 2 ** (3 / 12));
   });
+
+  it("retries a cold Piper server before using browser speech", async () => {
+    vi.useFakeTimers();
+    mutate.mockReset();
+    mutate.mockImplementation((_input, handlers) => handlers.onError());
+    render(<AccessibilityTts content={content} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    expect(screen.getByText("자연 음성 서버에 연결하고 있어요. 1번째로 다시 시도할게요.")).toBeTruthy();
+    expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
+
+    await act(async () => { vi.advanceTimersByTime(800); });
+    expect(mutate).toHaveBeenCalledTimes(2);
+    expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
+    await act(async () => { vi.advanceTimersByTime(1200); });
+    expect(mutate).toHaveBeenCalledTimes(3);
+    expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
+    await act(async () => { vi.advanceTimersByTime(1800); });
+    expect(mutate).toHaveBeenCalledTimes(4);
+    expect(window.speechSynthesis.speak).toHaveBeenCalledTimes(1);
+    vi.useRealTimers();
+  });
+
+  it("cancels a pending Piper retry when the reader is stopped", async () => {
+    vi.useFakeTimers();
+    mutate.mockReset();
+    mutate.mockImplementation((_input, handlers) => handlers.onError());
+    render(<AccessibilityTts content={content} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    fireEvent.click(screen.getByRole("button", { name: "정지" }));
+    await act(async () => { vi.advanceTimersByTime(5000); });
+    expect(mutate).toHaveBeenCalledTimes(1);
+    expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
+    vi.useRealTimers();
+  });
 });

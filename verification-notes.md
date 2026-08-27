@@ -63,3 +63,5 @@ GitHub Pages의 이전 화면은 GitHub Pages 설정이 `main`이 아니라 별�
 다국어 Piper·문장 하이라이트·속도·피치 변경은 `baekjunjoo/sensory`의 `main`에 커밋 `11ce226a9b54c84d6c6d9ba0ac5eb2281891da9c`으로 반영했다. GitHub Pages는 `gh-pages`의 정적 파일만 제공하므로 이전 화면을 유지하는 것이 정상이며, Node·Python Piper 서버를 실행할 수 없다. 실제 자연 음성 기능은 프로젝트의 Manus 서버 배포 환경에서 동작하도록 준비됐고, 배포는 사용자가 관리 화면의 Publish 버튼으로 실행해야 한다.
 
 GitHub Pages와 Piper 서버를 분리하는 구조를 추가했다. `main`의 GitHub Actions 워크플로는 `/sensory/` 경로의 정적 프런트엔드를 만들며, 저장소 변수 `PIPER_API_URL`에 Manus 배포 주소가 있으면 해당 서버의 tRPC 음성 API를 호출한다. 주소가 비어 있거나 연결에 실패하면 브라우저 음성 대체를 유지한다. Piper API는 `https://baekjunjoo.github.io` Origin에만 CORS 응답을 제공하며, 실제 OPTIONS preflight에서 POST·OPTIONS·Content-Type·Authorization 헤더를 확인했다. 19개 테스트와 GitHub Pages 전용 빌드를 통과했다.
+
+GitHub Pages는 공개 GitHub 릴리스의 최적화된 3D WebP 장면·캐릭터 자산을 직접 읽도록 바꿔 최신 화면이 정상 표시되는 것을 확인했다. 현재 Autoscale 호스팅에서는 Piper 서버가 유휴 후 깨어나는 구간에 외부 `github.io` 요청이 일시적으로 실패할 수 있다. 사용자가 Reserved Hosting 전환을 선택하지 않은 상태에서는 이 경우 브라우저 음성을 접근성 대체로 유지하며, `Piper 연결을 기다리는 동안 브라우저 음성으로 읽고 있어요.` 상태를 노출한다. 대체 중에도 문장 하이라이트·일시정지·정지·언어·속도·피치 제어는 계속 동작한다.

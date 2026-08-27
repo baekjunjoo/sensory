@@ -6,6 +6,7 @@ import { attachPiperAudioErrorFallback, runBrowserSpeechFallback } from "@/lib/b
 type ReadingScope = "site" | "today" | "studio";
 type ReaderLocale = "ko-KR" | "en-US" | "es-ES";
 type ReaderContent = Record<ReadingScope, Record<ReaderLocale, string>>;
+const piperRetryDelays = [800, 1200, 1800];
 
 function decodeAudio(base64: string) {
   const bytes = Uint8Array.from(atob(base64), (character) => character.charCodeAt(0));
@@ -32,12 +33,15 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
   const audio = useRef<HTMLAudioElement | null>(null);
   const objectUrl = useRef<string | null>(null);
   const speechToken = useRef(0);
+  const retryTimer = useRef<number | null>(null);
   const selectedText = useMemo(() => content[scope][locale], [content, locale, scope]);
   const transcript = readingSentences.length > 0 ? readingSentences : splitSentences(selectedText);
   const tts = trpc.accessibilityTts.synthesize.useMutation();
 
   const stop = () => {
     speechToken.current += 1;
+    if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
+    retryTimer.current = null;
     audio.current?.pause();
     audio.current = null;
     window.speechSynthesis?.cancel();
@@ -65,7 +69,7 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
     setStatus(fallback.status);
   };
 
-  const requestSentence = (sentences: string[], index: number, token: number) => {
+  const requestSentence = (sentences: string[], index: number, token: number, attempt = 0) => {
     const sentence = sentences[index];
     if (!sentence || token !== speechToken.current) return;
     setSentenceIndex(index);
@@ -89,7 +93,19 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
         setPlaying(true);
         setStatus(cache === "hit" ? `${index + 1}/${sentences.length}번째 문장을 바로 재생해요.` : `${index + 1}/${sentences.length}번째 문장을 자연 음성으로 읽어요.`);
       },
-      onError: () => browserFallback(sentence),
+      onError: () => {
+        if (token !== speechToken.current) return;
+        if (attempt < piperRetryDelays.length) {
+          setPlaying(true);
+          setStatus(`자연 음성 서버에 연결하고 있어요. ${attempt + 1}번째로 다시 시도할게요.`);
+          retryTimer.current = window.setTimeout(() => {
+            retryTimer.current = null;
+            requestSentence(sentences, index, token, attempt + 1);
+          }, piperRetryDelays[attempt]);
+          return;
+        }
+        browserFallback(sentence);
+      },
     });
   };
 
@@ -133,6 +149,7 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
   });
 
   useEffect(() => () => {
+    if (retryTimer.current !== null) window.clearTimeout(retryTimer.current);
     audio.current?.pause();
     if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
   }, []);
