@@ -1,6 +1,6 @@
 FROM node:22-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential curl python3 python3-pip ca-certificates \
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential curl m4 python3 python3-pip ca-certificates \
 	&& curl -fsSL https://github.com/liblouis/liblouis/releases/download/v3.38.0/liblouis-3.38.0.tar.gz | tar -xz -C /tmp \
 	&& cd /tmp/liblouis-3.38.0 \
 	&& ./configure --without-yaml --disable-static \
