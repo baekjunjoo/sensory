@@ -65,3 +65,13 @@ GitHub Pages의 이전 화면은 GitHub Pages 설정이 `main`이 아니라 별�
 GitHub Pages와 Piper 서버를 분리하는 구조를 추가했다. `main`의 GitHub Actions 워크플로는 `/sensory/` 경로의 정적 프런트엔드를 만들며, 저장소 변수 `PIPER_API_URL`에 Manus 배포 주소가 있으면 해당 서버의 tRPC 음성 API를 호출한다. 주소가 비어 있거나 연결에 실패하면 브라우저 음성 대체를 유지한다. Piper API는 `https://baekjunjoo.github.io` Origin에만 CORS 응답을 제공하며, 실제 OPTIONS preflight에서 POST·OPTIONS·Content-Type·Authorization 헤더를 확인했다. 19개 테스트와 GitHub Pages 전용 빌드를 통과했다.
 
 GitHub Pages는 공개 GitHub 릴리스의 최적화된 3D WebP 장면·캐릭터 자산을 직접 읽도록 바꿔 최신 화면이 정상 표시되는 것을 확인했다. 현재 Autoscale 호스팅에서는 Piper 서버가 유휴 후 깨어나는 구간에 외부 `github.io` 요청이 일시적으로 실패할 수 있다. 사용자가 Reserved Hosting 전환을 선택하지 않은 상태에서는 이 경우 브라우저 음성을 접근성 대체로 유지하며, `Piper 연결을 기다리는 동안 브라우저 음성으로 읽고 있어요.` 상태를 노출한다. 대체 중에도 문장 하이라이트·일시정지·정지·언어·속도·피치 제어는 계속 동작한다.
+
+GitHub Actions Pages 워크플로는 커밋 `6dd82552b51518970580df13a946a379491f9242`에서 성공적으로 완료됐고, `https://baekjunjoo.github.io/sensory/?v=6dd8255`에서 최신 3D 섬 배경·카드 캐릭터·접근성 패널이 표시되는 것을 확인했다. 3D 자산은 `https://github.com/baekjunjoo/sensory/releases/tag/sensory-assets-v1` 릴리스의 WebP 파일을 사용한다. GitHub Pages의 읽기 요청은 `https://sensorytac-v8ekttiz.manus.space/api/trpc/accessibilityTts.synthesize?batch=1`로 전달되며, 해당 Autoscale API가 연결되지 않은 경우 브라우저 음성 대체 상태를 표시한다.
+
+GitHub Pages 런타임의 Performance Resource 목록에서 `https://sensorytac-v8ekttiz.manus.space/api/trpc/accessibilityTts.synthesize?batch=1` 요청을 확인했다. 이는 GitHub Actions 빌드 시 저장소 변수 `PIPER_API_URL` 값이 정적 번들에 실제 주입됐음을 보여 준다. pnpm 설정 단계 추가 뒤 발생한 packageManager 버전 중복은 워크플로의 명시 version 설정을 제거해 해소했고, 최신 GitHub Actions Pages 실행은 성공했다.
+
+동일한 GitHub Pages 환경 변수로 로컬 정적 빌드를 다시 만들고 `dist/public`을 검사한 결과, `https://sensorytac-v8ekttiz.manus.space`가 번들에 직접 포함된 것을 확인했다. 따라서 `PIPER_API_URL`은 정적 산출물과 GitHub Pages 런타임 양쪽에서 모두 주입됐다. 현재 외부 자연 음성 실패 원인은 변수 누락이 아니라 Autoscale Piper 서버의 외부 연결이 간헐적으로 종료되는 현상이며, 이 경우에는 세 번의 재시도 후 브라우저 음성 대체가 작동한다.
+
+Autoscale 유지 선택에 맞춰 Piper 첫 요청 실패 시 0.8초·1.2초·1.8초 간격으로 세 차례 재시도한 뒤에만 브라우저 음성으로 대체하도록 보완했다. 정지 버튼을 누르면 보류 중인 재시도 타이머가 취소되며, 재시도·취소·대체 중복 방지까지 포함한 22개 테스트, 타입 검사, GitHub Pages 빌드를 통과했다. 최신 GitHub Pages에서 읽기를 실제로 실행한 결과, 3D 배경·캐릭터·문장 하이라이트는 정상 표시됐고 현재 Autoscale Piper 연결은 재시도 후 브라우저 대체로 전환됐다.
+
+재시도 후 Piper가 성공한 경우의 컴포넌트 경로도 추가 검증했다. 첫 합성 오류 뒤 0.8초 재시도에서 Piper 오디오가 재생되고 브라우저 `speechSynthesis`는 호출되지 않으며, 실패·정지 취소·성공 모두 중복 재생 없이 처리된다. 최종적으로 7개 테스트 파일의 23개 테스트와 타입 검사를 통과했다.

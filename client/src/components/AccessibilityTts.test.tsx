@@ -136,6 +136,27 @@ describe("AccessibilityTts fallback status", () => {
     vi.useRealTimers();
   });
 
+  it("uses Piper after a retry succeeds without starting browser speech", async () => {
+    vi.useFakeTimers();
+    let attempts = 0;
+    mutate.mockReset();
+    mutate.mockImplementation((_input, handlers) => {
+      attempts += 1;
+      if (attempts === 1) handlers.onError();
+      else handlers.onSuccess({ audioBase64: "UklGRg==", cache: "miss" });
+    });
+    render(<AccessibilityTts content={content} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    await act(async () => { vi.advanceTimersByTime(800); });
+
+    expect(mutate).toHaveBeenCalledTimes(2);
+    expect(player.play).toHaveBeenCalledTimes(1);
+    expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
+    expect(screen.getByText("1/2번째 문장을 자연 음성으로 읽어요.")).toBeTruthy();
+    vi.useRealTimers();
+  });
+
   it("cancels a pending Piper retry when the reader is stopped", async () => {
     vi.useFakeTimers();
     mutate.mockReset();

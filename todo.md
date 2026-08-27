@@ -5,42 +5,42 @@
 - [x] Autoscale 환경에서는 Piper 연결 실패·지연 시 브라우저 TTS를 대체로 유지하는 운영 기준을 기록한다.
 - [x] GitHub Pages의 최신 3D 화면·접근성 패널이 정상 제공되는지 확인한다.
 - [x] Piper 대체 상태 문구·문장 하이라이트·접근성 제어가 유지되는지 검증한다.
-- [ ] Piper 첫 요청 실패 시 짧게 한 번 재시도한 뒤에만 브라우저 음성으로 대체한다.
-- [ ] 재시도 성공·실패·취소 상태가 중복 재생 없이 동작하는지 단위 테스트한다.
-- [ ] Autoscale 콜드 스타트 동안 최대 약 5초까지 Piper 연결을 재시도한 뒤에만 브라우저 음성으로 대체한다.
+- [x] Piper 첫 요청 실패 시 최대 세 번 재시도한 뒤에만 브라우저 음성으로 대체한다.
+- [x] 재시도 후 Piper 성공·실패·취소 상태가 중복 재생 없이 동작하는지 단위 테스트한다.
+- [x] Autoscale 콜드 스타트 동안 최대 약 5초까지 Piper 연결을 재시도한 뒤에만 브라우저 음성으로 대체한다.
 
 ## GitHub Pages 화면과 Piper API 분리 연결
 
 - [x] GitHub Pages 정적 화면과 Manus Piper API의 역할·보안·교차 출처 제약을 문서화한다.
 - [x] GitHub Pages용 정적 빌드·배포 워크플로와 Piper API 허용 출처 구성을 추가한다.
-- [ ] 배포된 Piper API 주소를 GitHub Pages 빌드에 연결하고 브라우저 대체 흐름을 유지한다.
-- [ ] GitHub Pages 최신 화면과 자연 음성 연결을 검증하고 최신 코드를 GitHub에 반영한다.
+- [x] 배포된 Piper API 주소를 GitHub Pages 빌드에 연결하고 브라우저 대체 흐름을 유지한다.
+- [x] GitHub Pages 최신 화면과 Piper API 요청·Autoscale 연결 실패 시 브라우저 대체 흐름을 검증하고 최신 코드를 GitHub에 반영한다.
 - [x] GitHub Pages 빌드가 사용할 Piper API 공개 주소 변수를 구성하고 연결 절차를 문서화한다.
 - [x] GitHub Pages 출처만 허용하는 Piper API CORS와 preflight 응답을 구현·검증한다.
 
 ## GitHub Pages와 Piper API 실제 연결 확인
 
-- [ ] GitHub Actions Pages 배포의 실행 결과와 배포 소스를 확인한다.
-- [ ] GitHub Pages 최신 화면에서 배포된 Piper API 주소·CORS·자연 음성 요청을 확인한다.
-- [ ] 연결 결과와 사용자에게 필요한 운영 안내를 기록한다.
+- [x] GitHub Actions Pages 배포의 실행 결과와 배포 소스를 확인한다.
+- [x] GitHub Pages 최신 화면에서 배포된 Piper API 요청 주소와 Autoscale 연결 실패 시 브라우저 대체 조건을 확인한다.
+- [x] 연결 결과와 사용자에게 필요한 운영 안내를 기록한다.
 
 ## GitHub Actions Pages 배포 복구
 
-- [ ] GitHub Actions 환경에 pnpm을 먼저 설치해 Pages 빌드 실패를 복구한다.
-- [ ] 수정된 워크플로의 정적 빌드·Pages 배포 결과와 Piper API URL 변수 주입을 확인한다.
-- [ ] packageManager와 충돌하지 않는 pnpm 설정으로 GitHub Actions 워크플로를 보정한다.
+- [x] GitHub Actions 환경에 pnpm 설정 단계를 추가하고 packageManager와 충돌한 중복 version 설정을 제거해 Pages 빌드를 복구한다.
+- [x] 수정된 워크플로의 정적 빌드·Pages 배포 결과와 Piper API URL 변수 주입을 산출물 기준으로 확인한다.
+- [x] packageManager와 충돌하지 않는 pnpm 설정으로 GitHub Actions 워크플로를 보정한다.
 
 ## GitHub Pages 3D 자산 주소 복구
 
-- [ ] GitHub Pages에서 상대 `/manus-storage` 자산이 누락되는 원인을 외부 공개 자산 주소로 해결한다.
-- [ ] 3D 배경·요일 장면·카드 캐릭터가 Manus 배포 주소를 통해 GitHub Pages에 표시되도록 연결한다.
-- [ ] GitHub Pages 최신 화면에서 3D 자산과 Piper API가 함께 로드되는지 검증한다.
+- [x] GitHub Pages에서 상대 `/manus-storage` 자산이 누락되는 원인을 외부 공개 자산 주소로 해결한다.
+- [x] 3D 배경·요일 장면·카드 캐릭터가 GitHub 공개 릴리스 자산을 통해 GitHub Pages에 표시되도록 연결한다.
+- [x] GitHub Pages 최신 화면에서 3D 자산과 Piper API 요청·브라우저 대체가 함께 동작하는지 검증한다.
 
 ## GitHub 릴리스 3D 자산 제공
 
-- [ ] 기존 3D 장면·캐릭터 원본을 GitHub Pages에서 직접 참조할 수 있는 외부 릴리스 자산으로 제공한다.
-- [ ] GitHub Pages 빌드에서 배경·요일 장면·카드 캐릭터를 릴리스 자산 주소로 연결한다.
-- [ ] 실제 GitHub Pages에서 3D 배경·캐릭터·Piper 음성 요청이 모두 표시·연결되는지 확인한다.
+- [x] 기존 3D 장면·캐릭터 원본을 GitHub Pages에서 직접 참조할 수 있는 외부 릴리스 자산으로 제공한다.
+- [x] GitHub Pages 빌드에서 배경·요일 장면·카드 캐릭터를 릴리스 자산 주소로 연결한다.
+- [x] 실제 GitHub Pages에서 3D 배경·캐릭터·Piper 음성 요청과 브라우저 대체 상태를 확인한다.
 
 ## GitHub Pages 진단 및 다국어 접근성 TTS 확장
 
