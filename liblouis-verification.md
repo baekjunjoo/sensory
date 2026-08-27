@@ -9,3 +9,5 @@
 체크포인트 직후 공개 도메인을 두 번 확인했을 때에는 점자 스튜디오의 `READY!` 표기와 카드의 이전 점자 문자열이 계속 보였다. 이는 공개 도메인에 이전 정적 번들이 아직 제공되는 상태이므로, Liblouis 3.38.0 운영 이미지 반영은 최신 배포가 전환된 뒤 캐시 우회 주소로 다시 확인한다.
 
 운영 이미지 재배포 중 Liblouis 테이블 생성에 필요한 `m4` 누락이 확인돼 Dockerfile에 추가했다. 이후 공개 도메인의 `POST /api/trpc/braille.translate` 요청은 `센서리`에 대해 HTTP 200과 `engine: "liblouis"`, `table: "ko-g2.ctb"`, `braille: "⠠⠝⠒⠠⠎⠐⠕"`을 반환했다. 따라서 Liblouis 3.38.0 런타임과 한국어 점역 API가 실제 공개 서버에 반영된 것을 확인했다.
+
+캐시 우회 쿼리를 해시 앞에 둔 최신 공개 프런트에서 점자 스튜디오는 `LIBLOUIS`, `Liblouis 표준 점역 결과`, `liblouis ko-g2.ctb 표준 점역 결과예요.`를 표시했고, 커리큘럼 카드의 임의 점자 문자열은 더 이상 표시되지 않았다. 최신 공개 서버의 `GET /api/trpc/braille.status`는 HTTP 200으로 `engine: "liblouis"`, `version: "3.38.0"`, `tables: ["ko-g2.ctb", "en-ueb-g2.ctb"]`를 반환했다. 이 응답은 컨테이너에서 직접 실행한 `lou_translate --version` 결과를 사용하므로, 운영 런타임 버전도 검증됐다.
