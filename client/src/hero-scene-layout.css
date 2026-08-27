@@ -1,0 +1,74 @@
+/* The island remains the hero; copy is deliberately set directly into the scene. */
+.hero-grid .hero-copy {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.hero-grid .hero-copy h1 {
+  text-shadow: 0 3px 14px rgba(0, 43, 68, 0.7), 0 1px 0 rgba(0, 43, 68, 0.32);
+}
+
+.hero-grid .hero-copy > p {
+  max-width: 31ch;
+  text-shadow: 0 2px 8px rgba(0, 43, 68, 0.78);
+}
+
+@media (min-width: 651px) {
+  .hero-grid .hero-copy {
+    top: clamp(26px, 5vh, 54px);
+  }
+
+  .hero-grid .hero-copy h1 {
+    font-size: clamp(58px, 6.5vw, 104px);
+    line-height: 1.02;
+  }
+
+  .hero-grid .hero-copy > p {
+    margin-top: 15px;
+  }
+
+  .hero-grid .hero-actions {
+    margin-top: 18px;
+  }
+
+  .garden-site .hero-grid .theme-picker {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 650px) {
+  .hero-grid::after {
+    background: linear-gradient(180deg, rgba(4, 54, 83, 0.18), rgba(4, 54, 83, 0.03) 43%, rgba(4, 54, 83, 0.5)) !important;
+  }
+
+  .hero-grid .hero-copy {
+    right: 20px;
+    bottom: 152px;
+    left: 20px;
+    width: auto;
+  }
+
+  .hero-grid .hero-copy h1 {
+    margin-top: 15px;
+    font-size: clamp(50px, 14.3vw, 64px);
+    line-height: 1.04;
+  }
+
+  .hero-grid .hero-copy > p {
+    margin-top: 17px;
+    font-size: 14px;
+    line-height: 1.62;
+  }
+
+  .hero-grid .hero-actions {
+    margin-top: 21px;
+  }
+
+  .hero-grid .theme-picker {
+    margin-top: 15px;
+  }
+}
