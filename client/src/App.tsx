@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 const Report = lazy(() => import("./pages/Report"));
 
 function ReportRoute() {
-  return <Suspense fallback={<main className="report-page" aria-busy="true" /> }><Report /></Suspense>;
+  return <Suspense fallback={<main className="report-page report-loading" aria-busy="true" aria-live="polite"><div><span>WEEKLY LEARNING REPORT</span><b>보호자 리포트를 불러오고 있어요.</b></div></main>}><Report /></Suspense>;
 }
 
 const isGitHubPagesBuild = import.meta.env.VITE_GITHUB_PAGES === "true";

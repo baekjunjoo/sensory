@@ -41,3 +41,9 @@ Liblouis 학습지 점역은 효과 정리 함수의 `active` 플래그로 이�
 최신 상태에서 16개 테스트 파일의 38개 테스트, TypeScript 검사, 일반 프로덕션 빌드를 통과했다. GitHub Pages와 같은 빌드 조건으로 `VITE_GITHUB_PAGES=true`, `VITE_SENSORY_API_URL=https://sensorytac-v8ekttiz.manus.space`를 주입한 빌드도 통과했고, 생성된 JavaScript에 해당 공용 API 주소가 포함된 것을 확인했다. 보호자 리포트는 지연 로딩된 상태에서도 `/report` 직접 진입으로 정상 렌더링됐다.
 
 GitHub App 토큰에는 Actions variables 조회·변경 권한이 없어 기존 변수 값을 읽거나 `SENSORY_API_URL`을 자동 생성할 수 없었다. 이에 워크플로는 `SENSORY_API_URL`을 우선 사용하되 기존 `PIPER_API_URL`을 호환 입력으로만 읽게 했고, 운영 설정 안내도 갱신했다. 최신 GitHub Pages 배포에서는 새 변수명과 실제 외부 Liblouis API 호출을 다시 확인해야 한다.
+
+공개 운영 도메인에서 `/report?release=e97d6208`로 처음 진입했을 때는 지연 로딩 fallback만 잠시 보였으나, 다음 페이지 상태 확인에서 리포트 전체가 정상 렌더링됐다. 이는 빈 화면이 아닌 비동기 리포트 청크 로드 중 상태였으며, 리포트의 주요 지표·주간 흐름·학습지 복귀 링크가 확인됐다.
+
+GitHub Pages Origin 헤더를 붙인 실제 공개 Liblouis tRPC 배치 요청은 HTTP 200, `Access-Control-Allow-Origin: https://baekjunjoo.github.io`, `Access-Control-Allow-Methods: GET, POST, OPTIONS`를 반환했다. 응답에는 `engine: liblouis`, `table: ko-g2.ctb`, `locale: ko-KR` 및 `감각`의 4개 점자 셀이 포함됐다. 최신 Pages 번들에는 `https://sensorytac-v8ekttiz.manus.space` 공용 API 주소가 포함된 것도 확인했다.
+
+리포트 지연 로딩이 처음 몇 프레임 동안 배경만 보여 빈 화면처럼 인지될 수 있는 점을 수정했다. 이제 로딩 중에는 `WEEKLY LEARNING REPORT` 라벨과 `보호자 리포트를 불러오고 있어요.` 안내를 표시하며, `aria-busy`와 `aria-live`로 보조기기에도 상태를 전달한다. 수정 뒤 16개 테스트 파일의 38개 테스트, 타입 검사, 프로덕션 빌드를 다시 통과했다. 공개 운영·GitHub Pages 반영 뒤 직접 진입, 새로고침, 복귀 링크를 최종 확인한다.
