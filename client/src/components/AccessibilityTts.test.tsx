@@ -60,6 +60,7 @@ describe("AccessibilityTts fallback status", () => {
 
     await act(async () => { player.onerror?.(new Event("error")); });
     expect(screen.getByText("Piper 연결을 기다리는 동안 브라우저 음성으로 읽고 있어요.")).toBeTruthy();
+    expect(window.speechSynthesis.speak).toHaveBeenCalledTimes(1);
   });
 
   it("shows the text-only guidance when browser speech is unavailable", async () => {
@@ -84,5 +85,14 @@ describe("AccessibilityTts fallback status", () => {
     expect(mutate).toHaveBeenCalledTimes(1);
     await act(async () => { fireEvent.keyDown(window, { key: "Escape" }); });
     expect(screen.getByText("음성 읽기를 멈췄어요.")).toBeTruthy();
+  });
+
+  it("plays Piper audio first and does not call browser speech when synthesis succeeds", () => {
+    render(<AccessibilityTts content={content} />);
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+
+    expect(player.play).toHaveBeenCalledTimes(1);
+    expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
+    expect(screen.getByText("자연스러운 음성을 재생해요.")).toBeTruthy();
   });
 });
