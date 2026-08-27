@@ -22,4 +22,11 @@ describe("Super Dot speech bridge", () => {
     stopSuperDot();
     expect(stop).toHaveBeenCalledTimes(1);
   });
+
+  it("does not require the speech synthesis API just to stop safely", () => {
+    const stop = vi.fn();
+    Object.defineProperty(window, "SDTTS", { configurable: true, value: { stop } });
+    stopSuperDot();
+    expect(stop).toHaveBeenCalledTimes(1);
+  });
 });

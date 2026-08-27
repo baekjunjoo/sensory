@@ -29,4 +29,6 @@ export function speakWithSuperDot({ text, locale, rate, pitch, onEnd, onError }:
   } catch { return { started: false } as const; }
 }
 
-export function stopSuperDot() { window.SDTTS?.stop(); }
+export function stopSuperDot() {
+  if (typeof window !== "undefined") window.SDTTS?.stop();
+}

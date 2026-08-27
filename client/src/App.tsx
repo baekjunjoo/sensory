@@ -1,23 +1,28 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import GooglyEyesTracker from "./components/GooglyEyesTracker";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import Report from "./pages/Report";
+
+const Report = lazy(() => import("./pages/Report"));
+
+function ReportRoute() {
+  return <Suspense fallback={<main className="report-page" aria-busy="true" /> }><Report /></Suspense>;
+}
 
 const isGitHubPagesBuild = import.meta.env.VITE_GITHUB_PAGES === "true";
 
 function Router() {
   if (isGitHubPagesBuild) {
-    return new URLSearchParams(window.location.search).get("view") === "report" ? <Report /> : <Home />;
+    return new URLSearchParams(window.location.search).get("view") === "report" ? <ReportRoute /> : <Home />;
   }
   return <Switch>
     <Route path={"/"} component={Home} />
-    <Route path={"/report"} component={Report} />
+    <Route path={"/report"} component={ReportRoute} />
     <Route path={"/404"} component={NotFound} />
     <Route component={NotFound} />
   </Switch>;

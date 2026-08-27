@@ -1,5 +1,5 @@
 import { trpc } from "@/lib/trpc";
-import { COOKIE_NAME, UNAUTHED_ERR_MSG } from '@shared/const';
+import { COOKIE_NAME } from '@shared/const';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
@@ -9,14 +9,14 @@ import { startLogin } from "./const";
 import "./index.css";
 
 const queryClient = new QueryClient();
-const apiBaseUrl = import.meta.env.VITE_PIPER_API_URL;
+const apiBaseUrl = import.meta.env.VITE_SENSORY_API_URL;
 const trpcEndpoint = apiBaseUrl ? `${apiBaseUrl.replace(/\/$/, "")}/api/trpc` : "/api/trpc";
 
 const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!(error instanceof TRPCClientError)) return;
   if (typeof window === "undefined") return;
 
-  const isUnauthorized = error.message === UNAUTHED_ERR_MSG;
+  const isUnauthorized = error.data?.code === "UNAUTHORIZED";
 
   if (!isUnauthorized) return;
 

@@ -20,13 +20,16 @@ export function DotPadConnection({ dots, lessonLabel }: DotPadConnectionProps) {
   const [deviceName, setDeviceName] = useState("");
   const support = getDotPadBrowserSupport();
 
-  useEffect(() => () => {
-    mountedRef.current = false;
-    sdkRef.current?.setCallBack(null, null);
-    sdkRef.current?.disconnect(deviceRef.current);
-    sdkRef.current = null;
-    moduleRef.current = null;
-    deviceRef.current = null;
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      sdkRef.current?.setCallBack(null, null);
+      sdkRef.current?.disconnect(deviceRef.current);
+      sdkRef.current = null;
+      moduleRef.current = null;
+      deviceRef.current = null;
+    };
   }, []);
 
   const setupSdk = async () => {
@@ -96,6 +99,13 @@ export function DotPadConnection({ dots, lessonLabel }: DotPadConnectionProps) {
       if (!device) {
         setState("error");
         setMessage("DotPad 연결을 완료하지 못했어요. 기기 전원과 케이블 또는 블루투스를 확인해 주세요.");
+        return;
+      }
+      if (!deviceRef.current) {
+        deviceRef.current = device;
+        setDeviceName(device.cellType || "DotPad");
+        setState("connected");
+        setMessage("DotPad 연결을 확인했어요. 오늘의 촉각 프레임을 보낼 수 있어요.");
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === "NotFoundError") {

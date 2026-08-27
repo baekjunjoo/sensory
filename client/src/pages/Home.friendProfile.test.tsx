@@ -74,5 +74,28 @@ describe("오늘의 친구 프로필", () => {
     render(<Home />);
     expect(document.querySelector(".studio-braille")).toBeNull();
     expect(document.querySelectorAll(".studio-dotpad .cell-small").length).toBeGreaterThan(0);
+    expect(document.querySelector('[aria-live="polite"]')?.textContent).toContain("Liblouis 표준 점역 결과가 준비됐어요.");
+  });
+
+  it("헤더와 푸터 브랜드에는 Sensory 워드마크만 남긴다", () => {
+    render(<Home />);
+    expect(screen.getByLabelText("Sensory 홈").textContent).toBe("sensory");
+    expect(document.querySelectorAll(".brand-mark")).toHaveLength(0);
+    expect(screen.queryByText("TOUCH & GROW")).toBeNull();
+  });
+
+  it("모바일 메뉴는 제어 관계를 알리고 Escape로 닫힌 뒤 메뉴 버튼에 초점을 돌린다", () => {
+    render(<Home />);
+    const menuButton = screen.getByLabelText("메뉴 열기");
+    fireEvent.click(menuButton);
+
+    const menu = screen.getByLabelText("모바일 메뉴");
+    expect(menuButton.getAttribute("aria-controls")).toBe("mobile-navigation");
+    expect(menuButton.getAttribute("aria-expanded")).toBe("true");
+    expect(document.activeElement).toBe(within(menu).getByRole("link", { name: "오늘의 한 장" }));
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(menuButton);
   });
 });

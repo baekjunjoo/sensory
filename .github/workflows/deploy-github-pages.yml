@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_GITHUB_PAGES: "true"
-      VITE_PIPER_API_URL: ${{ vars.PIPER_API_URL }}
+      VITE_SENSORY_API_URL: ${{ vars.SENSORY_API_URL || vars.PIPER_API_URL }}
       VITE_ASSET_BASE_URL: https://github.com/baekjunjoo/sensory/releases/download/sensory-assets-v1
     steps:
       - uses: actions/checkout@v4
