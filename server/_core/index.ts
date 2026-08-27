@@ -7,6 +7,7 @@ import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import { piperCorsHeaders } from "../piperCors";
 import { serveStatic, setupVite } from "./vite";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -39,6 +40,12 @@ async function startServer() {
   // tRPC API
   app.use(
     "/api/trpc",
+    (req, res, next) => {
+      const headers = piperCorsHeaders(req.headers.origin);
+      Object.entries(headers).forEach(([name, value]) => res.setHeader(name, value));
+      if (req.method === "OPTIONS") { res.sendStatus(204); return; }
+      next();
+    },
     createExpressMiddleware({
       router: appRouter,
       createContext,
