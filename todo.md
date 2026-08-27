@@ -19,6 +19,7 @@
 
 - [ ] GitHub Actions 환경에 pnpm을 먼저 설치해 Pages 빌드 실패를 복구한다.
 - [ ] 수정된 워크플로의 정적 빌드·Pages 배포 결과와 Piper API URL 변수 주입을 확인한다.
+- [ ] packageManager와 충돌하지 않는 pnpm 설정으로 GitHub Actions 워크플로를 보정한다.
 
 ## GitHub Pages 진단 및 다국어 접근성 TTS 확장
 
