@@ -21,6 +21,12 @@
 - [ ] 수정된 워크플로의 정적 빌드·Pages 배포 결과와 Piper API URL 변수 주입을 확인한다.
 - [ ] packageManager와 충돌하지 않는 pnpm 설정으로 GitHub Actions 워크플로를 보정한다.
 
+## GitHub Pages 3D 자산 주소 복구
+
+- [ ] GitHub Pages에서 상대 `/manus-storage` 자산이 누락되는 원인을 외부 공개 자산 주소로 해결한다.
+- [ ] 3D 배경·요일 장면·카드 캐릭터가 Manus 배포 주소를 통해 GitHub Pages에 표시되도록 연결한다.
+- [ ] GitHub Pages 최신 화면에서 3D 자산과 Piper API가 함께 로드되는지 검증한다.
+
 ## GitHub Pages 진단 및 다국어 접근성 TTS 확장
 
 - [x] GitHub Pages가 이전 정적 사이트를 제공하는 원인과 Piper 서버 배포 제약을 확인한다.

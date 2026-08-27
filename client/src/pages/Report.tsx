@@ -1,6 +1,7 @@
 /* Sensory Garden Print report: a clear parent-facing weekly overview built from the same 7-day sample learning record. */
 import { ArrowLeft, ArrowRight, BookOpenCheck, ChartNoAxesCombined, Check, Clock3, Ear, House, Leaf, PanelsTopLeft, Sparkles, Volume2 } from "lucide-react";
 import { characters, dailyLessons, loadProgress, type CharacterKey, type DailyLesson } from "@/lib/dailyContent";
+import { publicAsset } from "@/lib/publicAsset";
 
 function ShapeBadge({ accent }: { accent: string }) { const colorMap: Record<string, CharacterKey> = { coral: "momo", sky: "pio", pink: "lulu", lime: "nabi", purple: "nabi" }; const identity = colorMap[accent] ?? "momo"; return <span className={`report-shape character-breathe ${accent}`} data-character={identity} aria-hidden="true"><span className="face-eyes"><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /><i className="blink-lid" /></span><span className="googly-eye"><i className="googly-pupil" data-googly-pupil /><i className="blink-lid" /></span></span><b /></span>; }
 function ProgressBar({ completed, total }: { completed: number; total: number }) { return <div className="progress-track" aria-label={`${total}개 중 ${completed}개 완료`}><span style={{ width: `${(completed / total) * 100}%` }} /></div>; }
@@ -14,7 +15,7 @@ export default function Report() {
   const subjects: DailyLesson["subject"][] = ["점자 문해", "수학", "영어", "촉각 그림"];
   const recent = completedLessons.slice(-3).reverse();
 
-  return <div className="report-page">
+  return <div className="report-page" style={{ "--toy-island": `url(${publicAsset("/manus-storage/sensory-3d-toy-island_077dd413.png")})`, "--neon-stage": `url(${publicAsset("/manus-storage/sensory-neon-character-stage_744636b3.png")})` } as React.CSSProperties}>
     <header className="report-header"><div className="report-width report-nav"><a href="/" className="report-brand"><span className="report-mark">⠿</span><b>sensory</b><small>PARENT REPORT</small></a><a className="report-back" href="/"><ArrowLeft size={15} />학습지로 돌아가기</a></div></header>
     <main className="report-width report-main">
       <section className="report-intro"><div><span className="report-label">WEEKLY LEARNING REPORT · DEMO</span><h1>이번 주,<br /><em>손끝의 성장</em>을 보세요.</h1><p>이 화면은 현재 브라우저에서 진행한 7일 샘플 학습 기록을 요약합니다. 실제 서비스에서는 보호자와 코치가 아이의 학습 흐름을 함께 확인할 수 있습니다.</p></div><div className="report-plant"><ShapeBadge accent="sky" /><span className="report-leaves"><i /><i /><i /></span><b>이번 주의<br />감각 정원</b></div></section>
