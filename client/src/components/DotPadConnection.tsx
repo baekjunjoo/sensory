@@ -8,9 +8,10 @@ type ConnectionState = "ready" | "scanning" | "connecting" | "connected" | "erro
 type DotPadConnectionProps = {
   dots: BrailleDots[];
   lessonLabel: string;
+  onFrameSent?: () => void;
 };
 
-export function DotPadConnection({ dots, lessonLabel }: DotPadConnectionProps) {
+export function DotPadConnection({ dots, lessonLabel, onFrameSent }: DotPadConnectionProps) {
   const sdkRef = useRef<InstanceType<DotPadSdkModule["DotPadSDK"]> | null>(null);
   const moduleRef = useRef<DotPadSdkModule | null>(null);
   const deviceRef = useRef<DotPadDevice | null>(null);
@@ -131,6 +132,7 @@ export function DotPadConnection({ dots, lessonLabel }: DotPadConnectionProps) {
     try {
       sdk.displayGraphicData(makeBrailleGraphicFrame(dots), device, module.DisplayMode.GraphicMode);
       sdk.requestVibrator(device, 45, 35, 1);
+      onFrameSent?.();
       setMessage(`${lessonLabel}의 점자 프레임을 DotPad에 전송하고 있어요.`);
     } catch {
       setState("error");

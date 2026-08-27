@@ -102,6 +102,39 @@ describe("오늘의 친구 프로필", () => {
     expect(document.activeElement).toBe(menuButton);
   });
 
+  it("봉투를 열고 정답을 확인하면 완료 도장과 보관함 진입을 보여 준다", () => {
+    render(<Home />);
+    const arrival = screen.getByRole("tabpanel");
+    fireEvent.click(within(arrival).getByRole("button", { name: /학습지 열기/ }));
+    fireEvent.click(screen.getByRole("button", { name: "5" }));
+    fireEvent.click(screen.getByRole("button", { name: /정답 확인/ }));
+
+    expect(screen.getByRole("heading", { name: /오늘의 한 장을\s*완성했어요/ })).toBeTruthy();
+    expect(screen.getByRole("link", { name: /보관함에서 보기/ }).getAttribute("href")).toBe("/archive");
+    expect(screen.getByText("촉각 스티커 +1")).toBeTruthy();
+  });
+
+  it("DotPad가 없어도 화면 점자 대체 경로로 촉각 미션 2단계를 이어 갈 수 있다", () => {
+    render(<Home />);
+    fireEvent.click(within(screen.getByRole("tabpanel")).getByRole("button", { name: /학습지 열기/ }));
+    expect(screen.getByRole("button", { name: "화면 점자로 계속하기" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "화면 점자로 계속하기" }));
+    expect(screen.queryByRole("button", { name: "화면 점자로 계속하기" })).toBeNull();
+    expect(screen.getByText("점을 만져 보기").parentElement?.className).toContain("done");
+  });
+
+  it("완료 도장의 내일 미리 보기는 다음 학습지 봉투로 전환한다", () => {
+    render(<Home />);
+    fireEvent.click(within(screen.getByRole("tabpanel")).getByRole("button", { name: /학습지 열기/ }));
+    fireEvent.click(screen.getByRole("button", { name: "5" }));
+    fireEvent.click(screen.getByRole("button", { name: /정답 확인/ }));
+    fireEvent.click(screen.getByRole("button", { name: /내일의 한 장 미리 보기/ }));
+
+    expect(screen.getByRole("tab", { name: /목.*영어/ }).getAttribute("aria-selected")).toBe("true");
+    expect(screen.getByRole("tabpanel").textContent).toContain("목요일의 영어 학습지");
+    expect(within(screen.getByRole("tabpanel")).getByRole("button", { name: /학습지 열기/ })).toBeTruthy();
+  });
+
   it("7일 학습지 탭은 화살표·Home·End 키로 선택과 초점을 함께 옮기고 탭패널을 연결한다", () => {
     render(<Home />);
     const tabs = within(screen.getByRole("tablist", { name: "7일 학습지 선택" })).getAllByRole("tab");
@@ -110,6 +143,7 @@ describe("오늘의 친구 프로필", () => {
     fireEvent.keyDown(tabs[2], { key: "ArrowRight" });
     expect(tabs[3].getAttribute("aria-selected")).toBe("true");
     expect(document.activeElement).toBe(tabs[3]);
+    fireEvent.click(within(screen.getByRole("tabpanel")).getByRole("button", { name: /학습지 열기/ }));
     expect(screen.getByRole("tabpanel").getAttribute("aria-labelledby")).toBe(tabs[3].id);
 
     fireEvent.keyDown(tabs[3], { key: "End" });
@@ -127,6 +161,6 @@ describe("오늘의 친구 프로필", () => {
   it("홈의 자동 WCAG 규칙 검사에서 구조·이름·ARIA 위반을 만들지 않는다", async () => {
     render(<Home />);
     const result = await axe.run(document, { rules: { "color-contrast": { enabled: false } } });
-    expect(result.violations.map((violation) => violation.id)).toEqual([]);
+    expect(result.violations).toEqual([]);
   });
 });

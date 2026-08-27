@@ -27,6 +27,25 @@ describe("보호자 리포트 접근성", () => {
     expect(weeklyProgress.getAttribute("aria-label")).toBe(`7개 중 ${completed}개 완료`);
   });
 
+  it("일일 루틴과 DotPad 기록을 보호자용 요약과 다음 학습지 제안에 반영한다", () => {
+    window.localStorage.setItem("sensory-daily-routine", JSON.stringify({
+      openedIds: ["d1", "d2", "d3", "d4"],
+      completedIds: ["d1", "d2", "d3"],
+      completedAt: { d1: 1, d2: 2, d3: 3 },
+      tactileExploredIds: ["d2", "d3"],
+      dotpadFrameIds: ["d2", "d3"],
+      reviewIds: ["d1"],
+    }));
+    render(<Report />);
+
+    expect(screen.getByText("봉투를 연 학습지").parentElement?.textContent).toContain("4장");
+    expect(screen.getByText("화면·DotPad로 점을 탐색").parentElement?.textContent).toContain("2장");
+    expect(screen.getByText("다시 만나기로 담은 한 장").parentElement?.textContent).toContain("1장");
+    expect(screen.getByText(/DotPad에도/)).toBeTruthy();
+    expect(screen.getByText(/2개 학습지의 촉각 프레임 전송/)).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /첫 영어 점자/ })).toBeTruthy();
+  });
+
   it("리포트에서 구조·이름·ARIA 자동 검사 위반을 만들지 않는다", async () => {
     render(<Report />);
     const result = await axe.run(document, { rules: { "color-contrast": { enabled: false } } });

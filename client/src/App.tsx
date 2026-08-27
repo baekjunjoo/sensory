@@ -9,20 +9,27 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 
 const Report = lazy(() => import("./pages/Report"));
+const Archive = lazy(() => import("./pages/Archive"));
 
 function ReportRoute() {
   return <Suspense fallback={<main className="report-page report-loading" aria-busy="true" aria-live="polite"><div><span>WEEKLY LEARNING REPORT</span><b>보호자 리포트를 불러오고 있어요.</b></div></main>}><Report /></Suspense>;
+}
+
+function ArchiveRoute() {
+  return <Suspense fallback={<main className="archive-page report-loading" aria-busy="true" aria-live="polite"><div><span>MY WORKSHEET ARCHIVE</span><b>나의 학습지를 불러오고 있어요.</b></div></main>}><Archive /></Suspense>;
 }
 
 const isGitHubPagesBuild = import.meta.env.VITE_GITHUB_PAGES === "true";
 
 function Router() {
   if (isGitHubPagesBuild) {
-    return new URLSearchParams(window.location.search).get("view") === "report" ? <ReportRoute /> : <Home />;
+    const view = new URLSearchParams(window.location.search).get("view");
+    return view === "report" ? <ReportRoute /> : view === "archive" ? <ArchiveRoute /> : <Home />;
   }
   return <Switch>
     <Route path={"/"} component={Home} />
     <Route path={"/report"} component={ReportRoute} />
+    <Route path={"/archive"} component={ArchiveRoute} />
     <Route path={"/404"} component={NotFound} />
     <Route component={NotFound} />
   </Switch>;
@@ -37,6 +44,7 @@ function GitHubPagesLinkAdapter() {
       if (!link || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const href = link.getAttribute("href");
       if (href === "/report") { event.preventDefault(); window.location.assign(`${base}?view=report`); }
+      if (href === "/archive") { event.preventDefault(); window.location.assign(`${base}?view=archive`); }
       if (href === "/") { event.preventDefault(); window.location.assign(base); }
       if (href === "/#today" || href === "/#studio") { event.preventDefault(); window.location.assign(`${base}${href.slice(1)}`); }
     };
