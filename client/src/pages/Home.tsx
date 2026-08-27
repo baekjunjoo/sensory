@@ -10,19 +10,19 @@ declare global { interface Window { KB?: { brailleCells: (text: string) => Brail
 const FALLBACK_CELLS: Record<string, BrailleCell[]> = { "바": [[1, 2, 4, 5]], "다": [[1, 4, 5]], "마": [[1, 3, 4]], "가": [[1, 2, 4, 6]], "5": [[3, 4, 5, 6], [1, 5]], "C": [[6], [1, 4]], "위": [[1, 3, 6]], "사각형": [[2, 3, 4], [1, 2, 4], [1, 2, 4, 6]], "센서리": [[2, 3, 4], [1, 2, 3, 5], [2, 3, 4], [1, 2, 3, 5], [2, 4]] };
 const DOT_ORDER = [1, 4, 2, 5, 3, 6];
 const WEEK_SCENES = [
-  { label: "조개 글자 해변", src: publicAsset("/manus-storage/monday-literacy_de47c94d.png") },
-  { label: "촉각 우편 만", src: publicAsset("/manus-storage/tuesday-words_fab7d8e3.png") },
-  { label: "숫자 산호 공방", src: publicAsset("/manus-storage/wednesday-math_691a03b2.png") },
-  { label: "알파벳 구름 정원", src: publicAsset("/manus-storage/thursday-english_f21b46ab.png") },
-  { label: "입체 지도 모래섬", src: publicAsset("/manus-storage/friday-map_10904ff4.png") },
-  { label: "도형 퍼즐 만", src: publicAsset("/manus-storage/saturday-shapes_bf5c583f.png") },
-  { label: "별빛 이야기 해안", src: publicAsset("/manus-storage/sunday-story_b794ea20.png") },
+  { label: "조개 글자 해변", src: publicAsset("/manus-storage/monday-literacy_de47c94d.png", "monday-literacy.webp") },
+  { label: "촉각 우편 만", src: publicAsset("/manus-storage/tuesday-words_fab7d8e3.png", "tuesday-words.webp") },
+  { label: "숫자 산호 공방", src: publicAsset("/manus-storage/wednesday-math_691a03b2.png", "wednesday-math.webp") },
+  { label: "알파벳 구름 정원", src: publicAsset("/manus-storage/thursday-english_f21b46ab.png", "thursday-english.webp") },
+  { label: "입체 지도 모래섬", src: publicAsset("/manus-storage/friday-map_10904ff4.png", "friday-map.webp") },
+  { label: "도형 퍼즐 만", src: publicAsset("/manus-storage/saturday-shapes_bf5c583f.png", "saturday-shapes.webp") },
+  { label: "별빛 이야기 해안", src: publicAsset("/manus-storage/sunday-story_b794ea20.png", "sunday-story.webp") },
 ];
 const CURRICULUM_CHARACTERS = {
-  momo: publicAsset("/manus-storage/momo-literacy-3d_8d992ff3.png"),
-  pio: publicAsset("/manus-storage/pio-math-3d_1f8bfd2c.png"),
-  lulu: publicAsset("/manus-storage/lulu-english-3d_e3740a54.png"),
-  nabi: publicAsset("/manus-storage/nabi-tactile-map-3d_3dba16f2.png"),
+  momo: publicAsset("/manus-storage/momo-literacy-3d_8d992ff3.png", "momo-literacy-3d.webp"),
+  pio: publicAsset("/manus-storage/pio-math-3d_1f8bfd2c.png", "pio-math-3d.webp"),
+  lulu: publicAsset("/manus-storage/lulu-english-3d_e3740a54.png", "lulu-english-3d.webp"),
+  nabi: publicAsset("/manus-storage/nabi-tactile-map-3d_3dba16f2.png", "nabi-tactile-map-3d.webp"),
 };
 const SPEECH_PROFILES: Record<CharacterKey, { rate: number; pitch: number; volume: number }> = {
   momo: { rate: 0.94, pitch: 1.06, volume: 0.96 },
@@ -63,7 +63,7 @@ export default function Home() {
   const [liveMessage, setLiveMessage] = useState("수요일 학습지가 도착했어요.");
   const lesson = dailyLessons[lessonIndex];
   const scene = WEEK_SCENES[lessonIndex];
-  const sceneStyle = { "--daily-scene": `url(${scene.src})`, "--previous-scene": previousSceneIndex === null ? "none" : `url(${WEEK_SCENES[previousSceneIndex].src})`, "--toy-island": `url(${publicAsset("/manus-storage/sensory-3d-toy-island_077dd413.png")})`, "--neon-stage": `url(${publicAsset("/manus-storage/sensory-neon-character-stage_744636b3.png")})` } as CSSProperties;
+  const sceneStyle = { "--daily-scene": `url(${scene.src})`, "--previous-scene": previousSceneIndex === null ? "none" : `url(${WEEK_SCENES[previousSceneIndex].src})`, "--toy-island": `url(${publicAsset("/manus-storage/sensory-3d-toy-island_077dd413.png", "sensory-3d-toy-island.webp")})`, "--neon-stage": `url(${publicAsset("/manus-storage/sensory-neon-character-stage_744636b3.png", "sensory-neon-character-stage.webp")})` } as CSSProperties;
   const character = characters[lesson.character];
   const lessonDots = useMemo(() => getCells(lesson.answer).slice(0, 3), [lesson.answer]);
   const studioCells = useMemo(() => getCells(studioText || "점자").slice(0, 14), [studioText]);

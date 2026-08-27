@@ -1,6 +1,6 @@
 # GitHub Pages와 Piper 자연 음성 연결
 
-GitHub Pages는 Sensory의 정적 화면을 제공하고, 자연 음성은 Manus에 배포된 Piper 서버가 담당합니다. GitHub Pages만으로는 Node·Python과 Piper 음성 모델을 실행할 수 없으므로 두 주소를 분리하는 것이 필요합니다.
+GitHub Pages는 Sensory의 정적 화면과 공개 GitHub 릴리스의 3D WebP 자산을 제공하고, 자연 음성은 Manus에 배포된 Piper 서버가 담당합니다. GitHub Pages만으로는 Node·Python과 Piper 음성 모델을 실행할 수 없으므로 두 주소를 분리하는 것이 필요합니다.
 
 ## 한 번만 설정하기
 
@@ -10,7 +10,7 @@ GitHub Pages는 Sensory의 정적 화면을 제공하고, 자연 음성은 Manus
 4. GitHub 저장소의 **Settings → Pages → Build and deployment**에서 Source를 **GitHub Actions**로 선택합니다.
 5. `main`에 새 커밋을 푸시하거나 **Actions → Deploy Sensory to GitHub Pages → Run workflow**를 실행합니다.
 
-그 뒤 `https://baekjunjoo.github.io/sensory/`는 최신 화면을 제공하고, 접근성 읽기 패널은 Manus Piper API에서 한국어·영어·스페인어 자연 음성을 받습니다. `PIPER_API_URL`이 비어 있거나 서버에 연결할 수 없으면 화면은 계속 열리고 브라우저 음성으로 대체됩니다.
+그 뒤 `https://baekjunjoo.github.io/sensory/`는 최신 화면과 GitHub 릴리스의 3D 자산을 제공하고, 접근성 읽기 패널은 Manus Piper API에서 한국어·영어·스페인어 자연 음성을 받습니다. `PIPER_API_URL`이 비어 있거나 서버에 연결할 수 없으면 화면은 계속 열리고 브라우저 음성으로 대체됩니다.
 
 ## 보안 원칙
 

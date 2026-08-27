@@ -27,6 +27,12 @@
 - [ ] 3D 배경·요일 장면·카드 캐릭터가 Manus 배포 주소를 통해 GitHub Pages에 표시되도록 연결한다.
 - [ ] GitHub Pages 최신 화면에서 3D 자산과 Piper API가 함께 로드되는지 검증한다.
 
+## GitHub 릴리스 3D 자산 제공
+
+- [ ] 기존 3D 장면·캐릭터 원본을 GitHub Pages에서 직접 참조할 수 있는 외부 릴리스 자산으로 제공한다.
+- [ ] GitHub Pages 빌드에서 배경·요일 장면·카드 캐릭터를 릴리스 자산 주소로 연결한다.
+- [ ] 실제 GitHub Pages에서 3D 배경·캐릭터·Piper 음성 요청이 모두 표시·연결되는지 확인한다.
+
 ## GitHub Pages 진단 및 다국어 접근성 TTS 확장
 
 - [x] GitHub Pages가 이전 정적 사이트를 제공하는 원인과 Piper 서버 배포 제약을 확인한다.
