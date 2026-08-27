@@ -2,9 +2,10 @@ import { Pause, Play, Square, Volume2 } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { attachPiperAudioErrorFallback, runBrowserSpeechFallback } from "@/lib/browserSpeech";
+import { loadTtsPreferences, saveTtsPreferences, type TtsLocale } from "@/lib/ttsPreferences";
 
 type ReadingScope = "site" | "today" | "studio";
-type ReaderLocale = "ko-KR" | "en-US" | "es-ES";
+type ReaderLocale = TtsLocale;
 type ReaderContent = Record<ReadingScope, Record<ReaderLocale, string>>;
 const piperRetryDelays = [800, 1200, 1800];
 
@@ -22,10 +23,11 @@ function effectivePlaybackRate(rate: number, pitch: number) {
 }
 
 export function AccessibilityTts({ content }: { content: ReaderContent }) {
+  const [preferences] = useState(loadTtsPreferences);
   const [scope, setScope] = useState<ReadingScope>("site");
-  const [locale, setLocale] = useState<ReaderLocale>("ko-KR");
-  const [rate, setRate] = useState(1);
-  const [pitch, setPitch] = useState(0);
+  const [locale, setLocale] = useState<ReaderLocale>(preferences.locale);
+  const [rate, setRate] = useState(preferences.rate);
+  const [pitch, setPitch] = useState(preferences.pitch);
   const [status, setStatus] = useState("접근성 음성 읽기를 준비했어요.");
   const [playing, setPlaying] = useState(false);
   const [readingSentences, setReadingSentences] = useState<string[]>([]);
@@ -34,6 +36,7 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
   const objectUrl = useRef<string | null>(null);
   const speechToken = useRef(0);
   const retryTimer = useRef<number | null>(null);
+  const activeSentence = useRef<HTMLSpanElement | null>(null);
   const selectedText = useMemo(() => content[scope][locale], [content, locale, scope]);
   const transcript = readingSentences.length > 0 ? readingSentences : splitSentences(selectedText);
   const tts = trpc.accessibilityTts.synthesize.useMutation();
@@ -154,6 +157,16 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
     if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
   }, []);
 
+  useEffect(() => {
+    saveTtsPreferences({ locale, rate, pitch });
+  }, [locale, pitch, rate]);
+
+  useEffect(() => {
+    if (sentenceIndex < 0 || !activeSentence.current) return;
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    activeSentence.current.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest", inline: "nearest" });
+  }, [sentenceIndex]);
+
   return <aside className="accessibility-tts" aria-label="다국어 접근성 음성 읽기">
     <div className="accessibility-tts__intro"><Volume2 size={18} aria-hidden="true" /><div><b>자연 음성으로 읽기</b><span>한국어·영어·스페인어 안내를 문장별로 들을 수 있어요.</span></div></div>
     <div className="accessibility-tts__controls">
@@ -165,7 +178,7 @@ export function AccessibilityTts({ content }: { content: ReaderContent }) {
       <button className="accessibility-tts__stop" onClick={stop} aria-keyshortcuts="Escape"><Square size={15} />정지</button>
       <button className="accessibility-tts__selection" onClick={playSelection}>선택한 글 읽기</button>
     </div>
-    <div className="accessibility-tts__transcript" aria-label="문장별 읽기 진행"><b>읽는 문장</b><p>{transcript.map((sentence, index) => <span className={index === sentenceIndex ? "is-reading" : ""} key={`${index}-${sentence}`}>{sentence}</span>)}</p></div>
+    <div className="accessibility-tts__transcript" aria-label="문장별 읽기 진행"><b>읽는 문장</b><p>{transcript.map((sentence, index) => <span ref={index === sentenceIndex ? activeSentence : undefined} className={index === sentenceIndex ? "is-reading" : ""} key={`${index}-${sentence}`}>{sentence}</span>)}</p></div>
     <p aria-live="polite" className="accessibility-tts__status">{status}</p>
   </aside>;
 }

@@ -45,6 +45,8 @@ describe("AccessibilityTts fallback status", () => {
     vi.stubGlobal("URL", { createObjectURL: vi.fn(() => "blob:tts"), revokeObjectURL: vi.fn() });
     vi.stubGlobal("SpeechSynthesisUtterance", class { lang = ""; rate = 1; onend: (() => void) | null = null; });
     Object.defineProperty(window, "speechSynthesis", { configurable: true, value: { speak: vi.fn(), cancel: vi.fn() } });
+    window.localStorage.clear();
+    HTMLElement.prototype.scrollIntoView = vi.fn();
     mutate.mockImplementation((_input, handlers) => handlers.onSuccess({ audioBase64: "UklGRg==", cache: "miss" }));
   });
 
@@ -112,6 +114,34 @@ describe("AccessibilityTts fallback status", () => {
     fireEvent.click(screen.getByRole("button", { name: "읽기" }));
 
     expect(player.playbackRate).toBeCloseTo(1.15 * 2 ** (3 / 12));
+  });
+
+  it("restores the saved language, speed, and pitch on the next visit", () => {
+    const { unmount } = render(<AccessibilityTts content={content} />);
+    fireEvent.change(screen.getByLabelText("언어"), { target: { value: "es-ES" } });
+    fireEvent.change(screen.getByLabelText("속도"), { target: { value: "1.3" } });
+    fireEvent.change(screen.getByLabelText("피치"), { target: { value: "-3" } });
+    unmount();
+
+    render(<AccessibilityTts content={content} />);
+    expect((screen.getByLabelText("언어") as HTMLSelectElement).value).toBe("es-ES");
+    expect((screen.getByLabelText("속도") as HTMLSelectElement).value).toBe("1.3");
+    expect((screen.getByLabelText("피치") as HTMLSelectElement).value).toBe("-3");
+  });
+
+  it("scrolls the active sentence into view while reading", async () => {
+    render(<AccessibilityTts content={content} />);
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    await act(async () => {});
+    expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "nearest", inline: "nearest" });
+  });
+
+  it("uses instant active-sentence scrolling when reduced motion is preferred", async () => {
+    window.matchMedia = vi.fn(() => ({ matches: true } as unknown as MediaQueryList));
+    render(<AccessibilityTts content={content} />);
+    fireEvent.click(screen.getByRole("button", { name: "읽기" }));
+    await act(async () => {});
+    expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "nearest", inline: "nearest" });
   });
 
   it("retries a cold Piper server before using browser speech", async () => {
