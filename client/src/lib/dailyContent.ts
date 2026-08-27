@@ -23,6 +23,13 @@ export const characters: Record<CharacterKey, { name: string; role: string; acce
   nabi: { name: "나비", role: "호기심 담당", accent: "lime", shape: "triangle", eye: { follow: 0.17, range: 0.25, wander: 0.085, rhythm: 2.35 }, greeting: "새로운 모양을 찾는 시간이야. 나비를 따라 손끝을 움직여 봐!", correct: "정답! 오늘의 발견을 나비가 기록해 뒀어!", retry: "좋은 시도야. 점 사이의 간격을 다시 느껴 볼까?" },
 };
 
+export const friendHeroSceneIndex: Record<CharacterKey, number> = {
+  momo: 0,
+  pio: 1,
+  lulu: 2,
+  nabi: 3,
+};
+
 export function loadCharacterTheme(): CharacterKey {
   try { const saved = localStorage.getItem(CHARACTER_THEME_KEY); return saved && saved in characters ? saved as CharacterKey : "momo"; } catch { return "momo"; }
 }
