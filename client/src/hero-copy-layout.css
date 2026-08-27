@@ -1,0 +1,43 @@
+/* Keep the hero supporting copy as one deliberately balanced block, not three narrow stacked fragments. */
+.garden-site .hero-copy > p {
+  width: min(550px, calc(100vw - 64px));
+  max-width: none;
+  margin-top: 16px;
+  font-size: clamp(15px, 1.28vw, 18px);
+  line-height: 1.56;
+  text-wrap: balance;
+}
+
+.garden-site .hero-actions {
+  margin-top: 22px;
+}
+
+.garden-site .theme-picker {
+  margin-top: 17px;
+}
+
+.garden-site .micro-copy {
+  margin-top: 20px;
+}
+
+@media (max-width: 650px) {
+  .garden-site .hero-copy > p {
+    width: 100%;
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .garden-site .hero-actions {
+    margin-top: 19px;
+  }
+
+  .garden-site .theme-picker {
+    margin-top: 16px;
+  }
+
+  .garden-site .micro-copy {
+    margin-top: 17px;
+  }
+}
