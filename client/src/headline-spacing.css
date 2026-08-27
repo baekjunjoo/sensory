@@ -1,11 +1,14 @@
-.garden-site :is(
-  .hero-copy h1,
-  .section-copy h2,
-  .how-copy h2,
-  .curriculum-header h2,
-  .studio-copy h2,
-  .garden-footer h2,
-  .question-block h3
-) {
-  letter-spacing: -0.04em;
+.garden-site .hero-copy h1,
+.garden-site .section-copy h2,
+.garden-site .how-copy h2,
+.garden-site .curriculum-header h2,
+.garden-site .studio-copy h2,
+.garden-site .garden-footer h2,
+.garden-site .question-block h3,
+.garden-site .growth-poster p,
+.garden-site .ribbon-grid p,
+.garden-site .daily-intro h3,
+.garden-site .curriculum-card h3,
+.garden-site .answer-option > b {
+  letter-spacing: 0.04em !important;
 }
