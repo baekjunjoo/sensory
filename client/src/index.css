@@ -3,6 +3,7 @@
 @import "./header-wordmark.css";
 @import "./headline-spacing.css";
 @import "./hero-copy-layout.css";
+@import "./accessibility-aa.css";
 @import "tw-animate-css";
 @theme inline { --color-background: var(--paper); --color-foreground: var(--ink); --color-primary: var(--orange); --color-primary-foreground: var(--ink); --color-border: var(--ink); }
 :root{--paper:#f8f4ea;--ink:#20201e;--orange:#f45e27;--red:#f23f51;--pink:#f3a3c0;--sky:#b9d8dc;--purple:#c8a8dc;--yellow:#f3d547;--lime:#c7db92;--deep-green:#205440;--blue:#2d63d1;--muted:#66645d;--line:#b9b3a5;--display:"Black Han Sans","Noto Sans KR",sans-serif;--body:"Noto Sans KR",sans-serif;--mono:"DM Mono",monospace;--ease:cubic-bezier(.23,1,.32,1)}

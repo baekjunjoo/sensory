@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import React from "react";
+import axe from "axe-core";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -36,6 +37,8 @@ describe("오늘의 친구 프로필", () => {
 
   beforeEach(() => {
     localStorage.clear();
+    document.documentElement.lang = "ko";
+    document.title = "Sensory — 오늘의 촉각 학습지";
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
       value: vi.fn().mockReturnValue({ matches: true }),
@@ -97,5 +100,33 @@ describe("오늘의 친구 프로필", () => {
     fireEvent.keyDown(window, { key: "Escape" });
     expect(menuButton.getAttribute("aria-expanded")).toBe("false");
     expect(document.activeElement).toBe(menuButton);
+  });
+
+  it("7일 학습지 탭은 화살표·Home·End 키로 선택과 초점을 함께 옮기고 탭패널을 연결한다", () => {
+    render(<Home />);
+    const tabs = within(screen.getByRole("tablist", { name: "7일 학습지 선택" })).getAllByRole("tab");
+
+    expect(tabs[2].getAttribute("aria-controls")).toBe("daily-task-panel");
+    fireEvent.keyDown(tabs[2], { key: "ArrowRight" });
+    expect(tabs[3].getAttribute("aria-selected")).toBe("true");
+    expect(document.activeElement).toBe(tabs[3]);
+    expect(screen.getByRole("tabpanel").getAttribute("aria-labelledby")).toBe(tabs[3].id);
+
+    fireEvent.keyDown(tabs[3], { key: "End" });
+    expect(tabs[6].getAttribute("aria-selected")).toBe("true");
+    fireEvent.keyDown(tabs[6], { key: "Home" });
+    expect(tabs[0].getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("건너뛰기 링크와 보호자 리포트 링크가 접근 가능한 이름과 현재 배포 기본 경로를 유지한다", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: "오늘의 학습지로 바로가기" }).getAttribute("href")).toBe("#today");
+    expect(screen.getAllByRole("link", { name: "보호자 리포트 보기" }).every((link) => link.getAttribute("href") === "/report")).toBe(true);
+  });
+
+  it("홈의 자동 WCAG 규칙 검사에서 구조·이름·ARIA 위반을 만들지 않는다", async () => {
+    render(<Home />);
+    const result = await axe.run(document, { rules: { "color-contrast": { enabled: false } } });
+    expect(result.violations.map((violation) => violation.id)).toEqual([]);
   });
 });

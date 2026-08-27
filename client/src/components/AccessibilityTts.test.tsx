@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import axe from "axe-core";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -22,6 +23,8 @@ describe("AccessibilityTts with Super Dot", () => {
   let callbacks: { onEnd: () => void; onError: () => void };
 
   beforeEach(() => {
+    document.documentElement.lang = "ko";
+    document.title = "Sensory — 오늘의 촉각 학습지";
     callbacks = { onEnd: vi.fn(), onError: vi.fn() };
     ttsMock.speak.mockReset();
     ttsMock.stop.mockReset();
@@ -84,6 +87,19 @@ describe("AccessibilityTts with Super Dot", () => {
     expect(screen.getByLabelText("다국어 접근성 음성 읽기").querySelector("[aria-live='polite']")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "큰 글자 고대비" }));
     expect(screen.getByLabelText("문장별 읽기 진행").getAttribute("data-highlight-size")).toBe("xlarge");
+  });
+
+  it("groups low-vision controls and exposes reading status through semantic regions", () => {
+    render(<AccessibilityTts content={content} />);
+    expect(screen.getByRole("group", { name: "저시력 하이라이트 프리셋" })).toBeTruthy();
+    expect(screen.getByRole("region", { name: "문장별 읽기 진행" })).toBeTruthy();
+    expect(screen.getByRole("status").getAttribute("aria-live")).toBe("polite");
+  });
+
+  it("does not introduce structural, naming, or ARIA violations in the reader panel", async () => {
+    render(<AccessibilityTts content={content} />);
+    const result = await axe.run(document, { rules: { "color-contrast": { enabled: false } } });
+    expect(result.violations.map((violation) => violation.id)).toEqual([]);
   });
 
   it("restores and resets local reader preferences", () => {

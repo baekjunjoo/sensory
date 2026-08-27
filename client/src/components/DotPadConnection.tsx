@@ -153,10 +153,10 @@ export function DotPadConnection({ dots, lessonLabel }: DotPadConnectionProps) {
 
   return <section className="dotpad-connection" aria-labelledby="dotpad-connection-title">
     <div className="dotpad-connection-heading"><div><span className="capsule-label"><i /><i /><i /> DOTPAD LIVE <b>USB · BLE</b></span><h4 id="dotpad-connection-title">실제 DotPad에<br />오늘의 점을 올려요.</h4></div><span className={`dotpad-status ${state}`}><i />{connectionLabel}</span></div>
-    <p>Chrome 또는 Chromium 브라우저에서 기기를 직접 선택해 연결하세요. 권한은 이 브라우저에서만 요청됩니다.</p>
+    <p id="dotpad-support-note">Chrome 또는 Chromium 브라우저에서 기기를 직접 선택해 연결하세요. 권한은 이 브라우저에서만 요청됩니다.</p>
     <div className="dotpad-actions">
-      <button type="button" onClick={() => connect("ble")} disabled={state === "scanning" || state === "connecting" || !support.ble}><Bluetooth size={16} />블루투스 연결</button>
-      <button type="button" onClick={() => connect("usb")} disabled={state === "scanning" || state === "connecting" || !support.usb}><Cable size={16} />USB 연결</button>
+      <button type="button" onClick={() => connect("ble")} disabled={state === "scanning" || state === "connecting" || !support.ble} aria-describedby="dotpad-support-note"><Bluetooth size={16} />블루투스 연결</button>
+      <button type="button" onClick={() => connect("usb")} disabled={state === "scanning" || state === "connecting" || !support.usb} aria-describedby="dotpad-support-note"><Cable size={16} />USB 연결</button>
       {state === "connected" ? <button type="button" className="dotpad-send" onClick={sendFrame} disabled={!dots.length}><Send size={16} />오늘의 점자 보내기</button> : null}
       {state === "connected" ? <button type="button" className="dotpad-disconnect" onClick={disconnect}><Unplug size={16} />연결 해제</button> : null}
     </div>
