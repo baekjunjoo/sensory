@@ -9,6 +9,17 @@
 - [x] GitHub Pages 빌드가 사용할 Piper API 공개 주소 변수를 구성하고 연결 절차를 문서화한다.
 - [x] GitHub Pages 출처만 허용하는 Piper API CORS와 preflight 응답을 구현·검증한다.
 
+## GitHub Pages와 Piper API 실제 연결 확인
+
+- [ ] GitHub Actions Pages 배포의 실행 결과와 배포 소스를 확인한다.
+- [ ] GitHub Pages 최신 화면에서 배포된 Piper API 주소·CORS·자연 음성 요청을 확인한다.
+- [ ] 연결 결과와 사용자에게 필요한 운영 안내를 기록한다.
+
+## GitHub Actions Pages 배포 복구
+
+- [ ] GitHub Actions 환경에 pnpm을 먼저 설치해 Pages 빌드 실패를 복구한다.
+- [ ] 수정된 워크플로의 정적 빌드·Pages 배포 결과와 Piper API URL 변수 주입을 확인한다.
+
 ## GitHub Pages 진단 및 다국어 접근성 TTS 확장
 
 - [x] GitHub Pages가 이전 정적 사이트를 제공하는 원인과 Piper 서버 배포 제약을 확인한다.
