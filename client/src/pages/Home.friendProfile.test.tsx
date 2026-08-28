@@ -146,6 +146,26 @@ describe("오늘의 친구 프로필", () => {
     expect(screen.getByText("촉각 스티커 +1")).toBeTruthy();
   });
 
+  it("도착한 한 장에는 촉각 목표와 사용자 제공 3D 점토 봉투를 함께 보여 준다", () => {
+    render(<Home />);
+    const arrival = screen.getByRole("tabpanel");
+
+    expect(within(arrival).getByText("오늘의 촉각 목표")).toBeTruthy();
+    expect(within(arrival).getByText("세어 보기 · 3 더하기 2")).toBeTruthy();
+    expect(arrival.querySelector<HTMLImageElement>(".clay-envelope img")?.getAttribute("src")).toBe("/manus-storage/sensory-clay-envelope_90f6d08c.png");
+    expect(arrival.querySelector(".arrival-envelope-paper")).toBeNull();
+  });
+
+  it("정답이 아니면 학습지를 다시 만져 보기 목록에 담는다", () => {
+    render(<Home />);
+    fireEvent.click(within(screen.getByRole("tabpanel")).getByRole("button", { name: /학습지 열기/ }));
+    fireEvent.click(screen.getByRole("button", { name: "4" }));
+    fireEvent.click(screen.getByRole("button", { name: /정답 확인/ }));
+
+    expect(screen.getByText(/다시 만져 보기 목록에 담았어요/)).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem("sensory-daily-routine") ?? "{}").reviewIds).toContain("d3");
+  });
+
   it("DotPad가 없어도 화면 점자 대체 경로로 촉각 미션 2단계를 이어 갈 수 있다", () => {
     render(<Home />);
     fireEvent.click(within(screen.getByRole("tabpanel")).getByRole("button", { name: /학습지 열기/ }));

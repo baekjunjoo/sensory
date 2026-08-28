@@ -11,6 +11,7 @@ import "./hero-scene-layout.css";
 import "./friend-profile-center.css";
 import "./curriculum-copy-layout.css";
 import "./daily-arrival-scene.css";
+import "./p0-tactile-goals.css";
 
 const queryClient = new QueryClient();
 const apiBaseUrl = import.meta.env.VITE_SENSORY_API_URL;

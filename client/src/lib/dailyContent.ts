@@ -14,6 +14,13 @@ export type DailyLesson = {
   options: string[];
   hint: string;
   character: CharacterKey;
+  tactileGoal: {
+    action: "비교하기" | "찾기" | "세어 보기" | "따라가기" | "구분하기";
+    concept: string;
+    complexity: string;
+    instruction: string;
+    parentPrompt: string;
+  };
 };
 
 export const characters: Record<CharacterKey, { name: string; role: string; accent: string; shape: "round" | "arch" | "drop" | "triangle"; eye: { follow: number; range: number; wander: number; rhythm: number }; greeting: string; correct: string; retry: string }> = {
@@ -40,13 +47,13 @@ export function applyCharacterTheme(theme: CharacterKey) {
 }
 
 export const dailyLessons: DailyLesson[] = [
-  { id: "d1", weekday: "월", title: "첫 글자 찾기", subject: "점자 문해", accent: "coral", prompt: "닷패드 위 점자를 만져 보고, 알맞은 글자를 골라 보세요.", description: "점 하나하나의 자리를 느끼며 읽기의 첫 감각을 만들어요.", answer: "바", options: ["바", "다", "마"], hint: "왼쪽 윗점과 오른쪽 가운데·아랫점의 위치를 천천히 확인해 보세요.", character: "momo" },
-  { id: "d2", weekday: "화", title: "점자 두 칸", subject: "점자 문해", accent: "sky", prompt: "이어진 두 칸의 점자를 읽고, 알맞은 글자를 골라 보세요.", description: "한 칸씩 읽은 다음, 두 점자 칸의 흐름을 연결해요.", answer: "가", options: ["가", "나", "다"], hint: "첫 칸의 왼쪽 위 점과 마지막 칸의 아래 점을 순서대로 느껴 보세요.", character: "pio" },
-  { id: "d3", weekday: "수", title: "촉각 덧셈", subject: "수학", accent: "yellow", prompt: "닷패드 위에 올라온 3과 2를 더하면 얼마일까요?", description: "수와 수를 만져 보고, 답을 손끝의 리듬으로 찾아요.", answer: "5", options: ["5", "4", "6"], hint: "3에서 두 칸을 더 앞으로 세어 보세요.", character: "lulu" },
-  { id: "d4", weekday: "목", title: "첫 영어 점자", subject: "영어", accent: "pink", prompt: "영어 점자 C를 만져 보고, 알맞은 알파벳을 골라 보세요.", description: "소리와 글자, 점자의 모양을 한 번에 연결해요.", answer: "C", options: ["C", "B", "D"], hint: "왼쪽 위 점과 오른쪽 위 점이 함께 올라왔는지 확인해 보세요.", character: "nabi" },
-  { id: "d5", weekday: "금", title: "네 꼭짓점", subject: "촉각 그림", accent: "purple", prompt: "닷패드의 네 모서리를 만져 보고, 도형의 이름을 골라 보세요.", description: "촉각 그림 속 모양과 이름을 이어 보는 시간이예요.", answer: "사각형", options: ["사각형", "삼각형", "원"], hint: "끝점이 네 번 만나면 어떤 모양이 될까요?", character: "momo" },
-  { id: "d6", weekday: "토", title: "위쪽 길 찾기", subject: "촉각 그림", accent: "lime", prompt: "점선 길을 따라 위쪽으로 가면 만나는 방향을 골라 보세요.", description: "지도와 방향을 손끝의 선으로 알아가요.", answer: "위", options: ["위", "아래", "오른쪽"], hint: "점선이 시작한 곳보다 높은 쪽을 찾아 보세요.", character: "pio" },
-  { id: "d7", weekday: "일", title: "내 이름의 점", subject: "점자 문해", accent: "coral", prompt: "이번 주에 익힌 점으로, 오늘의 단어를 골라 보세요.", description: "익숙한 단어를 점자로 읽으며 한 주를 마무리해요.", answer: "센서리", options: ["센서리", "점자", "소리"], hint: "처음의 두 점자 칸을 천천히 연결해 보세요.", character: "lulu" },
+  { id: "d1", weekday: "월", title: "첫 글자 찾기", subject: "점자 문해", accent: "coral", prompt: "닷패드 위 점자를 만져 보고, 알맞은 글자를 골라 보세요.", description: "점 하나하나의 자리를 느끼며 읽기의 첫 감각을 만들어요.", answer: "바", options: ["바", "다", "마"], hint: "왼쪽 윗점과 오른쪽 가운데·아랫점의 위치를 천천히 확인해 보세요.", character: "momo", tactileGoal: { action: "찾기", concept: "글자 바", complexity: "점자 한 칸", instruction: "왼쪽 윗점에서 시작해 올라온 점의 자리를 찾아보세요.", parentPrompt: "집에서 손가락으로 ‘바’의 첫소리를 함께 말해 볼까요?" } },
+  { id: "d2", weekday: "화", title: "점자 두 칸", subject: "점자 문해", accent: "sky", prompt: "이어진 두 칸의 점자를 읽고, 알맞은 글자를 골라 보세요.", description: "한 칸씩 읽은 다음, 두 점자 칸의 흐름을 연결해요.", answer: "가", options: ["가", "나", "다"], hint: "첫 칸의 왼쪽 위 점과 마지막 칸의 아래 점을 순서대로 느껴 보세요.", character: "pio", tactileGoal: { action: "따라가기", concept: "점자 두 칸", complexity: "두 칸의 순서", instruction: "첫 칸에서 둘째 칸으로 손가락을 옮기며 점의 흐름을 느껴보세요.", parentPrompt: "오늘 찾은 첫 칸과 둘째 칸의 차이를 말로 들려줄까요?" } },
+  { id: "d3", weekday: "수", title: "촉각 덧셈", subject: "수학", accent: "yellow", prompt: "닷패드 위에 올라온 3과 2를 더하면 얼마일까요?", description: "수와 수를 만져 보고, 답을 손끝의 리듬으로 찾아요.", answer: "5", options: ["5", "4", "6"], hint: "3에서 두 칸을 더 앞으로 세어 보세요.", character: "lulu", tactileGoal: { action: "세어 보기", concept: "3 더하기 2", complexity: "두 수의 리듬", instruction: "세 점을 찾은 뒤 두 번 더 움직이며 다섯까지 세어보세요.", parentPrompt: "식탁 위 과일 세 개에 두 개를 더하면 몇 개인지 함께 세어 볼까요?" } },
+  { id: "d4", weekday: "목", title: "첫 영어 점자", subject: "영어", accent: "pink", prompt: "영어 점자 C를 만져 보고, 알맞은 알파벳을 골라 보세요.", description: "소리와 글자, 점자의 모양을 한 번에 연결해요.", answer: "C", options: ["C", "B", "D"], hint: "왼쪽 위 점과 오른쪽 위 점이 함께 올라왔는지 확인해 보세요.", character: "nabi", tactileGoal: { action: "비교하기", concept: "영어 점자 C", complexity: "윗점 두 개", instruction: "왼쪽과 오른쪽 윗점이 함께 있는지 비교해보세요.", parentPrompt: "C로 시작하는 좋아하는 단어를 하나 함께 찾아볼까요?" } },
+  { id: "d5", weekday: "금", title: "네 꼭짓점", subject: "촉각 그림", accent: "purple", prompt: "닷패드의 네 모서리를 만져 보고, 도형의 이름을 골라 보세요.", description: "촉각 그림 속 모양과 이름을 이어 보는 시간이예요.", answer: "사각형", options: ["사각형", "삼각형", "원"], hint: "끝점이 네 번 만나면 어떤 모양이 될까요?", character: "momo", tactileGoal: { action: "찾기", concept: "사각형의 네 꼭짓점", complexity: "네 개의 끝점", instruction: "모서리를 따라가며 멈추는 곳을 네 번 찾아보세요.", parentPrompt: "집 안에서 네 꼭짓점이 있는 물건을 하나 함께 찾아볼까요?" } },
+  { id: "d6", weekday: "토", title: "위쪽 길 찾기", subject: "촉각 그림", accent: "lime", prompt: "점선 길을 따라 위쪽으로 가면 만나는 방향을 골라 보세요.", description: "지도와 방향을 손끝의 선으로 알아가요.", answer: "위", options: ["위", "아래", "오른쪽"], hint: "점선이 시작한 곳보다 높은 쪽을 찾아 보세요.", character: "pio", tactileGoal: { action: "따라가기", concept: "위쪽 방향", complexity: "한 개의 점선 길", instruction: "시작점에서 점선을 따라 위쪽 끝점까지 천천히 움직여보세요.", parentPrompt: "방 안에서 위쪽에 있는 물건을 하나 손으로 가리켜 볼까요?" } },
+  { id: "d7", weekday: "일", title: "내 이름의 점", subject: "점자 문해", accent: "coral", prompt: "이번 주에 익힌 점으로, 오늘의 단어를 골라 보세요.", description: "익숙한 단어를 점자로 읽으며 한 주를 마무리해요.", answer: "센서리", options: ["센서리", "점자", "소리"], hint: "처음의 두 점자 칸을 천천히 연결해 보세요.", character: "lulu", tactileGoal: { action: "구분하기", concept: "익숙한 단어", complexity: "여러 점자 칸", instruction: "처음 두 칸의 모양을 기억하며 익숙한 단어를 골라보세요.", parentPrompt: "내 이름을 손끝으로 읽는다면 어떤 기분일지 함께 이야기해 볼까요?" } },
 ];
 
 export const PROGRESS_KEY = "sensory-demo-week-progress";

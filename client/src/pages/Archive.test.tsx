@@ -25,7 +25,7 @@ describe("학습지 보관함", () => {
     fireEvent.click(review);
     fireEvent.click(within(screen.getByRole("group", { name: "상태" })).getByRole("button", { name: "다시 만나기" }));
     expect(within(archive).getAllByRole("article")).toHaveLength(1);
-    expect(within(archive).getByText("다시 만나기 목록")).toBeTruthy();
+    expect(within(archive).getByText(/다시 만져 보기/)).toBeTruthy();
   });
 
   it("완료 상태 필터는 완료한 학습지 카드만 남긴다", () => {

@@ -44,6 +44,9 @@ describe("보호자 리포트 접근성", () => {
     expect(screen.getByText(/DotPad에도/)).toBeTruthy();
     expect(screen.getByText(/2개 학습지의 촉각 프레임 전송/)).toBeTruthy();
     expect(screen.getByRole("heading", { name: /첫 영어 점자/ })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /오늘은 세어 보기로 3 더하기 2을 만났어요/ })).toBeTruthy();
+    expect(screen.getByText(/식탁 위 과일 세 개에 두 개를 더하면/)).toBeTruthy();
+    expect(screen.getByRole("link", { name: "학습지에서 다시 만져 보기" }).getAttribute("href")).toBe("/?lesson=d3#today");
   });
 
   it("리포트에서 구조·이름·ARIA 자동 검사 위반을 만들지 않는다", async () => {
