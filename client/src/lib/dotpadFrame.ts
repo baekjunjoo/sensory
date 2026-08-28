@@ -1,31 +1,49 @@
 export type BrailleDots = number[];
 
-const FRAME_COLUMNS = 60;
-const FRAME_ROWS = 40;
-const DOT_POSITIONS: Record<number, readonly [number, number]> = {
-  1: [0, 0], 2: [0, 2], 3: [0, 4], 4: [2, 0], 5: [2, 2], 6: [2, 4],
+/** DotPad graphic area: 30 braille cells × 10 braille cells = 60 × 40 pins. */
+const FRAME_CELL_COLUMNS = 30;
+const FRAME_CELL_ROWS = 10;
+const DOTPAD_PIN_BIT: Record<number, number> = {
+  // Official Web SDK 3.0.2 PIN_BIT_TABLE: (x, y) => cell-byte bit.
+  1: 0x01,
+  2: 0x02,
+  3: 0x04,
+  4: 0x10,
+  5: 0x20,
+  6: 0x40,
+  7: 0x08,
+  8: 0x80,
 };
 
-function setDot(bits: Uint8Array, column: number, row: number) {
-  if (column < 0 || column >= FRAME_COLUMNS || row < 0 || row >= FRAME_ROWS) return;
-  const bitIndex = row * FRAME_COLUMNS + column;
-  bits[Math.floor(bitIndex / 8)] |= 1 << (7 - (bitIndex % 8));
+function makeDotPadCellByte(dots: BrailleDots): number {
+  return dots.reduce((cellByte, dot) => cellByte | (DOTPAD_PIN_BIT[dot] ?? 0), 0);
 }
 
-/** Builds the 60×40 DotPad graphic-area payload expected by SDK 3.0.2. */
-export function makeBrailleGraphicFrame(cells: BrailleDots[]): string {
-  const bits = new Uint8Array((FRAME_COLUMNS * FRAME_ROWS) / 8);
-  const startColumn = Math.max(4, Math.floor((FRAME_COLUMNS - Math.min(cells.length, 6) * 8) / 2));
-  const startRow = 17;
+function makeRowMajorGraphicFrame(cells: BrailleDots[]): string {
+  const frame = new Uint8Array(FRAME_CELL_COLUMNS * FRAME_CELL_ROWS);
+  const visibleCells = cells.slice(0, FRAME_CELL_COLUMNS);
+  const startColumn = Math.floor((FRAME_CELL_COLUMNS - visibleCells.length) / 2);
+  const startRow = Math.floor(FRAME_CELL_ROWS / 2) - 1;
 
-  cells.slice(0, 6).forEach((cell, cellIndex) => {
-    cell.forEach((dot) => {
-      const position = DOT_POSITIONS[dot];
-      if (position) setDot(bits, startColumn + cellIndex * 8 + position[0], startRow + position[1]);
-    });
+  visibleCells.forEach((cell, cellIndex) => {
+    frame[startRow * FRAME_CELL_COLUMNS + startColumn + cellIndex] = makeDotPadCellByte(cell);
   });
 
-  return Array.from(bits, (byte) => byte.toString(16).padStart(2, "0").toUpperCase()).join("");
+  return Array.from(frame, (byte) => byte.toString(16).padStart(2, "0").toUpperCase()).join("");
 }
 
-export const DOTPAD_GRAPHIC_HEX_LENGTH = (FRAME_COLUMNS * FRAME_ROWS) / 4;
+/**
+ * Builds the 300-cell (600 hex character) row-major graphic payload expected by
+ * DotPad Web SDK 3.0.2. Each byte is one physical 2×4 pin braille cell, not an
+ * arbitrary 8-bit slice of a 60×40 pixel bitmap.
+ */
+export function makeBrailleGraphicFrame(cells: BrailleDots[]): string {
+  return makeRowMajorGraphicFrame(cells);
+}
+
+/** One centered row of physical dots 1–8, left to right, for hardware mapping checks. */
+export function makeDotPadDiagnosticFrame(): string {
+  return makeRowMajorGraphicFrame([[1], [2], [3], [4], [5], [6], [7], [8]]);
+}
+
+export const DOTPAD_GRAPHIC_HEX_LENGTH = FRAME_CELL_COLUMNS * FRAME_CELL_ROWS * 2;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Bluetooth, Cable, CheckCircle2, CircleAlert, Send, Unplug, Vibrate } from "lucide-react";
-import { makeBrailleGraphicFrame, type BrailleDots } from "@/lib/dotpadFrame";
+import { makeBrailleGraphicFrame, makeDotPadDiagnosticFrame, type BrailleDots } from "@/lib/dotpadFrame";
 import { getDotPadBrowserSupport, loadDotPadSdk, type DotPadDevice, type DotPadSdkModule } from "@/lib/dotpadSdk";
 
 type ConnectionState = "ready" | "scanning" | "connecting" | "connected" | "error" | "unsupported";
@@ -140,6 +140,20 @@ export function DotPadConnection({ dots, lessonLabel, onFrameSent }: DotPadConne
     }
   };
 
+  const sendDiagnosticFrame = () => {
+    const sdk = sdkRef.current;
+    const module = moduleRef.current;
+    const device = deviceRef.current;
+    if (!sdk || !module || !device || state !== "connected") return;
+    try {
+      sdk.displayGraphicData(makeDotPadDiagnosticFrame(), device, module.DisplayMode.GraphicMode);
+      setMessage("점 배열 점검을 보냈어요. 중앙의 8칸을 왼쪽부터 점 1·2·3·4·5·6·7·8 순서로 확인해 주세요.");
+    } catch {
+      setState("error");
+      setMessage("점 배열 점검 전송에 실패했어요. DotPad 연결을 다시 확인해 주세요.");
+    }
+  };
+
   const disconnect = () => {
     sdkRef.current?.setCallBack(null, null);
     sdkRef.current?.disconnect(deviceRef.current);
@@ -160,6 +174,7 @@ export function DotPadConnection({ dots, lessonLabel, onFrameSent }: DotPadConne
       <button type="button" onClick={() => connect("ble")} disabled={state === "scanning" || state === "connecting" || !support.ble} aria-describedby="dotpad-support-note"><Bluetooth size={16} />블루투스 연결</button>
       <button type="button" onClick={() => connect("usb")} disabled={state === "scanning" || state === "connecting" || !support.usb} aria-describedby="dotpad-support-note"><Cable size={16} />USB 연결</button>
       {state === "connected" ? <button type="button" className="dotpad-send" onClick={sendFrame} disabled={!dots.length}><Send size={16} />오늘의 점자 보내기</button> : null}
+      {state === "connected" ? <button type="button" className="dotpad-diagnostic" onClick={sendDiagnosticFrame}><Send size={16} />점 배열 점검</button> : null}
       {state === "connected" ? <button type="button" className="dotpad-disconnect" onClick={disconnect}><Unplug size={16} />연결 해제</button> : null}
     </div>
     <div className="dotpad-live-note" role="status" aria-live="polite">{state === "error" || state === "unsupported" ? <CircleAlert size={16} /> : state === "connected" ? <CheckCircle2 size={16} /> : <Vibrate size={16} />}<span>{message}</span></div>
