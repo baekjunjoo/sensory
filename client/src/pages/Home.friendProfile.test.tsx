@@ -117,7 +117,11 @@ describe("오늘의 친구 프로필", () => {
 
     cards.forEach((card, index) => {
       expect(card.style.getPropertyValue("--card-scene")).toContain(expectedScenes[index]);
-      expect(card.querySelector<HTMLImageElement>(":scope > img.card-character-image")?.getAttribute("src")).toContain("-3d_");
+      const image = card.querySelector<HTMLImageElement>(":scope > img.card-character-image");
+      expect(image?.getAttribute("src")).toContain("-3d_");
+      expect(image?.alt).toBeTruthy();
+      expect(card.getAttribute("tabindex")).not.toBe("0");
+      expect(card.querySelectorAll("a, button, input, select, textarea")).toHaveLength(0);
       expect(card.querySelector(":scope > .curriculum-copy")).toBeTruthy();
     });
   });
