@@ -10,6 +10,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <script defer src="https://cdn.jsdelivr.net/gh/baekjunjoo/sensory@79f303f/braille-engine.js"></script>
+    <script>
+      (() => {
+        const watched = new WeakSet();
+        const watchStylesheet = (link) => {
+          if (watched.has(link)) return;
+          watched.add(link);
+          link.addEventListener("error", () => {
+            const retryUrl = new URL(link.href, window.location.href);
+            retryUrl.searchParams.set("css-retry", String(Date.now()));
+            link.href = retryUrl.toString();
+          }, { once: true });
+        };
+
+        const watchExisting = () => document.querySelectorAll('link[rel="stylesheet"]').forEach(watchStylesheet);
+        new MutationObserver(watchExisting).observe(document.head, { childList: true });
+        watchExisting();
+      })();
+    </script>
     <title>Sensory — 오늘의 촉각 학습지</title>
   </head>
   <body>
