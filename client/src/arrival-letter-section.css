@@ -183,18 +183,20 @@
 /* The delivered sheet has its own beach: copy stays left while the clay letter arrives on the right. */
 .garden-site .daily-arrival {
   display: grid;
-  grid-template-columns: minmax(270px, 0.86fr) minmax(0, 1.14fr);
+  grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.08fr);
   align-items: center;
-  min-height: 520px;
+  min-height: 548px;
+  aspect-ratio: 16 / 9;
+  scroll-margin-top: 96px;
   padding: clamp(34px, 5vw, 70px);
   background:
-    linear-gradient(90deg, rgba(243, 255, 251, 0.82) 0%, rgba(238, 251, 247, 0.61) 43%, rgba(238, 251, 247, 0.16) 65%, rgba(238, 251, 247, 0) 78%),
-    var(--arrival-wide-scene) center / cover no-repeat !important;
+    linear-gradient(90deg, rgba(242, 255, 251, 0.93) 0%, rgba(238, 252, 247, 0.79) 40%, rgba(238, 252, 247, 0.24) 54%, rgba(238, 252, 247, 0) 66%),
+    var(--arrival-reference-scene) center / cover no-repeat !important;
 }
 
 .garden-site .daily-arrival .arrival-copy {
   grid-column: 1;
-  width: min(100%, 31rem);
+  width: min(100%, 29rem);
   color: #053b57;
 }
 
@@ -327,6 +329,43 @@
   gap: 7px;
 }
 
+/* Each subject owns a character-free scene. The original 3D friend sits in the center,
+   while the fixed lower copy edge never overlaps the character. */
+.garden-site .curriculum-card {
+  display: block;
+  isolation: isolate;
+  background-position: center !important;
+}
+
+.garden-site .curriculum-card::after {
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(5, 73, 95, 0) 35%, rgba(3, 56, 78, 0.16) 51%, rgba(3, 48, 70, 0.9) 100%);
+}
+
+.garden-site .curriculum-card > img.card-character-image {
+  position: absolute;
+  z-index: 2;
+  top: 43%;
+  left: 50%;
+  width: clamp(116px, 31%, 184px);
+  max-height: 54%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.garden-site .curriculum-card > .curriculum-copy {
+  position: absolute;
+  z-index: 3;
+  right: 24px;
+  bottom: 22px;
+  left: 24px;
+  width: auto;
+  margin: 0;
+}
+
 @media (max-width: 650px) {
   .garden-site .daily-section {
     background-position: 58% center !important;
@@ -389,29 +428,28 @@
     padding: 21px;
     border-radius: 20px;
   }
+
+  .garden-site .curriculum-card > img.card-character-image {
+    top: 42%;
+    width: clamp(128px, 43vw, 178px);
+    max-height: 51%;
+  }
+
+  .garden-site .curriculum-card > .curriculum-copy {
+    right: 21px;
+    bottom: 19px;
+    left: 21px;
+  }
 }
 
 @media (min-width: 651px) {
   .garden-site .daily-arrival {
-    background-position: left center !important;
-    background-size: auto, 160% auto !important;
+    background-position: center !important;
+    background-size: auto, 100% 100% !important;
   }
 
   .garden-site .daily-arrival .arrival-envelope.clay-envelope {
-    display: grid !important;
-    grid-column: 2;
-    z-index: 1;
-    width: min(100%, 470px);
-    min-height: 0 !important;
-    margin: 0 !important;
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    place-items: center;
-    justify-self: center;
-    transform: rotate(-1.5deg) !important;
+    display: none !important;
   }
 
   .garden-site .daily-arrival .arrival-envelope.clay-envelope img {

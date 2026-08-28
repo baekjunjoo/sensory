@@ -49,14 +49,27 @@ describe("한 장의 편지를 여는 도착 장면", () => {
     expect(css).toContain("height: 366px");
   });
 
+  it("uses character-free subject scenes with a centered foreground friend and a separate lower copy edge", () => {
+    expect(home).toContain("sensory-card-momo-literacy-scene.png");
+    expect(home).toContain("sensory-card-pio-math-scene.png");
+    expect(home).toContain("sensory-card-lulu-english-scene.png");
+    expect(home).toContain("sensory-card-nabi-tactile-scene-clean.png");
+    expect(css).toContain("top: 43%");
+    expect(css).toContain("left: 50%");
+    expect(css).toContain("transform: translate(-50%, -50%)");
+    expect(css).toContain("bottom: 22px");
+  });
+
   it("places delivery copy beside a dedicated wide clay-envelope beach and changes to a tall beach on mobile", () => {
-    expect(home).toContain("ARRIVAL_ENVELOPE_BEACH_WIDE");
+    expect(home).toContain("ARRIVAL_REFERENCE_OPEN_LETTER");
     expect(home).toContain("ARRIVAL_ENVELOPE_BEACH_TALL");
-    expect(css).toContain("var(--arrival-wide-scene) center / cover no-repeat !important");
+    expect(css).toContain("var(--arrival-reference-scene) center / cover no-repeat !important");
     expect(css).toContain("var(--arrival-tall-scene) center / cover no-repeat !important");
-    expect(css).toContain("grid-template-columns: minmax(270px, 0.86fr) minmax(0, 1.14fr)");
-    expect(css).toContain("grid-column: 2");
-    expect(css).toContain("width: min(100%, 470px)");
+    expect(css).toContain("grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.08fr)");
+    expect(css).toContain("width: min(100%, 29rem)");
+    expect(css).toContain(".arrival-envelope.clay-envelope {");
+    expect(css).toContain("display: none !important");
+    expect(css).toContain("scroll-margin-top: 96px");
     expect(css).toContain("min-height: 820px");
   });
 

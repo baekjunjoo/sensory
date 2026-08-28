@@ -25,13 +25,13 @@ const CURRICULUM_CHARACTERS = {
   nabi: publicAsset("/manus-storage/nabi-tactile-map-3d_3dba16f2.png", "nabi-tactile-map-3d.webp"),
 };
 const CURRICULUM_SCENES = {
-  momo: WEEK_SCENES[0].src,
-  pio: WEEK_SCENES[2].src,
-  lulu: WEEK_SCENES[3].src,
-  nabi: WEEK_SCENES[4].src,
+  momo: publicAsset("/manus-storage/sensory-card-momo-literacy-scene_7a448a9e.png", "sensory-card-momo-literacy-scene.png"),
+  pio: publicAsset("/manus-storage/sensory-card-pio-math-scene_907ad3a9.png", "sensory-card-pio-math-scene.png"),
+  lulu: publicAsset("/manus-storage/sensory-card-lulu-english-scene_e0525709.png", "sensory-card-lulu-english-scene.png"),
+  nabi: publicAsset("/manus-storage/sensory-card-nabi-tactile-scene-clean_ff25cea2.png", "sensory-card-nabi-tactile-scene-clean.png"),
 };
 const CLAY_ENVELOPE = publicAsset("/manus-storage/sensory-clay-envelope_90f6d08c.png", "sensory-clay-envelope.png");
-const ARRIVAL_ENVELOPE_BEACH_WIDE = publicAsset("/manus-storage/sensory-arrival-beach-empty-final-16x9_79edea97.png", "sensory-arrival-beach-empty-final-16x9.png");
+const ARRIVAL_REFERENCE_OPEN_LETTER = publicAsset("/manus-storage/sensory-arrival-reference-open-letter-clean-16x9_9242e5b9.png", "sensory-arrival-reference-open-letter-clean-16x9.png");
 const ARRIVAL_ENVELOPE_BEACH_TALL = publicAsset("/manus-storage/sensory-arrival-envelope-beach-9x16_a01acc29.png", "sensory-arrival-envelope-beach-9x16.png");
 const ARRIVAL_ENVELOPE_ART = publicAsset("/manus-storage/sensory-arrival-envelope-transparent_709fdfca.png", "sensory-arrival-envelope-transparent.png");
 const SPEECH_PROFILES: Record<CharacterKey, { rate: number; pitch: number; volume: number }> = {
@@ -54,7 +54,7 @@ function ShapeFace({ color = "coral", kind = "round", className = "", character,
 function PlantFriend({ color = "sky", className = "" }: { color?: string; className?: string }) { return <ShapeFace color={color} kind="arch" className={className} />; }
 
 function DailyArrival({ lesson, dayNumber, tabId, onOpen }: { lesson: DailyLesson; dayNumber: number; tabId: string; onOpen: () => void }) {
-  return <section id="daily-task-panel" className="daily-arrival" role="tabpanel" tabIndex={0} aria-labelledby={tabId} style={{ "--arrival-wide-scene": `url(${ARRIVAL_ENVELOPE_BEACH_WIDE})`, "--arrival-tall-scene": `url(${ARRIVAL_ENVELOPE_BEACH_TALL})` } as CSSProperties}><div className="arrival-copy"><span className="capsule-label"><i /><i /><i /> TODAY&apos;S DELIVERY <b>{String(dayNumber).padStart(2, "0")}</b></span><h3>오늘의 한 장이<br /><em>도착했어요.</em></h3><p>{lesson.weekday}요일의 {lesson.subject} 학습지를 손끝으로 열어 보세요. DotPad가 아직 연결되지 않아도 화면 점자와 음성 안내로 시작할 수 있어요.</p><div className="arrival-goal"><span>오늘의 촉각 목표</span><b>{lesson.tactileGoal.action} · {lesson.tactileGoal.concept}</b><small>{lesson.tactileGoal.complexity}</small></div><div className="arrival-actions"><button type="button" onClick={onOpen}><MailOpen size={17} />학습지 열기 <ArrowRight size={16} /></button><small>{lesson.title} · 약 10분</small></div></div><div className="arrival-envelope clay-envelope" aria-hidden="true"><img src={ARRIVAL_ENVELOPE_ART} alt="" /></div></section>;
+  return <section id="daily-task-panel" className="daily-arrival" role="tabpanel" tabIndex={0} aria-labelledby={tabId} style={{ "--arrival-reference-scene": `url(${ARRIVAL_REFERENCE_OPEN_LETTER})`, "--arrival-tall-scene": `url(${ARRIVAL_ENVELOPE_BEACH_TALL})` } as CSSProperties}><div className="arrival-copy"><span className="capsule-label"><i /><i /><i /> TODAY&apos;S DELIVERY <b>{String(dayNumber).padStart(2, "0")}</b></span><h3>오늘의 한 장이<br /><em>도착했어요.</em></h3><p>{lesson.weekday}요일의 {lesson.subject} 학습지를 손끝으로 열어 보세요. DotPad가 아직 연결되지 않아도 화면 점자와 음성 안내로 시작할 수 있어요.</p><div className="arrival-goal"><span>오늘의 촉각 목표</span><b>{lesson.tactileGoal.action} · {lesson.tactileGoal.concept}</b><small>{lesson.tactileGoal.complexity}</small></div><div className="arrival-actions"><button type="button" onClick={onOpen}><MailOpen size={17} />학습지 열기 <ArrowRight size={16} /></button><small>{lesson.title} · 약 10분</small></div></div><div className="arrival-envelope clay-envelope" aria-hidden="true"><img src={ARRIVAL_ENVELOPE_ART} alt="" /></div></section>;
 }
 
 function CompletionStamp({ lesson, streak, archiveHref, onNext, onReview }: { lesson: DailyLesson; streak: number; archiveHref: string; onNext: () => void; onReview: () => void }) {

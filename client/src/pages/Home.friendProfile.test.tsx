@@ -105,6 +105,23 @@ describe("오늘의 친구 프로필", () => {
     });
   });
 
+  it("학습 정원은 캐릭터 없는 과목별 배경 위에 기존 3D 캐릭터를 중앙 요소로 분리한다", () => {
+    render(<Home />);
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".curriculum-card"));
+    const expectedScenes = [
+      "sensory-card-momo-literacy-scene_7a448a9e.png",
+      "sensory-card-pio-math-scene_907ad3a9.png",
+      "sensory-card-lulu-english-scene_e0525709.png",
+      "sensory-card-nabi-tactile-scene-clean_ff25cea2.png",
+    ];
+
+    cards.forEach((card, index) => {
+      expect(card.style.getPropertyValue("--card-scene")).toContain(expectedScenes[index]);
+      expect(card.querySelector<HTMLImageElement>(":scope > img.card-character-image")?.getAttribute("src")).toContain("-3d_");
+      expect(card.querySelector(":scope > .curriculum-copy")).toBeTruthy();
+    });
+  });
+
   it("LIVE DOTPAD PREVIEW에는 중복 유니코드 점자 문자열 없이 촉각 격자만 남긴다", () => {
     render(<Home />);
     expect(document.querySelector(".studio-braille")).toBeNull();
