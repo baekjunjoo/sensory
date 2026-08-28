@@ -306,7 +306,8 @@
 
   .garden-site .how-copy,
   .garden-site .growth-poster {
-    min-height: 310px;
+    height: 384px;
+    min-height: 384px;
     border-radius: 20px;
   }
 
@@ -324,7 +325,9 @@
   }
 
   .garden-site .curriculum-card {
-    min-height: 272px;
+    box-sizing: border-box;
+    height: 366px;
+    min-height: 366px;
     aspect-ratio: auto;
     padding: 21px;
     border-radius: 20px;
