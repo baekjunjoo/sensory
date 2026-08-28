@@ -112,6 +112,21 @@ describe("오늘의 친구 프로필", () => {
     expect(document.querySelector('[aria-live="polite"]')?.textContent).toContain("Liblouis 표준 점역 결과가 준비됐어요.");
   });
 
+  it("점자 실험실과 마지막 영역의 장식 캐릭터 없이 DotPad 공식 문의 영역을 제공한다", () => {
+    render(<Home />);
+
+    expect(document.querySelector(".studio-face")).toBeNull();
+    expect(document.querySelector(".footer-plant")).toBeNull();
+    const inquiry = screen.getByRole("region", { name: /DotPad를 만나 보세요/ });
+    const inquiryLink = within(inquiry).getByRole("link", { name: /DotPad 렌탈·구매 문의하기/ });
+    inquiryLink.focus();
+    expect(document.activeElement).toBe(inquiryLink);
+    expect(inquiryLink.getAttribute("href")).toBe("https://www.dotincorp.com/en/contact");
+    expect(inquiryLink.getAttribute("target")).toBe("_blank");
+    expect(inquiryLink.getAttribute("rel")).toBe("noreferrer");
+    expect(within(inquiry).getByRole("link", { name: /Dot Pad X 자세히 보기/ }).getAttribute("href")).toBe("https://www.dotincorp.com/en/product/dotpadx");
+  });
+
   it("헤더와 푸터 브랜드에는 Sensory 워드마크만 남긴다", () => {
     render(<Home />);
     expect(screen.getByLabelText("Sensory 홈").textContent).toBe("sensory");
