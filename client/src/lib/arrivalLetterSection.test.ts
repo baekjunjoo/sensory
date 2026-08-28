@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const css = readFileSync(resolve(process.cwd(), "client/src/arrival-letter-section.css"), "utf8");
+const accessibilityCss = readFileSync(resolve(process.cwd(), "client/src/accessibility-aa.css"), "utf8");
 const home = readFileSync(resolve(process.cwd(), "client/src/pages/Home.tsx"), "utf8");
 
 describe("한 장의 편지를 여는 도착 장면", () => {
@@ -41,9 +42,16 @@ describe("한 장의 편지를 여는 도착 장면", () => {
     expect(css).toContain("aspect-ratio: 4 / 3");
     expect(css).toContain("rgba(54, 166, 192, 0.88)");
     expect(css).toContain("rgba(255, 255, 255, 0.62)");
+    expect(css).toContain(".garden-site .how-section .how-copy");
     expect(css).toContain("rgba(247, 255, 250, 0.94)");
     expect(css).toContain("rgba(4, 65, 88, 0.82)");
     expect(css).toContain("height: 384px");
     expect(css).toContain("height: 366px");
+  });
+
+  it("does not let the later accessibility stylesheet restore dark copy boxes over the bright sections", () => {
+    expect(accessibilityCss).not.toContain(".how-section .how-copy");
+    expect(accessibilityCss).not.toContain(".curriculum-section .curriculum-header");
+    expect(accessibilityCss).not.toContain(".daily-section::after,");
   });
 });

@@ -208,7 +208,7 @@
   box-sizing: border-box;
 }
 
-.garden-site .how-copy {
+.garden-site .how-section .how-copy {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

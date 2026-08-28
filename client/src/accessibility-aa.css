@@ -62,9 +62,6 @@
   background: #03354f !important;
 }
 
-.daily-section::after,
-.how-section::after,
-.curriculum-section::after,
 .studio-section::after,
 .garden-footer::after {
   background: linear-gradient(115deg, rgba(4, 54, 83, 0.94), rgba(4, 72, 101, 0.87) 58%, rgba(3, 48, 75, 0.9)) !important;
@@ -135,10 +132,7 @@
   background: #0b4669 !important;
 }
 
-.daily-section .section-copy,
-.how-section .how-copy,
 .studio-section .studio-copy,
-.curriculum-section .curriculum-header,
 .garden-footer .footer-row {
   width: fit-content;
   max-width: min(100%, 700px);
