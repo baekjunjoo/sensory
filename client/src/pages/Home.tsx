@@ -31,6 +31,9 @@ const CURRICULUM_SCENES = {
   nabi: WEEK_SCENES[4].src,
 };
 const CLAY_ENVELOPE = publicAsset("/manus-storage/sensory-clay-envelope_90f6d08c.png", "sensory-clay-envelope.png");
+const ARRIVAL_ENVELOPE_BEACH_WIDE = publicAsset("/manus-storage/sensory-arrival-beach-empty-final-16x9_79edea97.png", "sensory-arrival-beach-empty-final-16x9.png");
+const ARRIVAL_ENVELOPE_BEACH_TALL = publicAsset("/manus-storage/sensory-arrival-envelope-beach-9x16_a01acc29.png", "sensory-arrival-envelope-beach-9x16.png");
+const ARRIVAL_ENVELOPE_ART = publicAsset("/manus-storage/sensory-arrival-envelope-transparent_709fdfca.png", "sensory-arrival-envelope-transparent.png");
 const SPEECH_PROFILES: Record<CharacterKey, { rate: number; pitch: number; volume: number }> = {
   momo: { rate: 0.94, pitch: 1.06, volume: 0.96 },
   pio: { rate: 0.9, pitch: 0.98, volume: 0.94 },
@@ -51,7 +54,7 @@ function ShapeFace({ color = "coral", kind = "round", className = "", character,
 function PlantFriend({ color = "sky", className = "" }: { color?: string; className?: string }) { return <ShapeFace color={color} kind="arch" className={className} />; }
 
 function DailyArrival({ lesson, dayNumber, tabId, onOpen }: { lesson: DailyLesson; dayNumber: number; tabId: string; onOpen: () => void }) {
-  return <section id="daily-task-panel" className="daily-arrival" role="tabpanel" tabIndex={0} aria-labelledby={tabId} style={{ "--arrival-scene": `url(${CLAY_ENVELOPE})` } as CSSProperties}><div className="arrival-copy"><span className="capsule-label"><i /><i /><i /> TODAY&apos;S DELIVERY <b>{String(dayNumber).padStart(2, "0")}</b></span><h3>오늘의 한 장이<br /><em>도착했어요.</em></h3><p>{lesson.weekday}요일의 {lesson.subject} 학습지를 손끝으로 열어 보세요. DotPad가 아직 연결되지 않아도 화면 점자와 음성 안내로 시작할 수 있어요.</p><div className="arrival-goal"><span>오늘의 촉각 목표</span><b>{lesson.tactileGoal.action} · {lesson.tactileGoal.concept}</b><small>{lesson.tactileGoal.complexity}</small></div><div className="arrival-actions"><button type="button" onClick={onOpen}><MailOpen size={17} />학습지 열기 <ArrowRight size={16} /></button><small>{lesson.title} · 약 10분</small></div></div><div className="arrival-envelope clay-envelope" aria-hidden="true"><img src={CLAY_ENVELOPE} alt="" /></div></section>;
+  return <section id="daily-task-panel" className="daily-arrival" role="tabpanel" tabIndex={0} aria-labelledby={tabId} style={{ "--arrival-wide-scene": `url(${ARRIVAL_ENVELOPE_BEACH_WIDE})`, "--arrival-tall-scene": `url(${ARRIVAL_ENVELOPE_BEACH_TALL})` } as CSSProperties}><div className="arrival-copy"><span className="capsule-label"><i /><i /><i /> TODAY&apos;S DELIVERY <b>{String(dayNumber).padStart(2, "0")}</b></span><h3>오늘의 한 장이<br /><em>도착했어요.</em></h3><p>{lesson.weekday}요일의 {lesson.subject} 학습지를 손끝으로 열어 보세요. DotPad가 아직 연결되지 않아도 화면 점자와 음성 안내로 시작할 수 있어요.</p><div className="arrival-goal"><span>오늘의 촉각 목표</span><b>{lesson.tactileGoal.action} · {lesson.tactileGoal.concept}</b><small>{lesson.tactileGoal.complexity}</small></div><div className="arrival-actions"><button type="button" onClick={onOpen}><MailOpen size={17} />학습지 열기 <ArrowRight size={16} /></button><small>{lesson.title} · 약 10분</small></div></div><div className="arrival-envelope clay-envelope" aria-hidden="true"><img src={ARRIVAL_ENVELOPE_ART} alt="" /></div></section>;
 }
 
 function CompletionStamp({ lesson, streak, archiveHref, onNext, onReview }: { lesson: DailyLesson; streak: number; archiveHref: string; onNext: () => void; onReview: () => void }) {

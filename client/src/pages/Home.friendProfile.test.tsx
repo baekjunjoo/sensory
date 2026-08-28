@@ -152,7 +152,7 @@ describe("오늘의 친구 프로필", () => {
 
     expect(within(arrival).getByText("오늘의 촉각 목표")).toBeTruthy();
     expect(within(arrival).getByText("세어 보기 · 3 더하기 2")).toBeTruthy();
-    expect(arrival.querySelector<HTMLImageElement>(".clay-envelope img")?.getAttribute("src")).toBe("/manus-storage/sensory-clay-envelope_90f6d08c.png");
+    expect(arrival.querySelector<HTMLImageElement>(".clay-envelope img")?.getAttribute("src")).toBe("/manus-storage/sensory-arrival-envelope-transparent_709fdfca.png");
     expect(arrival.querySelector(".arrival-envelope-paper")).toBeNull();
   });
 
