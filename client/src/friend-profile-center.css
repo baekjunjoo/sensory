@@ -1,0 +1,79 @@
+/* Each 3D friend is cropped inside its own circular portrait, not across the whole selector button. */
+.garden-site .theme-picker > div {
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.garden-site .theme-picker button {
+  display: grid;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 58px auto;
+  justify-items: center;
+  gap: 5px;
+  min-width: 62px;
+  min-height: 80px !important;
+  padding: 3px 3px 6px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.garden-site .theme-picker button > b {
+  width: 100%;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 2px 5px rgba(0, 43, 68, 0.9);
+}
+
+.garden-site .theme-picker .friend-avatar {
+  position: relative;
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  background: #dceff0;
+  box-shadow: 0 2px 0 rgba(0, 43, 68, 0.5);
+}
+
+.garden-site .theme-picker .friend-avatar img {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 43%;
+  transform: scale(1.62) translateY(4px);
+  transform-origin: 50% 50%;
+}
+
+.garden-site .theme-picker .friend-avatar[data-character="momo"] img { object-position: 50% 40%; transform: scale(1.56) translateY(5px); }
+.garden-site .theme-picker .friend-avatar[data-character="pio"] img { object-position: 50% 39%; transform: scale(1.62) translateY(5px); }
+.garden-site .theme-picker .friend-avatar[data-character="lulu"] img { object-position: 50% 43%; transform: scale(1.68) translateY(5px); }
+.garden-site .theme-picker .friend-avatar[data-character="nabi"] img { object-position: 50% 41%; transform: scale(1.63) translateY(5px); }
+
+.garden-site .theme-picker button.selected .friend-avatar {
+  border-color: #fff1a8;
+  box-shadow: 0 0 0 3px rgba(255, 241, 168, 0.54), 0 3px 0 rgba(0, 43, 68, 0.56);
+}
+
+@media (max-width: 650px) {
+  .garden-site .theme-picker > div { gap: 8px; }
+  .garden-site .theme-picker button {
+    grid-template-rows: 52px auto;
+    min-width: 56px;
+    min-height: 73px !important;
+  }
+  .garden-site .theme-picker .friend-avatar {
+    width: 52px;
+    height: 52px;
+    background-size: 280px auto;
+  }
+  .garden-site .theme-picker button > b { font-size: 11px; }
+}

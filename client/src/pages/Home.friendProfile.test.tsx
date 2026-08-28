@@ -73,6 +73,25 @@ describe("오늘의 친구 프로필", () => {
     expect(screen.getByTestId("hero-scene-label").textContent).toContain("나비 · 알파벳 구름 정원");
   });
 
+  it("오늘의 친구는 각 원형 프레임 안에 개별 3D 포트레이트를 렌더링한다", () => {
+    render(<Home />);
+    const picker = screen.getByLabelText("Sensory 친구와 색상 테마 선택");
+
+    (["모모", "피오", "루루", "나비"] as const).forEach((name) => {
+      const button = within(picker).getByRole("button", { name });
+      const portrait = button.querySelector<HTMLImageElement>(".friend-avatar > img");
+      expect(portrait).not.toBeNull();
+      expect(portrait?.getAttribute("alt")).toBe("");
+      expect(button.querySelector(".friend-avatar")?.getAttribute("data-character")).toBeTruthy();
+    });
+  });
+
+  it("홈에는 별도의 기기 음성으로 읽기 패널을 렌더링하지 않는다", () => {
+    render(<Home />);
+    expect(screen.queryByTestId("accessibility-tts")).toBeNull();
+    expect(screen.queryByRole("heading", { name: "기기 음성으로 읽기" })).toBeNull();
+  });
+
   it("LIVE DOTPAD PREVIEW에는 중복 유니코드 점자 문자열 없이 촉각 격자만 남긴다", () => {
     render(<Home />);
     expect(document.querySelector(".studio-braille")).toBeNull();

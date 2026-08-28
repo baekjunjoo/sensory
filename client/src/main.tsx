@@ -8,6 +8,7 @@ import App from "./App";
 import { startLogin } from "./const";
 import "./index.css";
 import "./hero-scene-layout.css";
+import "./friend-profile-center.css";
 
 const queryClient = new QueryClient();
 const apiBaseUrl = import.meta.env.VITE_SENSORY_API_URL;
