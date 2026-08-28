@@ -41,6 +41,8 @@ describe("한 장의 편지를 여는 도착 장면", () => {
     expect(css).toContain("aspect-ratio: 4 / 3");
     expect(css).toContain("rgba(54, 166, 192, 0.88)");
     expect(css).toContain("rgba(255, 255, 255, 0.62)");
+    expect(css).toContain("rgba(247, 255, 250, 0.94)");
+    expect(css).toContain("rgba(4, 65, 88, 0.82)");
     expect(css).toContain("height: 384px");
     expect(css).toContain("height: 366px");
   });

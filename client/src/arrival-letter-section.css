@@ -214,17 +214,22 @@
   justify-content: flex-end;
   align-items: flex-start;
   padding: clamp(24px, 3.4vw, 42px);
-  color: #fff;
+  color: #053b57;
   border: 1px solid rgba(255, 255, 255, 0.62);
   border-radius: 24px;
-  background: linear-gradient(140deg, rgba(9, 108, 143, 0.43), rgba(41, 158, 181, 0.16));
+  background: linear-gradient(140deg, rgba(247, 255, 250, 0.94), rgba(205, 240, 239, 0.9));
   box-shadow: 0 14px 34px rgba(5, 91, 119, 0.17);
 }
 
 .garden-site .how-copy h2,
 .garden-site .how-copy p {
-  color: #fff;
-  text-shadow: 0 2px 11px rgba(0, 65, 91, 0.54);
+  color: #053b57;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.54);
+}
+
+.garden-site .how-copy h2 em {
+  color: #064967;
+  text-decoration-color: #ff7a45;
 }
 
 .garden-site .growth-poster {
@@ -270,12 +275,12 @@
   border-radius: 22px;
   box-shadow: 0 12px 28px rgba(5, 88, 116, 0.17);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 30%, rgba(5, 79, 108, 0.68) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 24%, rgba(4, 65, 88, 0.82) 100%),
     var(--card-scene) center / cover no-repeat !important;
 }
 
 .garden-site .curriculum-card::after {
-  background: linear-gradient(180deg, rgba(100, 206, 217, 0.04) 24%, rgba(4, 72, 102, 0.24) 100%);
+  background: linear-gradient(180deg, rgba(100, 206, 217, 0.02) 24%, rgba(2, 52, 75, 0.32) 100%);
 }
 
 .garden-site .curriculum-card > .curriculum-copy {
