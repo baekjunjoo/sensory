@@ -16,3 +16,9 @@
 | 문의 영역 | 하단 아이보리·민트 카드에 공식 문의 CTA와 제품 링크 표시 | CTA와 제품 링크가 1열로 전환되어 손가락 조작 가능 |
 
 `Home.friendProfile.test.tsx`에 점자 실험실·푸터 장식 캐릭터 부재와 두 공식 링크를 확인하는 회귀 검사를 추가했다. 전체 `23개` 테스트 파일·`72개` 테스트, TypeScript 검사와 Vite 프로덕션 빌드를 통과했다.
+
+## GitHub Pages 공개 확인
+
+최신 GitHub Pages 배포에서 점자 실험실의 `점점점` 강조와 `LIVE DOTPAD PREVIEW` 입력·촉각 프리뷰·상태 행이 표시되는 것을 확인했다. 점자 실험실에는 하단 장식 캐릭터가 없으며, 마지막 `내일도 새로운 한 장을 만나.` 영역에도 캐릭터가 남아 있지 않았다.
+
+공개 페이지 최하단에는 아이보리·민트 카드 형태의 **DotPad 렌탈·구매 문의하기** CTA와 `Dot Pad X 자세히 보기` 보조 링크가 보인다. 두 링크는 각각 [Dot Inc. 공식 문의 페이지](https://www.dotincorp.com/en/contact)와 [Dot Pad X 공식 제품 페이지](https://www.dotincorp.com/en/product/dotpadx)를 새 창으로 연다. CTA와 보조 링크 모두 접근 가능한 링크로 노출되며, 캐릭터 장식 없이 문의 목적을 선명하게 전달한다.
