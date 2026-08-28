@@ -1,10 +1,11 @@
-/* The delivery is a small object inside the island scene, not a second full-page card. */
+/* The delivery is a full tactile scene: the clay envelope sits in its own beach panel. */
 .garden-site .daily-arrival {
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.58fr);
-  min-height: 282px;
-  gap: clamp(24px, 5vw, 66px);
+  grid-template-columns: minmax(0, 0.84fr) minmax(350px, 1.16fr);
+  align-items: center;
+  min-height: 370px;
+  gap: clamp(28px, 5vw, 72px);
   margin-top: clamp(28px, 4vw, 46px);
-  padding: clamp(12px, 2vw, 24px) 0;
+  padding: clamp(10px, 2vw, 22px) 0;
   overflow: visible;
   border: 0;
   border-radius: 0;
@@ -12,21 +13,17 @@
   box-shadow: none;
 }
 
-.garden-site .daily-arrival::before {
-  display: none;
-}
+.garden-site .daily-arrival::before { display: none; }
 
 .garden-site .arrival-copy {
-  max-width: 530px;
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
   color: #fff;
   text-shadow: 0 3px 16px rgba(3, 36, 58, 0.88);
 }
 
-.garden-site .arrival-copy .capsule-label {
-  color: #173a52;
-  text-shadow: none;
-}
-
+.garden-site .arrival-copy .capsule-label { color: #173a52; text-shadow: none; }
 .garden-site .arrival-copy h3 {
   max-width: 11ch;
   margin-top: 13px;
@@ -35,11 +32,7 @@
   line-height: 1.03;
   letter-spacing: 0.035em;
 }
-
-.garden-site .arrival-copy h3 em {
-  color: #fff0b3;
-}
-
+.garden-site .arrival-copy h3 em { color: #fff0b3; }
 .garden-site .arrival-copy p {
   max-width: 43ch;
   margin-top: 14px;
@@ -47,92 +40,73 @@
   font-size: 14px;
   line-height: 1.7;
 }
+.garden-site .arrival-actions { align-items: center; gap: 13px; margin-top: 19px; }
+.garden-site .arrival-actions button { min-height: 46px; padding-inline: 18px; }
+.garden-site .arrival-actions small { color: #fff; font-size: 11px; text-shadow: 0 2px 8px rgba(3, 36, 58, 0.9); }
 
-.garden-site .arrival-actions {
-  align-items: center;
-  gap: 13px;
-  margin-top: 19px;
+.garden-site .arrival-envelope.clay-envelope {
+  position: relative;
+  isolation: isolate;
+  align-self: stretch;
+  justify-self: stretch;
+  width: 100%;
+  min-height: 334px !important;
+  overflow: hidden;
+  border: 2px solid rgba(255, 253, 247, 0.78);
+  border-radius: clamp(20px, 2.5vw, 32px);
+  background: #d8eee8;
+  box-shadow: 8px 11px 0 rgba(3, 36, 58, 0.28), 0 20px 44px rgba(3, 36, 58, 0.2);
+  transform: rotate(1.2deg) !important;
 }
 
-.garden-site .arrival-actions button {
-  min-height: 46px;
-  padding-inline: 18px;
+.garden-site .arrival-envelope.clay-envelope::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 40%, rgba(3, 54, 80, 0.08));
 }
 
-.garden-site .arrival-actions small {
-  color: #fff;
-  font-size: 11px;
-  text-shadow: 0 2px 8px rgba(3, 36, 58, 0.9);
-}
-
-.garden-site .arrival-envelope {
-  align-self: end;
-  justify-self: center;
-  width: min(100%, 270px);
-  min-height: 190px;
-  transform: rotate(2.5deg);
-}
-
-.garden-site .arrival-envelope-paper {
-  height: 156px;
-  border-radius: 10px;
-  box-shadow: 7px 8px 0 rgba(3, 36, 58, 0.28);
-}
-
-.garden-site .arrival-letter {
-  top: -39px;
-  height: 59px;
-  padding: 10px 12px;
-}
-
-.garden-site .arrival-seal {
-  width: 56px;
-  height: 56px;
+.garden-site .arrival-envelope.clay-envelope img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 334px;
+  object-fit: cover;
+  object-position: 50% 51%;
+  filter: none;
+  mask-image: none;
+  -webkit-mask-image: none;
+  transform: scale(1.025);
 }
 
 @media (max-width: 650px) {
   .garden-site .daily-arrival {
     grid-template-columns: 1fr;
     min-height: 0;
-    gap: 17px;
+    gap: 19px;
     margin-top: 25px;
-    padding: 4px 0 14px;
+    padding: 4px 0 16px;
   }
 
-  .garden-site .arrival-copy h3 {
-    max-width: 12ch;
-    font-size: 40px;
+  .garden-site .arrival-copy { max-width: none; }
+  .garden-site .arrival-copy h3 { max-width: 12ch; font-size: 40px; }
+  .garden-site .arrival-copy p { max-width: 31ch; font-size: 13px; }
+  .garden-site .arrival-actions { align-items: flex-start; flex-direction: row; gap: 11px; }
+  .garden-site .arrival-actions button { width: auto; }
+
+  .garden-site .arrival-envelope.clay-envelope {
+    width: 100% !important;
+    min-height: 260px !important;
+    margin-top: 4px !important;
+    border-radius: 24px;
+    transform: none !important;
   }
 
-  .garden-site .arrival-copy p {
-    max-width: 31ch;
-    font-size: 13px;
-  }
-
-  .garden-site .arrival-actions {
-    align-items: flex-start;
-    flex-direction: row;
-    gap: 11px;
-  }
-
-  .garden-site .arrival-actions button {
-    width: auto;
-  }
-
-  .garden-site .arrival-envelope {
-    justify-self: end;
-    width: min(76%, 255px);
-    min-height: 164px;
-    margin-top: -3px;
-  }
-
-  .garden-site .arrival-envelope-paper {
-    height: 137px;
-  }
+  .garden-site .arrival-envelope.clay-envelope img { min-height: 260px; object-position: 50% 52%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .garden-site .arrival-envelope {
-    transform: none;
-  }
+  .garden-site .arrival-envelope.clay-envelope { transform: none !important; }
 }
