@@ -1,0 +1,70 @@
+/* One quiet reading edge for every tactile-garden card. */
+.garden-site .curriculum-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.garden-site .curriculum-card > .curriculum-copy {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  width: min(100%, 29ch);
+  gap: 6px;
+  margin-top: auto;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(3, 36, 58, 0.9);
+}
+
+.garden-site .curriculum-card > .curriculum-copy > span {
+  display: block;
+  margin: 0;
+  color: #fff4c9;
+  font: 800 10px/1.25 var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.garden-site .curriculum-card > .curriculum-copy h3 {
+  margin: 0;
+  color: #fff;
+  font: 400 clamp(24px, 2.3vw, 31px)/1 var(--display);
+  letter-spacing: 0.04em !important;
+}
+
+.garden-site .curriculum-card > .curriculum-copy p {
+  max-width: 25ch;
+  margin: 0;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.55;
+  font-weight: 800;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 650px) {
+  .garden-site .curriculum-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .garden-site .curriculum-card {
+    min-height: 264px;
+    padding: 19px;
+  }
+
+  .garden-site .curriculum-card > .curriculum-copy {
+    width: min(70%, 27ch);
+    gap: 5px;
+  }
+
+  .garden-site .curriculum-card > .curriculum-copy h3 {
+    font-size: 27px;
+  }
+
+  .garden-site .curriculum-card > .curriculum-copy p {
+    max-width: 28ch;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}

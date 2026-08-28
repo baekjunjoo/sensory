@@ -92,6 +92,19 @@ describe("오늘의 친구 프로필", () => {
     expect(screen.queryByRole("heading", { name: "기기 음성으로 읽기" })).toBeNull();
   });
 
+  it("학습 정원 카드마다 요일·제목·설명이 하나의 문구 묶음으로 렌더링된다", () => {
+    render(<Home />);
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".curriculum-card"));
+
+    expect(cards).toHaveLength(4);
+    cards.forEach((card) => {
+      const copy = card.querySelector(":scope > .curriculum-copy");
+      expect(copy?.querySelector(":scope > span")?.textContent).toBeTruthy();
+      expect(copy?.querySelector(":scope > h3")?.textContent).toBeTruthy();
+      expect(copy?.querySelector(":scope > p")?.textContent).toBeTruthy();
+    });
+  });
+
   it("LIVE DOTPAD PREVIEW에는 중복 유니코드 점자 문자열 없이 촉각 격자만 남긴다", () => {
     render(<Home />);
     expect(document.querySelector(".studio-braille")).toBeNull();

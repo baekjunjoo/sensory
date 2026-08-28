@@ -1,0 +1,138 @@
+/* The delivery is a small object inside the island scene, not a second full-page card. */
+.garden-site .daily-arrival {
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.58fr);
+  min-height: 282px;
+  gap: clamp(24px, 5vw, 66px);
+  margin-top: clamp(28px, 4vw, 46px);
+  padding: clamp(12px, 2vw, 24px) 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.garden-site .daily-arrival::before {
+  display: none;
+}
+
+.garden-site .arrival-copy {
+  max-width: 530px;
+  color: #fff;
+  text-shadow: 0 3px 16px rgba(3, 36, 58, 0.88);
+}
+
+.garden-site .arrival-copy .capsule-label {
+  color: #173a52;
+  text-shadow: none;
+}
+
+.garden-site .arrival-copy h3 {
+  max-width: 11ch;
+  margin-top: 13px;
+  color: #fff;
+  font-size: clamp(36px, 4.3vw, 55px);
+  line-height: 1.03;
+  letter-spacing: 0.035em;
+}
+
+.garden-site .arrival-copy h3 em {
+  color: #fff0b3;
+}
+
+.garden-site .arrival-copy p {
+  max-width: 43ch;
+  margin-top: 14px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.garden-site .arrival-actions {
+  align-items: center;
+  gap: 13px;
+  margin-top: 19px;
+}
+
+.garden-site .arrival-actions button {
+  min-height: 46px;
+  padding-inline: 18px;
+}
+
+.garden-site .arrival-actions small {
+  color: #fff;
+  font-size: 11px;
+  text-shadow: 0 2px 8px rgba(3, 36, 58, 0.9);
+}
+
+.garden-site .arrival-envelope {
+  align-self: end;
+  justify-self: center;
+  width: min(100%, 270px);
+  min-height: 190px;
+  transform: rotate(2.5deg);
+}
+
+.garden-site .arrival-envelope-paper {
+  height: 156px;
+  border-radius: 10px;
+  box-shadow: 7px 8px 0 rgba(3, 36, 58, 0.28);
+}
+
+.garden-site .arrival-letter {
+  top: -39px;
+  height: 59px;
+  padding: 10px 12px;
+}
+
+.garden-site .arrival-seal {
+  width: 56px;
+  height: 56px;
+}
+
+@media (max-width: 650px) {
+  .garden-site .daily-arrival {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    gap: 17px;
+    margin-top: 25px;
+    padding: 4px 0 14px;
+  }
+
+  .garden-site .arrival-copy h3 {
+    max-width: 12ch;
+    font-size: 40px;
+  }
+
+  .garden-site .arrival-copy p {
+    max-width: 31ch;
+    font-size: 13px;
+  }
+
+  .garden-site .arrival-actions {
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 11px;
+  }
+
+  .garden-site .arrival-actions button {
+    width: auto;
+  }
+
+  .garden-site .arrival-envelope {
+    justify-self: end;
+    width: min(76%, 255px);
+    min-height: 164px;
+    margin-top: -3px;
+  }
+
+  .garden-site .arrival-envelope-paper {
+    height: 137px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .garden-site .arrival-envelope {
+    transform: none;
+  }
+}
