@@ -346,12 +346,13 @@
 .garden-site .curriculum-card > img.card-character-image {
   position: absolute;
   z-index: 2;
-  top: 43%;
+  top: 39%;
   left: 50%;
-  width: clamp(116px, 31%, 184px);
-  max-height: 54%;
+  width: clamp(170px, 46%, 290px) !important;
+  height: auto !important;
+  max-height: 55%;
   object-fit: contain;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) !important;
   transform-origin: center;
   pointer-events: none;
 }
@@ -430,9 +431,10 @@
   }
 
   .garden-site .curriculum-card > img.card-character-image {
-    top: 42%;
-    width: clamp(128px, 43vw, 178px);
-    max-height: 51%;
+    top: 36%;
+    width: clamp(184px, 55vw, 240px) !important;
+    height: auto !important;
+    max-height: 53%;
   }
 
   .garden-site .curriculum-card > .curriculum-copy {

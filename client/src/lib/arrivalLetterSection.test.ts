@@ -54,7 +54,7 @@ describe("한 장의 편지를 여는 도착 장면", () => {
     expect(home).toContain("sensory-card-pio-math-scene.png");
     expect(home).toContain("sensory-card-lulu-english-scene.png");
     expect(home).toContain("sensory-card-nabi-tactile-scene-clean.png");
-    expect(css).toContain("top: 43%");
+    expect(css).toContain("top: 39%");
     expect(css).toContain("left: 50%");
     expect(css).toContain("transform: translate(-50%, -50%)");
     expect(css).toContain("bottom: 22px");
