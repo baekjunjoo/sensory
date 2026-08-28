@@ -132,8 +132,7 @@
   background: #0b4669 !important;
 }
 
-.studio-section .studio-copy,
-.garden-footer .footer-row {
+.studio-section .studio-copy {
   width: fit-content;
   max-width: min(100%, 700px);
   padding: 18px 22px;
